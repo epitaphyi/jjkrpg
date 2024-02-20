@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="pt-BR"> 
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <title>Ficha</title>
+        <link rel="icon" href="">
+    </head>
+    <body>
+        <form id="formFicha">
+            <div id="fichaBasico">
+                <p><h2><b>Básico</b></h2></p>
+
+                <label for="ficha_nome">Nome</label>
+                <input type="text" id="ficha_nome" name="ficha_nome"> <br><br>
+
+                <label for="ficha_nivel">Nível</label>
+                <input type="number" id="ficha_nivel" name="ficha_nivel" min="1" max="20"> <br><br>
+
+                <label for="ficha_origem">Origem</label>
+                <select id="ficha_origem" name="ficha_origem">
+                    <option value="inato">Inato</option>
+                    <option value="herdado">Herdado</option>
+                    <option value="derivado">Derivado</option>
+                    <option value="restringido">Restringido</option>
+                    <option value="feto_amaldicoado">Feto Amaldiçoado</option>
+                    <option value="sem_tecnica">Sem Técnica</option>
+                    <option value="corpo_amaldicoado_mutante">Corpo Amaldiçoado Mutante</option>
+                </select><br><br>
+
+                <div hidden id="ficha_clas">
+                    <label for="ficha_clas">Clã</label> 
+                    <select id="ficha_clas" name="ficha_clas">
+                        <option value="cla1">Clã 1</option>
+                        <option value="cla2">Clã 2</option>
+                    </select>
+                    <br>
+                </div>
+
+                <label for="ficha_especializacao">Especialização</label>
+                <select id="ficha_especializacao" name="ficha_especializacao">
+                    <option value="lutador">Lutador</option>
+                    <option value="especialista_em_combate">Especialista em Combate</option>
+                    <option value="especialista_em_tecnicas">Especialista em Técnicas</option>
+                    <option value="controlador">Controlador</option>
+                    <option value="suporte">Suporte</option>
+                    <option value="restringido">Restringido</option>
+                </select><br><br>
+
+                <label for="ficha_tipo_de_mulher">Tipo de Mulher</label>
+                <input type="text" id="ficha_tipo_de_mulher" name="ficha_tipo_de_mulher"> <br><br>
+                
+                <br>
+            </div>
+
+            <div id="fichaAtributos" class="container">
+                <div class="attributes">
+                    <div>
+                        <label for="forca">Força</label>
+                        <input type="number" id="forca" min="8" max="15">
+                    </div>
+                    <div>
+                        <label for="destreza">Destreza</label>
+                        <input type="number" id="destreza" min="8" max="15">
+                    </div>
+                    <div>
+                        <label for="constituicao">Constituição</label>
+                        <input type="number" id="constituicao" min="8" max="15">
+                    </div>
+                    <div>
+                        <label for="inteligencia">Inteligência</label>
+                        <input type="number" id="inteligencia" min="8" max="15">
+                    </div>
+                    <div>
+                        <label for="sabedoria">Sabedoria</label>
+                        <input type="number" id="sabedoria" min="8" max="15">
+                    </div>
+                    <div>
+                        <label for="carisma">Carisma</label>
+                        <input type="number" id="carisma" min="8" max="15">
+                    </div>
+                </div>
+                <button type="button" onclick="validateAttributes()">Validar Atributos</button>
+                <p id="message"></p>
+                <p>Pontos de Atributo Disponível: x</p>
+
+                
+            </div>
+
+            <div id="fichaValores">
+                <p><h2><b>Valores</b></h2></p>
+                <p> Vida </p>
+                <p> Energia Amaldiçoada </p>
+                <p> Bônus de Maestria </p>
+                <p> Iniciativa </p>
+                <p> Movimento </p>
+                <p> Integridade da Alma </p>
+                <p> Classe de Armadura</p>
+                <p> Atenção </p>
+                <br>
+            </div>
+
+            <div id="fichaMaestrias">
+                <p><h2><b>Maestrias</b></h2></p>
+                <p> (Perícias) </p>
+                <p> (Armas) </p>
+                <p> (Kit de Ferramentas)</p>
+                <br>
+            </div>
+            
+            <div id="fichaPericias">
+                <p><h2><b>Pericías</b></h2></p>
+                <p> Carisma +x </p>
+            </div>
+            <br>
+            
+            <div id="fichaEquipamentos">
+                <p><h2><b>Equipamentos</b></h2></p>
+                <p> item x </p>
+                <br>
+            </div>
+            
+            <div id="fichaOrigem">
+                <p><h2><b>Origem</b></h2></p>
+                <p> habilidade de origem x </p>
+                <br>
+            </div>
+
+            <div id="fichaEspecialização">
+                <p><h2><b>Especialização</b></h2></p>
+                <p> poder de classe </p>
+                <br>
+            </div>
+
+            <div id="fichaHabilidadesEspecialização">
+                <p><h2><b>Habilidades de Especialização</b></h2></p>
+                <p> habilidade de especialização x </p>
+                <br>
+            </div>
+            
+            <div id="fichaTalentos">
+                <p><h2><b>Talentos</b></h2></p>
+                <p> talento x </p>
+                <br>
+            </div>
+
+            <div id="fichaHabilidadesAmaldicoadas">
+                <p><h2><b>Habilidades Amaldiçoadas</b></h2></p>
+                <p> habilidade amaldiçoada x </p>
+                <br>
+            </div>
+
+            <div id="fichaMaximoHabilidadesTecnica">
+                <p><h2><b>Máximo de Habilidades de Técnica</b></h2></p>
+                <p> calculo do maximo de habilidades de tecnica</p>
+                <br>
+            </div>
+
+            <div id="fichaHabilidadesTenica">
+                <p><h2><b>Habilidades de Técnicas</b></h2></p>
+                <p>Habilidade de técnica x</p>
+                <br>
+            </div>
+
+            <div id="fichaRosto">
+                <div id="fichaAparencia">
+                    <p><h2><b>Aparência</b></h2></p>
+                    <textarea id="fichaDescricaoAparencia" name="textoResponsivo" placeholder="Descreva sua aparência"></textarea>
+                </div>
+
+                <div id="fichaTracosPersonalidade">
+                    <p><h2><b>Traços de Personalidade</b></h2></p>
+                    <textarea id="fichaDescricaoTracosPersonalidade" name="textoResponsivo" placeholder="Descreva como é sua personalidade"></textarea>
+                </div>
+                
+                <div id="fichaHistorico">
+                    <p><h2><b>Histórico do Personagme</b></h2></p>
+                    <textarea id="fichaDescricaoHistorico" name="textoResponsivo" placeholder="Descreva sua história"></textarea>
+                </div>
+                
+                <div id="fichaTecnicaInata">
+                    <p><h2><b>Técnica Inata</b></h2></p>
+                    <textarea id="fichaDescricaoTecnicaInata" name="textoResponsivo" placeholder="Descreva sua técnica inata e como ela funciona"></textarea>
+                </div>
+            </div>
+
+            <div id="fichaListaTecnicas">
+                <p><h2><b>Lista de Técnicas</b></h2></p>
+                <p>Descrição da lista de técnicas</p>
+                <br>
+            </div>
+        </form>
+
+        <div id="fichaPersonagem">
+            <h2><b>Ficha Personagem</b></h2>
+            <br>
+        </div>
+
+        <button id="salvarBtn">Salvar</button>
+
+        <script src="script.js"></script>
+    </body>
+</html>
