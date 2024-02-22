@@ -54,38 +54,56 @@
                 <br>
             </div>
 
-            <div id="fichaAtributos" class="container">
-                <div class="attributes">
-                    <div>
+            <div id="fichaAtributosBase" class="container">
+                <div class="atributosBase">
                         <label for="forca">Força</label>
                         <input type="number" id="forca" min="8" max="15">
-                    </div>
-                    <div>
                         <label for="destreza">Destreza</label>
                         <input type="number" id="destreza" min="8" max="15">
-                    </div>
-                    <div>
                         <label for="constituicao">Constituição</label>
                         <input type="number" id="constituicao" min="8" max="15">
-                    </div>
-                    <div>
                         <label for="inteligencia">Inteligência</label>
                         <input type="number" id="inteligencia" min="8" max="15">
-                    </div>
-                    <div>
                         <label for="sabedoria">Sabedoria</label>
                         <input type="number" id="sabedoria" min="8" max="15">
-                    </div>
-                    <div>
                         <label for="carisma">Carisma</label>
                         <input type="number" id="carisma" min="8" max="15">
-                    </div>
                 </div>
-                <button type="button" onclick="validateAttributes()">Validar Atributos</button>
+                <button type="button" onclick="validarAtributos()">Validar Atributos Base</button>
                 <p id="message"></p>
-                <p>Pontos de Atributo Disponível: x</p>
+                <button type="button" onclick="salvarAtributos()">Salvar Atributos Base</button>
+                <p id="mensagemSalvar"></p>
 
-                
+                <div id="fichaAtributos" class="container">
+                    <div class="atributos">
+                        <div>
+                            <label for="forca">Força</label>
+                            <input type="number" id="forca" min="8" max="15">
+                        </div>
+                        <div>
+                            <label for="destreza">Destreza</label>
+                            <input type="number" id="destreza" min="8" max="15">
+                        </div>
+                        <div>
+                            <label for="constituicao">Constituição</label>
+                            <input type="number" id="constituicao" min="8" max="15">
+                        </div>
+                        <div>
+                            <label for="inteligencia">Inteligência</label>
+                            <input type="number" id="inteligencia" min="8" max="15">
+                        </div>
+                        <div>
+                            <label for="sabedoria">Sabedoria</label>
+                            <input type="number" id="sabedoria" min="8" max="15">
+                        </div>
+                        <div>
+                            <label for="carisma">Carisma</label>
+                            <input type="number" id="carisma" min="8" max="15">
+                        </div>
+                    </div>
+                    <button type="button" onclick="validateAttributes()">Validar Atributos</button>
+                    <p id="message"></p>
+                    
             </div>
 
             <div id="fichaValores">
@@ -192,7 +210,7 @@
             </div>
         </form>
 
-        <div id="fichaPersonagem">
+        <div id="fichaPersonagem"> <!--O script de escrever ficha automaticamente é aqui-->
             <h2><b>Ficha Personagem</b></h2>
             <br>
         </div>

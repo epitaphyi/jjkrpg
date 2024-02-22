@@ -14,11 +14,13 @@
 //});
 
 
-// VALIDAR ATRIBUTOS BASE
-const attributeValues = [15, 14, 13, 12, 10, 8];
+// VALIDAR E SALVAR ATRIBUTOS BASE 
 
-function validateAttributes() {
-    const attributes = document.querySelectorAll('.attributes input');
+// VALIDAR
+const attributeValues = [15, 14, 13, 12, 10, 8]; // atributos base
+
+function validarAtributos() { // validar os atributos base
+    const attributes = document.querySelectorAll('.atributosBase input');
     const chosenValues = [];
 
     attributes.forEach(attribute => {
@@ -45,7 +47,45 @@ function showMessage(message) {
     document.getElementById('message').textContent = message;
 }
 
+// SALVAR
+let atributosSalvos = {
+    forca: 0,
+    destreza: 0,
+    constituicao: 0,
+    inteligencia: 0,
+    sabedoria: 0,
+    carisma: 0
+};
+
+function salvarAtributos() {
+    const attributes = document.querySelectorAll('.atributosBase input');
+
+    attributes.forEach(attribute => {
+        const attributeName = attribute.id;
+        const attributeValue = parseInt(attribute.value);
+        atributosSalvos[attributeName] = attributeValue;
+    });
+
+    mostrarMensagemSalvar("Atributos salvos com sucesso!");
+}
+
+function mostrarMensagemSalvar(mensagemSalvar) {
+    document.getElementById('mensagemSalvar').textContent = mensagemSalvar;
+}
+
+
 // ADICIONAR PONTOS DE ATRIBUTOS
+let bonusAtributos = {
+    forca: 0,
+    destreza: 0,
+    constituicao: 0,
+    inteligencia: 0,
+    sabedoria: 0,
+    carisma: 0
+};
+
+function adicionarAtributosBonus() {
+}
 
 
 // HABILIDADES DE ORIGEM, ESPECIALIZAÇÃO E TALENTOS
