@@ -16,10 +16,10 @@
 
 // VALIDAR E SALVAR ATRIBUTOS BASE 
 
-// VALIDAR
+// VALIDAR ATRIBUTOS BASE
 const attributeValues = [15, 14, 13, 12, 10, 8]; // atributos base
 
-function validarAtributos() { // validar os atributos base
+function validarAtributosBase() { // validar os atributos base
     const attributes = document.querySelectorAll('.atributosBase input');
     const chosenValues = [];
 
@@ -47,7 +47,7 @@ function showMessage(message) {
     document.getElementById('message').textContent = message;
 }
 
-// SALVAR
+// SALVAR ATRIBUTOS BASE
 let atributosSalvos = {
     forca: 0,
     destreza: 0,
@@ -57,7 +57,7 @@ let atributosSalvos = {
     carisma: 0
 };
 
-function salvarAtributos() {
+function salvarAtributosBase() {
     const attributes = document.querySelectorAll('.atributosBase input');
 
     attributes.forEach(attribute => {
@@ -66,16 +66,15 @@ function salvarAtributos() {
         atributosSalvos[attributeName] = attributeValue;
     });
 
-    mostrarMensagemSalvar("Atributos salvos com sucesso!");
-}
+    mostrarMensagemSalvar("Atributos base salvos com sucesso!");
+};
 
 function mostrarMensagemSalvar(mensagemSalvar) {
     document.getElementById('mensagemSalvar').textContent = mensagemSalvar;
-}
+};
 
-
-// ADICIONAR PONTOS DE ATRIBUTOS
-let bonusAtributos = {
+// SALVAR ATRIBUTOS FINAIS
+let atributosFinais = {
     forca: 0,
     destreza: 0,
     constituicao: 0,
@@ -84,9 +83,72 @@ let bonusAtributos = {
     carisma: 0
 };
 
-function adicionarAtributosBonus() {
-}
+function salvarAtributosFinais() {
+    const atributos = atributosSalvos;
+    
+    for (let atributo in atributos) {
+        const atributoNome = atributo.id;
+        const atributoValor = parseInt(atributo.valor);
+        atributosFinais[atributoNome] = atributoValor;
+        console.log(`${atributo}: ${atributos[atributo]}`);
+    }
 
+    function calcularAtributosBonus(atributosFinais, opcoes) {
+        for (let opcao of opcoes) {
+            if (opcao.tipo === 'adicao') {
+                for (let atributoBonus in opcao.atributosBonus) {
+                    atributosFinais[atributoBonus] += opcao.atributosBonus[atributoBonus];
+                }
+            } else {
+                console.log("Opção inválida:", opcao);
+            }
+        }
+        return atributosFinais;
+    }
+    
+    // Exemplo de uso
+    let opcoesSelecionadas = [
+        {
+            nome: 'Teste 1',
+            tipo: 'adicao', 
+            atributosBonus: {
+                forca: 2,
+                destreza: 1
+            }
+        },  // Adiciona 2 pontos em força e 1 ponto em destreza
+        {
+            nome: 'Teste 2',
+            tipo: 'adicao', 
+            atributosBonus: {
+                constituicao: 3
+            }
+        }  // Adiciona 3 pontos em constituição
+        // Outras opções...
+    ];
+    
+    let atributosAtualizados = calcularAtributosBonus(atributosFinais, opcoesSelecionadas);
+    console.log("Atributos somados com os bônus:", atributosAtualizados);
+
+    mostrarMensagemAtributosFinais("Atributos salvos com sucesso!");
+};
+
+function mostrarMensagemAtributosFinais(mensagemAtributosFinais) {
+    document.getElementById('mensagemAtributosFinais').textContent = mensagemAtributosFinais;
+};
+
+
+// LER ATRIBUTOS
+
+function lerAtributos() {
+    const atributosLidos = atributosSalvos;
+
+    for (let atributoLido in atributosLidos) {
+        
+        console.log(`${atributoLido}: ${atributosLidos[atributoLido]}`);
+    }
+    console.log("Leitura de atributos finalizada."); 
+
+}
 
 // HABILIDADES DE ORIGEM, ESPECIALIZAÇÃO E TALENTOS
 
@@ -223,7 +285,6 @@ const habilidadesOrigem = {
 
 }
 
-
 const habilidadesEspecializacao = {
     lutador: [
         { nome: "Mestre de Luta", descricao: `Um lutador é um mestre da luta, dedicando-se ao seu corpo` },
@@ -246,13 +307,13 @@ function escreverFicha() {
     const especializacao = document.getElementById("ficha_especializacao").value;
     const especializacaoHabilidadesBase = habilidadesEspecializacao[especializacao];
     
-    let personagemFichaHTML = "<h3>Habilidades de Origem:</h3><ul>";
+    let personagemFichaHTML = "<p><h2>Habilidades de Origem:</h2><ul>";
     origemHabilidadesBase.forEach(habilidade => {
         personagemFichaHTML += `<li><strong>${habilidade.nome}</strong>: ${habilidade.descricao}</li>`;
     });
     personagemFichaHTML += "</ul>";
 
-    personagemFichaHTML += "<h3>Habilidades de Especialização:</h3><ul>";
+    personagemFichaHTML += "<h2><b>Habilidades Base de Especialização</b></h2><ul>";
     especializacaoHabilidadesBase.forEach(habilidadeBase => {
         personagemFichaHTML += `<li><strong>${habilidadeBase.nome}</strong>: ${habilidadeBase.descricao}</li>`;
     });
@@ -277,6 +338,11 @@ document.getElementById("ficha_origem").addEventListener("change", function() { 
     } else { // caso contrário
         divClas.style.display = "none"; // muda o display para none, fazendo com que sua linha não apareça, e por ventura, nem o texto em si por conta do hidden no div
     }
+});
+
+// SELECIONAR OS BONUS DE ATRIBUTOS
+document.getElementById("ficha_origem").addEventListener("change", function() {
+    const origemSelecionada = document.getElementById("ficha_origem").value; // pega exatamente qual a origem escolhida
 });
 
 // HABILIDADES DE ESPECIALIZACAO
