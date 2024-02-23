@@ -1,20 +1,15 @@
-//document.getElementById("salvarBtn").addEventListener("click", function() {
-    // Obter os valores dos campos de entrada
-//    var nome = document.getElementById("nome").value;
-    // Obter mais valores de outros campos de entrada, se necessário
+// REAJUSTAR O TAMANHO DE TEXTOS PARA A DESCRIÇÃO DO PERSONAGEM
+function resizeTextarea() {
+    var textareas = document.getElementsByName("textoResponsivo"); // pega cada descrição do "rosto" da ficha pelo nome
+    textareas.forEach(function(textarea) { // para cada descrição de rosto, realiza a função abaixo
+      textarea.style.height = ""; // Redefine a altura para calcular a altura real
+      textarea.style.height = textarea.scrollHeight + "px"; // Define a altura conforme o conteúdo
+    });
+}
 
-    // Salvar as informações onde quer que deseje (local storage, banco de dados, etc.)
-    // Aqui, apenas um exemplo de exibição no console
-//    console.log("Nome: " + nome);
-    // Exibir mais informações no console, se necessário
-
-    // Limpar os campos de entrada após salvar as informações
-//    document.getElementById("nome").value = "";
-    // Limpar mais campos de entrada, se necessário
-//});
-
-
-// VALIDAR E SALVAR ATRIBUTOS BASE 
+document.getElementsByName("textoResponsivo").forEach(function(textarea) {
+    textarea.addEventListener("input", resizeTextarea);
+});
 
 // VALIDAR ATRIBUTOS BASE
 const attributeValues = [15, 14, 13, 12, 10, 8]; // atributos base
@@ -72,70 +67,6 @@ function salvarAtributosBase() {
 function mostrarMensagemSalvar(mensagemSalvar) {
     document.getElementById('mensagemSalvar').textContent = mensagemSalvar;
 };
-
-// SALVAR ATRIBUTOS FINAIS
-let atributosFinais = {
-    forca: 0,
-    destreza: 0,
-    constituicao: 0,
-    inteligencia: 0,
-    sabedoria: 0,
-    carisma: 0
-};
-
-function salvarAtributosFinais() {
-    const atributos = atributosSalvos;
-    
-    for (let atributo in atributos) {
-        const atributoNome = atributo.id;
-        const atributoValor = parseInt(atributo.valor);
-        atributosFinais[atributoNome] = atributoValor;
-        console.log(`${atributo}: ${atributos[atributo]}`);
-    }
-
-    function calcularAtributosBonus(atributosFinais, opcoes) {
-        for (let opcao of opcoes) {
-            if (opcao.tipo === 'adicao') {
-                for (let atributoBonus in opcao.atributosBonus) {
-                    atributosFinais[atributoBonus] += opcao.atributosBonus[atributoBonus];
-                }
-            } else {
-                console.log("Opção inválida:", opcao);
-            }
-        }
-        return atributosFinais;
-    }
-    
-    // Exemplo de uso
-    let opcoesSelecionadas = [
-        {
-            nome: 'Teste 1',
-            tipo: 'adicao', 
-            atributosBonus: {
-                forca: 2,
-                destreza: 1
-            }
-        },  // Adiciona 2 pontos em força e 1 ponto em destreza
-        {
-            nome: 'Teste 2',
-            tipo: 'adicao', 
-            atributosBonus: {
-                constituicao: 3
-            }
-        }  // Adiciona 3 pontos em constituição
-        // Outras opções...
-    ];
-    
-    let atributosAtualizados = calcularAtributosBonus(atributosFinais, opcoesSelecionadas);
-    console.log("Atributos somados com os bônus:", atributosAtualizados);
-
-    mostrarMensagemAtributosFinais("Atributos salvos com sucesso!");
-};
-
-function mostrarMensagemAtributosFinais(mensagemAtributosFinais) {
-    document.getElementById('mensagemAtributosFinais').textContent = mensagemAtributosFinais;
-};
-
 
 // LER ATRIBUTOS
 
@@ -297,36 +228,6 @@ const habilidadesEspecializacao = {
     ]
 }
 
-
-// ESCREVER AUTOMATICAMENTE NA FICHA
-
-function escreverFicha() {
-    const origem = document.getElementById("ficha_origem").value;
-    const origemHabilidadesBase = habilidadesOrigem[origem];
-
-    const especializacao = document.getElementById("ficha_especializacao").value;
-    const especializacaoHabilidadesBase = habilidadesEspecializacao[especializacao];
-    
-    let personagemFichaHTML = "<p><h2>Habilidades de Origem:</h2><ul>";
-    origemHabilidadesBase.forEach(habilidade => {
-        personagemFichaHTML += `<li><strong>${habilidade.nome}</strong>: ${habilidade.descricao}</li>`;
-    });
-    personagemFichaHTML += "</ul>";
-
-    personagemFichaHTML += "<h2><b>Habilidades Base de Especialização</b></h2><ul>";
-    especializacaoHabilidadesBase.forEach(habilidadeBase => {
-        personagemFichaHTML += `<li><strong>${habilidadeBase.nome}</strong>: ${habilidadeBase.descricao}</li>`;
-    });
-    personagemFichaHTML += "</ul>";
-    personagemFichaHTML += "</ul>";
-
-    document.getElementById("fichaPersonagem").innerHTML = personagemFichaHTML;
-
-}
-
-document.getElementById("ficha_origem").addEventListener("change", escreverFicha);
-document.getElementById("ficha_especializacao").addEventListener("change", escreverFicha);
-
 // APARECER OPÇÃO DE CLÃS PARA HERDADO
 document.getElementById("ficha_origem").addEventListener("change", function() { // o addEventListener("change") funciona toda vez que o selecionado for alterado
     const origemSelecionada = document.getElementById("ficha_origem").value; // pega exatamente qual a origem escolhida
@@ -340,27 +241,159 @@ document.getElementById("ficha_origem").addEventListener("change", function() { 
     }
 });
 
-// SELECIONAR OS BONUS DE ATRIBUTOS
-document.getElementById("ficha_origem").addEventListener("change", function() {
-    const origemSelecionada = document.getElementById("ficha_origem").value; // pega exatamente qual a origem escolhida
-});
+// SELECIONAR OS BONUS DE ATRIBUTOS E SALVAR OS BONUS
+function AtributoBonus() {
+    const origemSelecionada = document.getElementById("ficha_origem").value;
+    const divAtributosBonus = document.getElementById("ficha_atributos_bonus");
 
-// HABILIDADES DE ESPECIALIZACAO
+    if (origemSelecionada === "inato" || origemSelecionada === "feto_amaldicoado" || origemSelecionada === "derivado") {
+        divAtributosBonus.style.display = "block";
+    } else {
+        divAtributosBonus.style.display = "none"; 
+    }
+};
 
+AtributoBonus(); // ativa o evento uma vez
+document.getElementById("ficha_origem").addEventListener("change", AtributoBonus); // ativa o evento toda vez que a (nesse caso) origem mudar
 
-// REAJUSTAR O TAMANHO DE TEXTOS PARA A DESCRIÇÃO DO PERSONAGEM
-function resizeTextarea() {
-    var textareas = document.getElementsByName("textoResponsivo"); // pega cada descrição do "rosto" da ficha pelo nome
-    textareas.forEach(function(textarea) { // para cada descrição de rosto, realiza a função abaixo
-      textarea.style.height = ""; // Redefine a altura para calcular a altura real
-      textarea.style.height = textarea.scrollHeight + "px"; // Define a altura conforme o conteúdo
-    });
+function definirAtributosBonusOrigem() { // validar os atributos base
+    const atributosBonusOrigem = document.querySelectorAll('.ficha_atributos_bonus_origem input'); // pega os atributos bonus na ficha conforme o input do usuário
+    let arrayAtributosBonus = Array.from(atributosBonusOrigem) // transforma o nodelist do querySelectorAll em cima em um array
+
+    let soma = 0; // define a variavel da soma
+
+    arrayAtributosBonus.forEach(atributoBonus => { // cria um loop, verificando cada atributo individual
+        soma += parseInt(atributoBonus.value); // então soma o valor do atributo na variavel soma (o int parse é necessário, caso contrário irá somar como string, como 00102)
+      })
+
+    if (soma != 3) { // se estiver diferente de 3, retorna para o loop anterior até estar correto 
+        mostrarMensagemAtributosBonusOrigem("A distribuição está incorreta.")
+        return;
+    }
+
+    mostrarMensagemAtributosBonusOrigem("");
+} 
+
+function mostrarMensagemAtributosBonusOrigem(mensagemAtributoBonusOrigem) {
+    document.getElementById('mensagemAtributoBonusOrigem').textContent = mensagemAtributoBonusOrigem;
 }
 
-document.getElementsByName("textoResponsivo").forEach(function(textarea) {
-    textarea.addEventListener("input", resizeTextarea);
-});
+function SalvarAtributosBonus() {
+    // nada por enquanto
+}
 
+// SALVAR ATRIBUTOS FINAIS
+let atributosFinais = {
+    forca: 0,
+    destreza: 0,
+    constituicao: 0,
+    inteligencia: 0,
+    sabedoria: 0,
+    carisma: 0
+};
 
-// Build character sheet initially
+function salvarAtributosFinais() { // ACHO QUE TENHO QUE REFAZER TODO ESSE CÓDIGO, ESTÁ SOMANDO A 0 E PODE SER ADICIONADO BONUS INFINITAMENTE
+    const atributos = atributosSalvos;
+    
+    for (let atributo in atributos) {
+        const atributoNome = atributo.id;
+        const atributoValor = parseInt(atributo.valor);
+        atributosFinais[atributoNome] = atributoValor;
+        console.log(`${atributo}: ${atributos[atributo]}`);
+    }
+
+    function calcularAtributosBonus(atributosFinais, opcoes) {
+        for (let opcao of opcoes) {
+            if (opcao.tipo === 'adicao') {
+                for (let atributoBonus in opcao.atributosBonus) {
+                    atributosFinais[atributoBonus] += opcao.atributosBonus[atributoBonus];
+                }
+            } else {
+                console.log("Opção inválida:", opcao);
+            }
+        }
+        return atributosFinais;
+    }
+    
+    // Exemplo de uso
+    let opcoesSelecionadas = [
+        {
+            nome: 'Teste 1',
+            tipo: 'adicao', 
+            atributosBonus: {
+                forca: 2,
+                destreza: 1
+            }
+        },  // Adiciona 2 pontos em força e 1 ponto em destreza
+        {
+            nome: 'Teste 2',
+            tipo: 'adicao', 
+            atributosBonus: {
+                constituicao: 3
+            }
+        }  // Adiciona 3 pontos em constituição
+        // Outras opções...
+    ];
+    
+    let atributosAtualizados = calcularAtributosBonus(atributosFinais, opcoesSelecionadas);
+    console.log("Atributos somados com os bônus:", atributosAtualizados);
+
+    mostrarMensagemAtributosFinais("Atributos salvos com sucesso!");
+};
+
+function mostrarMensagemAtributosFinais(mensagemAtributosFinais) {
+    document.getElementById('mensagemAtributosFinais').textContent = mensagemAtributosFinais;
+};
+
+// MOSTRAR OS ATRIBUTOS FINAIS NA FICHA
+function escreverAtributos() {
+    const atributosDefinidos = atributosAtualizados.valor;
+    console.log("teste1");
+
+    for (let atributoDefinido in atributosDefinidos) {
+        const atributoNome = atributoDefinido.id;
+        const atributoValor = parseInt(atributoDefinido.valor);
+        atributosDefinidos[atributoNome] = atributoValor;
+        console.log("teste2");
+        //console.log(`${atributoDefinido}: ${atributosDefinidos[atributoDefinido]}`);
+    }
+
+    //document.getElementById("fichaAtributosCalculados").innerHTML = atributosFichaHTML;
+};
+
+function SalvarEscreverAtributos() {
+    salvarAtributosFinais();
+    escreverAtributos();
+}
+
+// ESCREVER HABILIDADES DE ORIGENS E ESPECIALIZAÇÕES NA FICHA
+
+function escreverFicha() {
+    const origem = document.getElementById("ficha_origem").value;
+    const origemHabilidadesBase = habilidadesOrigem[origem];
+
+    const especializacao = document.getElementById("ficha_especializacao").value;
+    const especializacaoHabilidadesBase = habilidadesEspecializacao[especializacao];
+    
+    let personagemFichaHTML = "<p><h2>Habilidades de Origem:</h2><ul>";
+
+    origemHabilidadesBase.forEach(habilidade => {
+        personagemFichaHTML += `<li><strong>${habilidade.nome}</strong>: ${habilidade.descricao}</li>`;
+    });
+    personagemFichaHTML += "</ul>";
+
+    personagemFichaHTML += "<h2><b>Habilidades Base de Especialização</b></h2><ul>";
+    especializacaoHabilidadesBase.forEach(habilidadeBase => {
+        personagemFichaHTML += `<li><strong>${habilidadeBase.nome}</strong>: ${habilidadeBase.descricao}</li>`;
+    });
+    personagemFichaHTML += "</ul>";
+    personagemFichaHTML += "</ul>";
+
+    document.getElementById("fichaAutomatizada").innerHTML = personagemFichaHTML;
+
+}
+
+document.getElementById("ficha_origem").addEventListener("change", escreverFicha);
+document.getElementById("ficha_especializacao").addEventListener("change", escreverFicha);
+
 escreverFicha();
