@@ -43,7 +43,7 @@ function showMessage(message) {
 }
 
 // SALVAR ATRIBUTOS BASE
-let atributosSalvos = {
+let atributosSalvos = { // objeto 1
     forca: 0,
     destreza: 0,
     constituicao: 0,
@@ -264,45 +264,60 @@ function definirAtributosBonusOrigem() { // validar os atributos base
     let arrayAtributosBonus = Array.from(atributosBonusOrigem); // transforma o nodelist do querySelectorAll em cima em um array
 
     let soma = 0; // define a variavel da soma
+    indice = 0;
+    const array = ['forca', 'destreza', 'constituicao', 'inteligencia', 'sabedoria', 'carisma'];
+    const valores = [0, 0, 0, 0, 0, 0];
 
     arrayAtributosBonus.forEach(atributoBonus => { // cria um loop, verificando cada atributo individual
         soma += parseInt(atributoBonus.value); // então soma o valor do atributo na variavel soma (o int parse é necessário, caso contrário irá somar como string, como 00102)
+        valores[indice] = atributoBonus.value;
+        console.log(`Valor atual de indice ${indice}: ${valores[indice]}`);
+        indice += 1;
       });
+  
+    const objeto = {};
+  
+    for (let i = 0; i < array.length; i++) {
+          const chave = array[i];
+          const valor = valores[i];
+          objeto[chave] = valor;
+    }
 
-      let mensagem = "";
-      switch (origemSelecionada) {
-          case "inato":
-          case "feto_amaldicoado":
-          case "derivado":
-          case "herdado":
-              if (soma !== 3) {
-                  mensagem = "A distribuição está incorreta.";
-              }
-              break;
-          case "sem_tecnica":
-              if (soma !== 4) {
-                  mensagem = "A distribuição está incorreta.";
-              }
-              break;
-          case "restringido":
-              if (soma !== 5) {
-                  mensagem = "A distribuição está incorreta.";
-              }
-              break;
-          case "corpo_amaldicoado_mutante":
-              if (soma !== 2) {
-                  mensagem = "A distribuição está incorreta.";
-              }
-              break;
-          default:
-              mensagem = "Origem inválida.";
+    let mensagem = "";
+    switch (origemSelecionada) {
+        case "inato":
+        case "feto_amaldicoado":
+        case "derivado":
+        case "herdado":
+            if (soma !== 3) {
+                mensagem = "A distribuição está incorreta.";
+            }
+            break;
+        case "sem_tecnica":
+            if (soma !== 4) {
+                mensagem = "A distribuição está incorreta.";
+            }
+            break;
+        case "restringido":
+            if (soma !== 5) {
+                mensagem = "A distribuição está incorreta.";
+            }
+            break;
+        case "corpo_amaldicoado_mutante":
+            if (soma !== 2) {
+                mensagem = "A distribuição está incorreta.";
+            }
+            break;
+        default:
+            mensagem = "Origem inválida.";
       }
   
-      if (mensagem === "") {
-          mensagem = "";
-      }
-  
-      mostrarMensagemAtributosBonusOrigem(mensagem);
+    if (mensagem === "") {
+        mensagem = "";
+    }
+
+    mostrarMensagemAtributosBonusOrigem(mensagem);
+
 }; 
 
 function mostrarMensagemAtributosBonusOrigem(mensagemAtributoBonusOrigem) {
@@ -326,7 +341,7 @@ const bonusAtributos = {
 }
 
 // SALVAR ATRIBUTOS FINAIS
-let atributosFinais = {
+let atributosFinais = { // objeto 2
     forca: 0,
     destreza: 0,
     constituicao: 0,
@@ -345,21 +360,7 @@ function salvarAtributosFinais() { // ACHO QUE TENHO QUE REFAZER TODO ESSE CÓDI
         atributosFinais[atributoNome] = atributoValor;
         console.log(`${atributo}: ${atributos[atributo] + bonus}`);
     }
-
-    function calcularAtributosBonus(atributosFinais, opcoes) {
-        for (let opcao of opcoes) {
-            if (opcao.tipo === 'adicao') {
-                for (let atributoBonus in opcao.atributosBonus) {
-                    atributosFinais[atributoBonus] += opcao.atributosBonus[atributoBonus];
-                }
-            } else {
-                console.log("Opção inválida:", opcao);
-            }
-        }
-        return atributosFinais;
-
-    console.log("Leitura de atributos TOTAIS finalizada."); 
-}};
+};
 
 function mostrarMensagemAtributosFinais(mensagemAtributosFinais) {
     document.getElementById('mensagemAtributosFinais').textContent = mensagemAtributosFinais;
