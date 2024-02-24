@@ -55,20 +55,14 @@
             </div>
 
             <div id="fichaAtributos" class="container">
-                <div id="fichaAtributosCalculados"> <!--script de escrever os atributos-->
+                <div id="fichaAtributosAuto"> <!--script de escrever os atributos-->
                     <h2><b>Atributos</b></h2>
-                </div>
-                <div class="atributos">
-                    <p>Força</p>
-                    <p>Destreza</p>
-                    <p>Constituição</p>
-                    <p>Inteligência</p>
-                    <p>Sabedoria</p>
-                    <p>Carisma</p>
                 </div>
                 <br>
                 <button type="button" onclick="SalvarEscreverAtributos()">Salvar Atributos Finais</button>
                 <p id="mensagemAtributosFinais"></p>
+                <button type="button" onclick="salvarAtributosBase()">Salvar Atributos Base</button>
+                <button type="button" onclick="SalvarAtributosBonus()">Salvar Atributos Bonus</button>
             </div>
 
             <div id="fichaValores">
@@ -170,17 +164,17 @@
             <div id="fichaAtributosBase" class="container">
                 <div class="atributosBase">
                         <label for="forca">Força</label>
-                        <input type="number" id="forca" min="8" max="15">
+                        <input type="number" id="forca" min="8" max="15" value="15">
                         <label for="destreza">Destreza</label>
-                        <input type="number" id="destreza" min="8" max="15">
+                        <input type="number" id="destreza" min="8" max="15" value="14">
                         <label for="constituicao">Constituição</label>
-                        <input type="number" id="constituicao" min="8" max="15">
+                        <input type="number" id="constituicao" min="8" max="15" value="13">
                         <label for="inteligencia">Inteligência</label>
-                        <input type="number" id="inteligencia" min="8" max="15">
+                        <input type="number" id="inteligencia" min="8" max="15" value="12">
                         <label for="sabedoria">Sabedoria</label>
-                        <input type="number" id="sabedoria" min="8" max="15">
+                        <input type="number" id="sabedoria" min="8" max="15" value="10">
                         <label for="carisma">Carisma</label>
-                        <input type="number" id="carisma" min="8" max="15">
+                        <input type="number" id="carisma" min="8" max="15" value="8">
                 </div>
             <button type="button" onclick="validarAtributosBase()">Validar Atributos Base</button>
             <p id="message"></p>
@@ -188,23 +182,23 @@
             <p id="mensagemSalvar"></p>
             <button type="button" onclick="lerAtributos()">Ler Atributos</button>
 
-            <div hidden id="ficha_atributos_bonus" class="container">
+            <div id="ficha_atributos_bonus" class="container">
                 
                 <p><h2><b>Escolher Opções</b></h2></p>
-                <label for="ficha_atributos_bonus">Atributos Bônus</label><br><br> 
+                <label for="ficha_atributos_bonus">Atributos Bônus de Origem</label><br><br> 
                 <div class="ficha_atributos_bonus_origem">
                     <label for="forca">Força</label>
-                    <input type="number" id="forca" min="0" max="3">
+                    <input type="number" id="forca_bonus" min="0" max="3" value="0">
                     <label for="destreza">Destreza</label>
-                    <input type="number" id="destreza" min="0" max="3">
+                    <input type="number" id="destreza_bonus" min="0" max="3" value="0">
                     <label for="constituicao">Constituição</label>
-                    <input type="number" id="constituicao" min="0" max="3">
+                    <input type="number" id="constituicao_bonus" min="0" max="3" value="0">
                     <label for="inteligencia">Inteligência</label>
-                    <input type="number" id="inteligencia" min="0" max="3">
+                    <input type="number" id="inteligencia_bonus" min="0" max="3" value="0">
                     <label for="sabedoria">Sabedoria</label>
-                    <input type="number" id="sabedoria" min="0" max="3">
+                    <input type="number" id="sabedoria_bonus" min="0" max="3" value="0">
                     <label for="carisma">Carisma</label>
-                    <input type="number" id="carisma" min="0" max="3">
+                    <input type="number" id="carisma_bonus" min="0" max="3" value="0">
                 </div>
                 <br><button type="button" onclick="definirAtributosBonusOrigem()">Definir bônus de atributos da origem</button>
                 <p id="mensagemAtributoBonusOrigem"></p>

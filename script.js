@@ -206,7 +206,7 @@ const habilidadesOrigem = {
 
     ],
 
-    vazio: [
+    modelo: [
         {nome: "Bônus de Atributo", descricao: ``},
         {nome: "", descricao: ``},
         {nome: "", descricao: ``},
@@ -246,10 +246,11 @@ function AtributoBonus() {
     const origemSelecionada = document.getElementById("ficha_origem").value;
     const divAtributosBonus = document.getElementById("ficha_atributos_bonus");
 
-    if (origemSelecionada === "inato" || origemSelecionada === "feto_amaldicoado" || origemSelecionada === "derivado") {
-        divAtributosBonus.style.display = "block";
-    } else {
-        divAtributosBonus.style.display = "none"; 
+    if (origemSelecionada === "restringido") {
+        document.getElementById("forca_bonus").value = 1;
+        document.getElementById("destreza_bonus").value = 1;
+        document.getElementById("constituicao_bonus").value = 1;
+
     }
 };
 
@@ -257,22 +258,52 @@ AtributoBonus(); // ativa o evento uma vez
 document.getElementById("ficha_origem").addEventListener("change", AtributoBonus); // ativa o evento toda vez que a (nesse caso) origem mudar
 
 function definirAtributosBonusOrigem() { // validar os atributos base
+    const origemSelecionada = document.getElementById("ficha_origem").value;
+    
     const atributosBonusOrigem = document.querySelectorAll('.ficha_atributos_bonus_origem input'); // pega os atributos bonus na ficha conforme o input do usuário
-    let arrayAtributosBonus = Array.from(atributosBonusOrigem) // transforma o nodelist do querySelectorAll em cima em um array
+    let arrayAtributosBonus = Array.from(atributosBonusOrigem); // transforma o nodelist do querySelectorAll em cima em um array
 
     let soma = 0; // define a variavel da soma
 
     arrayAtributosBonus.forEach(atributoBonus => { // cria um loop, verificando cada atributo individual
         soma += parseInt(atributoBonus.value); // então soma o valor do atributo na variavel soma (o int parse é necessário, caso contrário irá somar como string, como 00102)
-      })
+      });
 
-    if (soma != 3) { // se estiver diferente de 3, retorna para o loop anterior até estar correto 
-        mostrarMensagemAtributosBonusOrigem("A distribuição está incorreta.")
-        return;
-    }
-
-    mostrarMensagemAtributosBonusOrigem("");
-} 
+      let mensagem = "";
+      switch (origemSelecionada) {
+          case "inato":
+          case "feto_amaldicoado":
+          case "derivado":
+          case "herdado":
+              if (soma !== 3) {
+                  mensagem = "A distribuição está incorreta.";
+              }
+              break;
+          case "sem_tecnica":
+              if (soma !== 4) {
+                  mensagem = "A distribuição está incorreta.";
+              }
+              break;
+          case "restringido":
+              if (soma !== 5) {
+                  mensagem = "A distribuição está incorreta.";
+              }
+              break;
+          case "corpo_amaldicoado_mutante":
+              if (soma !== 2) {
+                  mensagem = "A distribuição está incorreta.";
+              }
+              break;
+          default:
+              mensagem = "Origem inválida.";
+      }
+  
+      if (mensagem === "") {
+          mensagem = "";
+      }
+  
+      mostrarMensagemAtributosBonusOrigem(mensagem);
+}; 
 
 function mostrarMensagemAtributosBonusOrigem(mensagemAtributoBonusOrigem) {
     document.getElementById('mensagemAtributoBonusOrigem').textContent = mensagemAtributoBonusOrigem;
@@ -280,6 +311,18 @@ function mostrarMensagemAtributosBonusOrigem(mensagemAtributoBonusOrigem) {
 
 function SalvarAtributosBonus() {
     // nada por enquanto
+}
+
+// COISAS QUE DÃO BONUS DE ATRIBUTOS
+const bonusAtributos = {
+    bonusAtributoOrigem1: [
+        { nome: "Bônus de Atributo", descricao: `Um Inato recebe 3 pontos de atributos adicionais para distribuir entre os seus atributos.` },
+    ], 
+
+    bonusAtributoNível4: [
+        { nome: "Bônus de Atributo", descricao: `Um Inato recebe 3 pontos de atributos adicionais para distribuir entre os seus atributos.` },
+    ], 
+
 }
 
 // SALVAR ATRIBUTOS FINAIS
@@ -294,12 +337,13 @@ let atributosFinais = {
 
 function salvarAtributosFinais() { // ACHO QUE TENHO QUE REFAZER TODO ESSE CÓDIGO, ESTÁ SOMANDO A 0 E PODE SER ADICIONADO BONUS INFINITAMENTE
     const atributos = atributosSalvos;
-    
+    const bonus = 1;
+
     for (let atributo in atributos) {
         const atributoNome = atributo.id;
         const atributoValor = parseInt(atributo.valor);
         atributosFinais[atributoNome] = atributoValor;
-        console.log(`${atributo}: ${atributos[atributo]}`);
+        console.log(`${atributo}: ${atributos[atributo] + bonus}`);
     }
 
     function calcularAtributosBonus(atributosFinais, opcoes) {
@@ -313,40 +357,16 @@ function salvarAtributosFinais() { // ACHO QUE TENHO QUE REFAZER TODO ESSE CÓDI
             }
         }
         return atributosFinais;
-    }
-    
-    // Exemplo de uso
-    let opcoesSelecionadas = [
-        {
-            nome: 'Teste 1',
-            tipo: 'adicao', 
-            atributosBonus: {
-                forca: 2,
-                destreza: 1
-            }
-        },  // Adiciona 2 pontos em força e 1 ponto em destreza
-        {
-            nome: 'Teste 2',
-            tipo: 'adicao', 
-            atributosBonus: {
-                constituicao: 3
-            }
-        }  // Adiciona 3 pontos em constituição
-        // Outras opções...
-    ];
-    
-    let atributosAtualizados = calcularAtributosBonus(atributosFinais, opcoesSelecionadas);
-    console.log("Atributos somados com os bônus:", atributosAtualizados);
 
-    mostrarMensagemAtributosFinais("Atributos salvos com sucesso!");
-};
+    console.log("Leitura de atributos TOTAIS finalizada."); 
+}};
 
 function mostrarMensagemAtributosFinais(mensagemAtributosFinais) {
     document.getElementById('mensagemAtributosFinais').textContent = mensagemAtributosFinais;
 };
 
 // MOSTRAR OS ATRIBUTOS FINAIS NA FICHA
-function escreverAtributos() {
+/* function escreverAtributos() {
     const atributosDefinidos = atributosAtualizados.valor;
     console.log("teste1");
 
@@ -361,9 +381,11 @@ function escreverAtributos() {
     //document.getElementById("fichaAtributosCalculados").innerHTML = atributosFichaHTML;
 };
 
+*/
+
 function SalvarEscreverAtributos() {
     salvarAtributosFinais();
-    escreverAtributos();
+    //escreverAtributos();
 }
 
 // ESCREVER HABILIDADES DE ORIGENS E ESPECIALIZAÇÕES NA FICHA
@@ -375,6 +397,8 @@ function escreverFicha() {
     const especializacao = document.getElementById("ficha_especializacao").value;
     const especializacaoHabilidadesBase = habilidadesEspecializacao[especializacao];
     
+    let atributosFichaHTML = "<p><h2>Atributos</h2><ul>";
+
     let personagemFichaHTML = "<p><h2>Habilidades de Origem:</h2><ul>";
 
     origemHabilidadesBase.forEach(habilidade => {
@@ -389,6 +413,7 @@ function escreverFicha() {
     personagemFichaHTML += "</ul>";
     personagemFichaHTML += "</ul>";
 
+    document.getElementById("fichaAtributosAuto").innerHTML = atributosFichaHTML
     document.getElementById("fichaAutomatizada").innerHTML = personagemFichaHTML;
 
 }
