@@ -16,7 +16,7 @@
                 <input type="text" id="ficha_nome" name="ficha_nome"> <br><br>
 
                 <label for="ficha_nivel">Nível</label>
-                <input type="number" id="ficha_nivel" name="ficha_nivel" min="1" max="20"> <br><br>
+                <input type="number" id="ficha_nivel" name="ficha_nivel" min="1" max="20" default="1"> <br><br>
 
                 <label for="ficha_origem">Origem</label>
                 <select id="ficha_origem" name="ficha_origem">
@@ -50,8 +50,9 @@
 
                 <label for="ficha_tipo_de_mulher">Tipo de Mulher</label>
                 <input type="text" id="ficha_tipo_de_mulher" name="ficha_tipo_de_mulher"> <br><br>
-                
-                <br>
+
+                <label for="ficha_exp">Pontos de Experiência</label>
+                <input type="text" id="ficha_exp" name="ficha_exp"> <br><br>
             </div>
 
             <div id="fichaAtributos" class="container">
@@ -64,16 +65,17 @@
             </div>
 
             <div id="fichaValores">
-                <p><h2><b>Valores</b></h2></p>
-                <p> Vida </p>
-                <p> Energia Amaldiçoada </p>
-                <p> Bônus de Maestria </p>
-                <p> Iniciativa </p>
-                <p> Movimento </p>
-                <p> Integridade da Alma </p>
-                <p> Classe de Armadura</p>
-                <p> Atenção </p>
-                <br>
+                <div id="fichaValoresAuto">
+                    <p><h2><b>Valores</b></h2></p>
+                    <p> Vida </p>
+                    <p> Energia Amaldiçoada </p>
+                    <p> Bônus de Maestria </p>
+                    <p> Iniciativa </p>
+                    <p> Movimento </p>
+                    <p> Integridade da Alma </p>
+                    <p> Classe de Armadura</p>
+                    <p> Atenção </p>
+                </div>
             </div>
 
             <div id="fichaMaestrias">
@@ -162,17 +164,17 @@
             <div id="fichaAtributosBase" class="container">
                 <div class="atributosBase">
                         <label for="forca">Força</label>
-                        <input type="number" id="forca" min="8" max="15">
+                        <input type="number" id="forca" min="8" max="15" value="15">
                         <label for="destreza">Destreza</label>
-                        <input type="number" id="destreza" min="8" max="15">
+                        <input type="number" id="destreza" min="8" max="15" value="14">
                         <label for="constituicao">Constituição</label>
-                        <input type="number" id="constituicao" min="8" max="15">
+                        <input type="number" id="constituicao" min="8" max="15" value="13">
                         <label for="inteligencia">Inteligência</label>
-                        <input type="number" id="inteligencia" min="8" max="15">
+                        <input type="number" id="inteligencia" min="8" max="15" value="12">
                         <label for="sabedoria">Sabedoria</label>
-                        <input type="number" id="sabedoria" min="8" max="15">
+                        <input type="number" id="sabedoria" min="8" max="15" value="10">
                         <label for="carisma">Carisma</label>
-                        <input type="number" id="carisma" min="8" max="15">
+                        <input type="number" id="carisma" min="8" max="15" value="8">
                 </div>
             <button type="button" onclick="validarAtributosBase()">Validar Atributos Base</button>
             <p id="message"></p>

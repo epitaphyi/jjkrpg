@@ -68,19 +68,6 @@ function mostrarMensagemSalvar(mensagemSalvar) {
     document.getElementById('mensagemSalvar').textContent = mensagemSalvar;
 };
 
-// LER ATRIBUTOS
-
-function lerAtributos() {
-    const atributosLidos = objetoAtributosBase;
-
-    for (let atributoLido in atributosLidos) {
-        
-        console.log(`${atributoLido}: ${atributosLidos[atributoLido]}`);
-    }
-    console.log("Leitura de atributos finalizada."); 
-
-}
-
 // HABILIDADES DE ORIGEM, ESPECIALIZAÇÃO E TALENTOS
 
 const habilidadesOrigem = {
@@ -244,7 +231,6 @@ document.getElementById("ficha_origem").addEventListener("change", function() { 
 // SELECIONAR OS BONUS DE ATRIBUTOS E SALVAR OS BONUS
 function AtributoBonus() {
     const origemSelecionada = document.getElementById("ficha_origem").value;
-    const divAtributosBonus = document.getElementById("ficha_atributos_bonus");
 
     if (origemSelecionada === "restringido") {
         document.getElementById("forca_bonus").value = 1;
@@ -327,11 +313,7 @@ function mostrarMensagemAtributosBonusOrigem(mensagemAtributoBonusOrigem) {
     document.getElementById('mensagemAtributoBonusOrigem').textContent = mensagemAtributoBonusOrigem;
 }
 
-function SalvarAtributosBonus() {
-    // nada por enquanto
-}
-
-// SALVAR ATRIBUTOS FINAIS
+// SALVAR E ESCREVER ATRIBUTOS FINAIS
 function SalvarAtributosFinais() { // ACHO QUE TENHO QUE REFAZER TODO ESSE CÓDIGO, ESTÁ SOMANDO A 0 E PODE SER ADICIONADO BONUS INFINITAMENTE
     let atributosBase = objetoAtributosBase;
     let atributosBonus = objetoAtributosBonus;
@@ -347,33 +329,82 @@ function SalvarAtributosFinais() { // ACHO QUE TENHO QUE REFAZER TODO ESSE CÓDI
 
     // ESCREVER ATRIBUTOS FINAIS NA FICHA
     function EscreverAtributos() {
-        let atributosFichaHTML = "<p><h2>Atributos</h2>";
+        let atributosFichaHTML = "<h2>Atributos</h2>";
 
         for (let chave in atributosFinais) { // as chaves são as propriedades (no caso o nome dos atributos), então o atributosFinais[chave] mostra o valor da chave em questão
             console.log(`${chave}: ${atributosFinais[chave]}`);
             if ((atributosFinais[chave] - 10)/2 >= 0) {
-                atributosFichaHTML += `<p>${chave}  ${atributosFinais[chave]} (+${Math.floor((atributosFinais[chave] - 10) / 2)})</p>`
+                atributosFichaHTML += `<p>${chave}  ${atributosFinais[chave]} (+${Math.floor((atributosFinais[chave] - 10) / 2)})</p>`;
             } else {
-                atributosFichaHTML += `<p>${chave}  ${atributosFinais[chave]} (${((atributosFinais[chave] - 10) / 2)})</p>`
+                atributosFichaHTML += `<p>${chave}  ${atributosFinais[chave]} (${((atributosFinais[chave] - 10) / 2)})</p>`;
             }
           }
     
         document.getElementById("fichaAtributosAuto").innerHTML = atributosFichaHTML;
     }
 
+    // CALCULAR OS VALORES DA FICHA
+    const origemSelecionada = document.getElementById("ficha_origem").value;
+    const nivelAtual = document.getElementById("ficha_nivel").value;
+    let PVInicial = 0;
+    let PVNivel = 0;
+    let energiaNivel = 0;
+    let bonusMaestria = 2;
+
+    function EscreverValores() {
+        let valoresFichaHTML = "<h2>Valores</h2>";
+
+        // VALORES = PV inicial, PV por nivel e Energia por nivel
+        switch (origemSelecionada) {
+            case "especialista_em_tecnica":
+                PVInicial = 10 + (atributosFinais['Constituição'] - 10) / 2;
+                PVNivel = (7 + (atributosFinais['Constituição'] - 10) / 2) * nivelAtual;
+                energiaNivel = 6 * nivelAtual;
+                break;
+            case "controlador":
+            case "suporte":
+                PVInicial = 10 + (atributosFinais['Constituição'] - 10) / 2;
+                PVNivel = (7 + (atributosFinais['Constituição'] - 10) / 2) * nivelAtual;
+                energiaNivel = 5 * nivelAtual;
+                break;
+            case "lutador":
+            case "especialista_em_combate":
+                PVInicial = 12 + (atributosFinais['Constituição'] - 10) / 2;
+                PVNivel = (5 + (atributosFinais['Constituição'] - 10) / 2) * nivelAtual;
+                energiaNivel = 3 * nivelAtual;
+                break;
+            case "restringido":
+                PVInicial = 16 + (atributosFinais['Constituição'] - 10) / 2;
+                PVNivel = (7 + (atributosFinais['Constituição'] - 10) / 2) * nivelAtual;
+                energiaNivel = 3 * nivelAtual;
+                break;
+        };
+
+        // VALORES = Bônus de Maestria
+        if (nivelAtual >= 5 && nivelAtual <= 8) {
+            bonusMaestria = 3;
+        } else if (nivelAtual >= 9 && nivelAtual <= 12) {
+            bonusMaestria = 4;
+        } else if (nivelAtual >= 13 && nivelAtual <= 16) {
+            bonusMaestria = 5;
+        } else if (nivelAtual >= 17 && nivelAtual <= 20) {
+            bonusMaestria = 6;
+        };
+        
+        
+    };
+
     EscreverAtributos();
+    EscreverValores();
+
 };
+
+EscreverValores(); // ativa o evento uma vez
+document.getElementById("ficha_origem").addEventListener("change", EscreverValores); // ativa o evento toda vez que a (nesse caso) origem mudar
 
 function mostrarMensagemAtributosFinais(mensagemAtributosFinais) {
     document.getElementById('mensagemAtributosFinais').textContent = mensagemAtributosFinais;
 };
-
-// MOSTRAR OS ATRIBUTOS FINAIS NA FICHA
-
-//function SalvarEscreverAtributos() {
-//    salvarAtributosFinais();
-//    escreverAtributos();
-//}
 
 // ESCREVER HABILIDADES DE ORIGENS E ESPECIALIZAÇÕES NA FICHA
 
@@ -396,7 +427,6 @@ function escreverFicha() {
         personagemFichaHTML += `<li><strong>${habilidadeBase.nome}</strong>: ${habilidadeBase.descricao}</li>`;
     });
     personagemFichaHTML += "</ul>";
-    personagemFichaHTML += "</ul>";
 
     document.getElementById("fichaAutomatizada").innerHTML = personagemFichaHTML;
 
@@ -406,3 +436,16 @@ document.getElementById("ficha_origem").addEventListener("change", escreverFicha
 document.getElementById("ficha_especializacao").addEventListener("change", escreverFicha);
 
 escreverFicha();
+
+// LER ATRIBUTOS BASE, MEIO OBSOLETO
+
+function lerAtributos() {
+    const atributosLidos = objetoAtributosBase;
+
+    for (let atributoLido in atributosLidos) {
+        
+        console.log(`${atributoLido}: ${atributosLidos[atributoLido]}`);
+    }
+    console.log("Leitura de atributos finalizada."); 
+
+}
