@@ -332,7 +332,7 @@ function SalvarAtributosFinais() { // ACHO QUE TENHO QUE REFAZER TODO ESSE CÓDI
         let atributosFichaHTML = "<h2>Atributos</h2>";
 
         for (let chave in atributosFinais) { // as chaves são as propriedades (no caso o nome dos atributos), então o atributosFinais[chave] mostra o valor da chave em questão
-            console.log(`${chave}: ${atributosFinais[chave]}`);
+            //console.log(`${chave}: ${atributosFinais[chave]}`);
             if ((atributosFinais[chave] - 10)/2 >= 0) {
                 atributosFichaHTML += `<p>${chave}  ${atributosFinais[chave]} (+${Math.floor((atributosFinais[chave] - 10) / 2)})</p>`;
             } else {
@@ -343,54 +343,73 @@ function SalvarAtributosFinais() { // ACHO QUE TENHO QUE REFAZER TODO ESSE CÓDI
         document.getElementById("fichaAtributosAuto").innerHTML = atributosFichaHTML;
     }
 
-    // CALCULAR OS VALORES DA FICHA
-    const origemSelecionada = document.getElementById("ficha_origem").value;
+    // CALCULAR E ESCREVER OS VALORES DA FICHA
+    const especializacaoSelecionada = document.getElementById("ficha_especializacao").value;
     const nivelAtual = document.getElementById("ficha_nivel").value;
-    let PVInicial = 0;
+
+    let Valores = {
+        "Pontos de Vida Totais": 0,
+        "Pontos de Energia Amaldiçoada": 0,
+        "Bônus de Maestria": 2,
+        "Iniciativa": 0,
+        "Movimento": 9,
+        "Classe de Armadura": 0,
+        "Atenção": 0,
+    };
+
+    let PVInicial = 0; 
     let PVNivel = 0;
-    let energiaNivel = 0;
-    let bonusMaestria = 2;
 
-    function EscreverValores() {
-        let valoresFichaHTML = "<h2>Valores</h2>";
-
-        // VALORES = PV inicial, PV por nivel e Energia por nivel
-        switch (origemSelecionada) {
-            case "especialista_em_tecnica":
+    function EscreverValores() {    
+        switch (especializacaoSelecionada) {
+            case "especialista_em_tecnicas":
                 PVInicial = 10 + (atributosFinais['Constituição'] - 10) / 2;
-                PVNivel = (7 + (atributosFinais['Constituição'] - 10) / 2) * nivelAtual;
-                energiaNivel = 6 * nivelAtual;
+                PVNivel = nivelAtual > 1 ? (5 + (atributosFinais['Constituição'] - 10) / 2) * (nivelAtual - 1): 0; // é um if em uma unica linha, se a condição (nivel atual maior que 1) for true, então faz esse calculo, caso contrario pvnivel vale 0
+                Valores['PV'] = PVInicial + PVNivel;
+                Valores['energiaNivel'] = 6 * nivelAtual;
                 break;
             case "controlador":
             case "suporte":
                 PVInicial = 10 + (atributosFinais['Constituição'] - 10) / 2;
-                PVNivel = (7 + (atributosFinais['Constituição'] - 10) / 2) * nivelAtual;
-                energiaNivel = 5 * nivelAtual;
+                PVNivel = nivelAtual > 1 ? (5 + (atributosFinais['Constituição'] - 10) / 2) * (nivelAtual - 1): 0;
+                Valores['PV'] = PVInicial + PVNivel;
+                Valores['energiaNivel'] = 5 * nivelAtual;
                 break;
             case "lutador":
             case "especialista_em_combate":
                 PVInicial = 12 + (atributosFinais['Constituição'] - 10) / 2;
-                PVNivel = (5 + (atributosFinais['Constituição'] - 10) / 2) * nivelAtual;
-                energiaNivel = 3 * nivelAtual;
+                PVNivel = nivelAtual > 1 ? (6 + (atributosFinais['Constituição'] - 10) / 2) * (nivelAtual - 1): 0;
+                Valores['PV'] = PVInicial + PVNivel;
+                Valores['energiaNivel'] = 3 * nivelAtual;
                 break;
             case "restringido":
                 PVInicial = 16 + (atributosFinais['Constituição'] - 10) / 2;
-                PVNivel = (7 + (atributosFinais['Constituição'] - 10) / 2) * nivelAtual;
-                energiaNivel = 3 * nivelAtual;
+                PVNivel = nivelAtual > 1 ? (7 + (atributosFinais['Constituição'] - 10) / 2) * (nivelAtual - 1): 0;
+                Valores['PV'] = PVInicial + PVNivel;
+                Valores['energiaNivel'] = 3 * nivelAtual;
                 break;
         };
-
-        // VALORES = Bônus de Maestria
+    
         if (nivelAtual >= 5 && nivelAtual <= 8) {
-            bonusMaestria = 3;
+            Valores["Bônus de Maestria"] = 3;
         } else if (nivelAtual >= 9 && nivelAtual <= 12) {
-            bonusMaestria = 4;
+            Valores["Bônus de Maestria"] = 4;
         } else if (nivelAtual >= 13 && nivelAtual <= 16) {
-            bonusMaestria = 5;
+            Valores["Bônus de Maestria"] = 5;
         } else if (nivelAtual >= 17 && nivelAtual <= 20) {
-            bonusMaestria = 6;
+            Valores["Bônus de Maestria"] = 6;
         };
-        
+    
+        Valores['iniciativa'] = (atributosFinais['Destreza'] - 10) / 2;
+        Valores['CA'] = 10 +  (atributosFinais['Destreza'] - 10) / 2;
+        Valores['atencao'] = 10;
+    
+        // ESCREVER OS VALORES
+        let valoresFichaHTML = "<h2>Valores</h2>";
+        for (let chave in Valores) { // as chaves são as propriedades (no caso o nome dos atributos), então o atributosFinais[chave] mostra o valor da chave em questão
+            valoresFichaHTML += `<p>${chave}: ${Math.floor(Valores[chave])}</p>`
+        }
+        document.getElementById("fichaValoresAuto").innerHTML = valoresFichaHTML;
         
     };
 
@@ -398,9 +417,6 @@ function SalvarAtributosFinais() { // ACHO QUE TENHO QUE REFAZER TODO ESSE CÓDI
     EscreverValores();
 
 };
-
-EscreverValores(); // ativa o evento uma vez
-document.getElementById("ficha_origem").addEventListener("change", EscreverValores); // ativa o evento toda vez que a (nesse caso) origem mudar
 
 function mostrarMensagemAtributosFinais(mensagemAtributosFinais) {
     document.getElementById('mensagemAtributosFinais').textContent = mensagemAtributosFinais;
