@@ -337,7 +337,7 @@ function SalvarAtributosFinais() { // ACHO QUE TENHO QUE REFAZER TODO ESSE CÓDI
     let atributosBonus = objetoAtributosBonus;
 
     let atributosFinais = {
-        Forca: atributosBase.forca + parseInt(atributosBonus.forca),
+        Força: atributosBase.forca + parseInt(atributosBonus.forca),
         Destreza: atributosBase.destreza + parseInt(atributosBonus.destreza),
         Constituição: atributosBase.constituicao + parseInt(atributosBonus.constituicao),
         Inteligência: atributosBase.inteligencia + parseInt(atributosBonus.inteligencia),
@@ -351,10 +351,14 @@ function SalvarAtributosFinais() { // ACHO QUE TENHO QUE REFAZER TODO ESSE CÓDI
 
         for (let chave in atributosFinais) { // as chaves são as propriedades (no caso o nome dos atributos), então o atributosFinais[chave] mostra o valor da chave em questão
             console.log(`${chave}: ${atributosFinais[chave]}`);
-            atributosFichaHTML += `<p>${chave}: ${atributosFinais[chave]}</p>`
+            if ((atributosFinais[chave] - 10)/2 >= 0) {
+                atributosFichaHTML += `<p>${chave}  ${atributosFinais[chave]} (+${Math.floor((atributosFinais[chave] - 10) / 2)})</p>`
+            } else {
+                atributosFichaHTML += `<p>${chave}  ${atributosFinais[chave]} (${((atributosFinais[chave] - 10) / 2)})</p>`
+            }
           }
-          
-        document.getElementById("fichaAtributosAuto").innerHTML = atributosFichaHTML
+    
+        document.getElementById("fichaAtributosAuto").innerHTML = atributosFichaHTML;
     }
 
     EscreverAtributos();
