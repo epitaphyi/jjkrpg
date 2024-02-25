@@ -348,11 +348,13 @@ function SalvarAtributosFinais() { // ACHO QUE TENHO QUE REFAZER TODO ESSE CÓDI
     const nivelAtual = document.getElementById("ficha_nivel").value;
 
     let Valores = {
-        "Pontos de Vida Totais": 0,
+        "Pontos de Vida": 0,
         "Pontos de Energia Amaldiçoada": 0,
         "Bônus de Maestria": 2,
         "Iniciativa": 0,
         "Movimento": 9,
+        "Movimento de Voo": 0,
+        "Integridade da Alma": 100,
         "Classe de Armadura": 0,
         "Atenção": 0,
     };
@@ -365,28 +367,28 @@ function SalvarAtributosFinais() { // ACHO QUE TENHO QUE REFAZER TODO ESSE CÓDI
             case "especialista_em_tecnicas":
                 PVInicial = 10 + (atributosFinais['Constituição'] - 10) / 2;
                 PVNivel = nivelAtual > 1 ? (5 + (atributosFinais['Constituição'] - 10) / 2) * (nivelAtual - 1): 0; // é um if em uma unica linha, se a condição (nivel atual maior que 1) for true, então faz esse calculo, caso contrario pvnivel vale 0
-                Valores['PV'] = PVInicial + PVNivel;
-                Valores['energiaNivel'] = 6 * nivelAtual;
+                Valores["Pontos de Vida"] = PVInicial + PVNivel;
+                Valores["Pontos de Energia Amaldiçoada"] = 6 * nivelAtual;
                 break;
             case "controlador":
             case "suporte":
                 PVInicial = 10 + (atributosFinais['Constituição'] - 10) / 2;
                 PVNivel = nivelAtual > 1 ? (5 + (atributosFinais['Constituição'] - 10) / 2) * (nivelAtual - 1): 0;
-                Valores['PV'] = PVInicial + PVNivel;
-                Valores['energiaNivel'] = 5 * nivelAtual;
+                Valores["Pontos de Vida"] = PVInicial + PVNivel;
+                Valores["Pontos de Energia Amaldiçoada"] = 5 * nivelAtual;
                 break;
             case "lutador":
             case "especialista_em_combate":
                 PVInicial = 12 + (atributosFinais['Constituição'] - 10) / 2;
                 PVNivel = nivelAtual > 1 ? (6 + (atributosFinais['Constituição'] - 10) / 2) * (nivelAtual - 1): 0;
-                Valores['PV'] = PVInicial + PVNivel;
-                Valores['energiaNivel'] = 3 * nivelAtual;
+                Valores["Pontos de Vida"] = PVInicial + PVNivel;
+                Valores["Pontos de Energia Amaldiçoada"] = 3 * nivelAtual;
                 break;
             case "restringido":
                 PVInicial = 16 + (atributosFinais['Constituição'] - 10) / 2;
                 PVNivel = nivelAtual > 1 ? (7 + (atributosFinais['Constituição'] - 10) / 2) * (nivelAtual - 1): 0;
-                Valores['PV'] = PVInicial + PVNivel;
-                Valores['energiaNivel'] = 3 * nivelAtual;
+                Valores["Pontos de Vida"] = PVInicial + PVNivel;
+                Valores["Pontos de Energia Amaldiçoada"] = 3 * nivelAtual;
                 break;
         };
     
@@ -400,14 +402,34 @@ function SalvarAtributosFinais() { // ACHO QUE TENHO QUE REFAZER TODO ESSE CÓDI
             Valores["Bônus de Maestria"] = 6;
         };
     
-        Valores['iniciativa'] = (atributosFinais['Destreza'] - 10) / 2;
-        Valores['CA'] = 10 +  (atributosFinais['Destreza'] - 10) / 2;
-        Valores['atencao'] = 10;
+        Valores["Iniciativa"] = (atributosFinais['Destreza'] - 10) / 2;
+        Valores["Classe de Armadura"] = 10 +  (atributosFinais['Destreza'] - 10) / 2;
+        Valores["Atenção"] = 10;
     
         // ESCREVER OS VALORES
         let valoresFichaHTML = "<h2>Valores</h2>";
         for (let chave in Valores) { // as chaves são as propriedades (no caso o nome dos atributos), então o atributosFinais[chave] mostra o valor da chave em questão
-            valoresFichaHTML += `<p>${chave}: ${Math.floor(Valores[chave])}</p>`
+            switch (chave) {
+                case "Pontos de Vida": // dps pensar em pv temporarios
+                case "Pontos de Energia Amaldiçoada": // dps pensar em pe temporarios
+                    //valoresFichaHTML += `<p>${chave} ${Math.floor(Valores[chave])}/${Math.floor(Valores[chave])}</p>`;
+                    valoresFichaHTML += `<p>${chave}<input type="number" id="ficha_pontos_pv_pe" value="${Math.floor(Valores[chave])}" min="0" maxlength="3" size="2">/${Math.floor(Valores[chave])}</p>`;
+                    break;
+                case "Bônus de Maestria":
+                case "Iniciativa":
+                    valoresFichaHTML += `<p>${chave} +${Math.floor(Valores[chave])}</p>`;
+                    break;
+                case "Movimento":
+                    valoresFichaHTML += `<p>${chave} ${Math.floor(Valores[chave])} metros</p>`;
+                    break;
+                case "Movimento de Voo": // dps programar as habilidades e talentos que permitem voo
+                    if (Valores["Movimento de Voo"] > 0) {
+                        valoresFichaHTML += `<p>${chave} ${Math.floor(Valores[chave])} metros</p>`;
+                    }
+                    break;
+                default:
+                    valoresFichaHTML += `<p>${chave} ${Math.floor(Valores[chave])}</p>`;
+            }
         }
         document.getElementById("fichaValoresAuto").innerHTML = valoresFichaHTML;
         
@@ -417,6 +439,7 @@ function SalvarAtributosFinais() { // ACHO QUE TENHO QUE REFAZER TODO ESSE CÓDI
     EscreverValores();
 
 };
+
 
 function mostrarMensagemAtributosFinais(mensagemAtributosFinais) {
     document.getElementById('mensagemAtributosFinais').textContent = mensagemAtributosFinais;
@@ -432,7 +455,6 @@ function escreverFicha() {
     const especializacaoHabilidadesBase = habilidadesEspecializacao[especializacao];
     
     let personagemFichaHTML = "<p><h2>Habilidades de Origem:</h2><ul>";
-
     origemHabilidadesBase.forEach(habilidade => {
         personagemFichaHTML += `<li><strong>${habilidade.nome}</strong>: ${habilidade.descricao}</li>`;
     });
