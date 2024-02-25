@@ -43,7 +43,7 @@ function showMessage(message) {
 }
 
 // SALVAR ATRIBUTOS BASE
-let atributosSalvos = { // objeto 1
+let objetoAtributosBase = { // objeto 1
     forca: 0,
     destreza: 0,
     constituicao: 0,
@@ -58,7 +58,7 @@ function salvarAtributosBase() {
     attributes.forEach(attribute => {
         const attributeName = attribute.id;
         const attributeValue = parseInt(attribute.value);
-        atributosSalvos[attributeName] = attributeValue;
+        objetoAtributosBase[attributeName] = attributeValue;
     });
 
     mostrarMensagemSalvar("Atributos base salvos com sucesso!");
@@ -71,7 +71,7 @@ function mostrarMensagemSalvar(mensagemSalvar) {
 // LER ATRIBUTOS
 
 function lerAtributos() {
-    const atributosLidos = atributosSalvos;
+    const atributosLidos = objetoAtributosBase;
 
     for (let atributoLido in atributosLidos) {
         
@@ -250,12 +250,13 @@ function AtributoBonus() {
         document.getElementById("forca_bonus").value = 1;
         document.getElementById("destreza_bonus").value = 1;
         document.getElementById("constituicao_bonus").value = 1;
-
-    }
+    };
 };
 
 AtributoBonus(); // ativa o evento uma vez
 document.getElementById("ficha_origem").addEventListener("change", AtributoBonus); // ativa o evento toda vez que a (nesse caso) origem mudar
+
+const objetoAtributosBonus = {}; // segundo objeto do codigo
 
 function definirAtributosBonusOrigem() { // validar os atributos base
     const origemSelecionada = document.getElementById("ficha_origem").value;
@@ -263,26 +264,28 @@ function definirAtributosBonusOrigem() { // validar os atributos base
     const atributosBonusOrigem = document.querySelectorAll('.ficha_atributos_bonus_origem input'); // pega os atributos bonus na ficha conforme o input do usuário
     let arrayAtributosBonus = Array.from(atributosBonusOrigem); // transforma o nodelist do querySelectorAll em cima em um array
 
+    // VARIAVEIS PARA COLOCAR OS ATRIBUTOS E FORMAR O OBJETO
     let soma = 0; // define a variavel da soma
-    indice = 0;
-    const array = ['forca', 'destreza', 'constituicao', 'inteligencia', 'sabedoria', 'carisma'];
-    const valores = [0, 0, 0, 0, 0, 0];
+    let indice = 0;
+    const arrayAtributosNome = ['forca', 'destreza', 'constituicao', 'inteligencia', 'sabedoria', 'carisma'];
+    const valoresAtributosBonus = [0, 0, 0, 0, 0, 0];
 
+    // COLOCA OS ATRIBUTOS BONUS 
     arrayAtributosBonus.forEach(atributoBonus => { // cria um loop, verificando cada atributo individual
         soma += parseInt(atributoBonus.value); // então soma o valor do atributo na variavel soma (o int parse é necessário, caso contrário irá somar como string, como 00102)
-        valores[indice] = atributoBonus.value;
-        console.log(`Valor atual de indice ${indice}: ${valores[indice]}`);
-        indice += 1;
+        valoresAtributosBonus[indice] = atributoBonus.value; // adiciona o atributo de indice atual (ex: 0 = forçca, 1 = destreza, etc) a variavel valores
+        indice += 1; // aumenta o indice para que possa ser lido de 1 por 1
       });
   
-    const objeto = {};
   
-    for (let i = 0; i < array.length; i++) {
-          const chave = array[i];
-          const valor = valores[i];
-          objeto[chave] = valor;
+    // FORMA O OBJETO DOS ATRIBUTOS BONUS
+    for (let i = 0; i < arrayAtributosNome.length; i++) { // coloca os valores da const array e da const valores ao objeto vazio chamado
+          const chave = arrayAtributosNome[i]; // pega o nome do atributo
+          const valor = valoresAtributosBonus[i]; // pega o valor númerico do atributo
+          objetoAtributosBonus[chave] = valor; // no objeto de chave x (ex forca) adiciona o valor do bonus de x
     }
 
+    // VERIFICA SE A DISTRIBUIÇÃO ESTÁ CORRETA POR ORIGEM
     let mensagem = "";
     switch (origemSelecionada) {
         case "inato":
@@ -328,38 +331,33 @@ function SalvarAtributosBonus() {
     // nada por enquanto
 }
 
-// COISAS QUE DÃO BONUS DE ATRIBUTOS
-const bonusAtributos = {
-    bonusAtributoOrigem1: [
-        { nome: "Bônus de Atributo", descricao: `Um Inato recebe 3 pontos de atributos adicionais para distribuir entre os seus atributos.` },
-    ], 
-
-    bonusAtributoNível4: [
-        { nome: "Bônus de Atributo", descricao: `Um Inato recebe 3 pontos de atributos adicionais para distribuir entre os seus atributos.` },
-    ], 
-
-}
-
 // SALVAR ATRIBUTOS FINAIS
-let atributosFinais = { // objeto 2
-    forca: 0,
-    destreza: 0,
-    constituicao: 0,
-    inteligencia: 0,
-    sabedoria: 0,
-    carisma: 0
-};
+function SalvarAtributosFinais() { // ACHO QUE TENHO QUE REFAZER TODO ESSE CÓDIGO, ESTÁ SOMANDO A 0 E PODE SER ADICIONADO BONUS INFINITAMENTE
+    let atributosBase = objetoAtributosBase;
+    let atributosBonus = objetoAtributosBonus;
 
-function salvarAtributosFinais() { // ACHO QUE TENHO QUE REFAZER TODO ESSE CÓDIGO, ESTÁ SOMANDO A 0 E PODE SER ADICIONADO BONUS INFINITAMENTE
-    const atributos = atributosSalvos;
-    const bonus = 1;
+    let atributosFinais = {
+        Forca: atributosBase.forca + parseInt(atributosBonus.forca),
+        Destreza: atributosBase.destreza + parseInt(atributosBonus.destreza),
+        Constituição: atributosBase.constituicao + parseInt(atributosBonus.constituicao),
+        Inteligência: atributosBase.inteligencia + parseInt(atributosBonus.inteligencia),
+        Sabedoria: atributosBase.sabedoria + parseInt(atributosBonus.sabedoria),
+        Carisma: atributosBase.carisma + parseInt(atributosBonus.carisma)
+    };
 
-    for (let atributo in atributos) {
-        const atributoNome = atributo.id;
-        const atributoValor = parseInt(atributo.valor);
-        atributosFinais[atributoNome] = atributoValor;
-        console.log(`${atributo}: ${atributos[atributo] + bonus}`);
+    // ESCREVER ATRIBUTOS FINAIS NA FICHA
+    function EscreverAtributos() {
+        let atributosFichaHTML = "<p><h2>Atributos</h2>";
+
+        for (let chave in atributosFinais) { // as chaves são as propriedades (no caso o nome dos atributos), então o atributosFinais[chave] mostra o valor da chave em questão
+            console.log(`${chave}: ${atributosFinais[chave]}`);
+            atributosFichaHTML += `<p>${chave}: ${atributosFinais[chave]}</p>`
+          }
+          
+        document.getElementById("fichaAtributosAuto").innerHTML = atributosFichaHTML
     }
+
+    EscreverAtributos();
 };
 
 function mostrarMensagemAtributosFinais(mensagemAtributosFinais) {
@@ -367,27 +365,11 @@ function mostrarMensagemAtributosFinais(mensagemAtributosFinais) {
 };
 
 // MOSTRAR OS ATRIBUTOS FINAIS NA FICHA
-/* function escreverAtributos() {
-    const atributosDefinidos = atributosAtualizados.valor;
-    console.log("teste1");
 
-    for (let atributoDefinido in atributosDefinidos) {
-        const atributoNome = atributoDefinido.id;
-        const atributoValor = parseInt(atributoDefinido.valor);
-        atributosDefinidos[atributoNome] = atributoValor;
-        console.log("teste2");
-        //console.log(`${atributoDefinido}: ${atributosDefinidos[atributoDefinido]}`);
-    }
-
-    //document.getElementById("fichaAtributosCalculados").innerHTML = atributosFichaHTML;
-};
-
-*/
-
-function SalvarEscreverAtributos() {
-    salvarAtributosFinais();
-    //escreverAtributos();
-}
+//function SalvarEscreverAtributos() {
+//    salvarAtributosFinais();
+//    escreverAtributos();
+//}
 
 // ESCREVER HABILIDADES DE ORIGENS E ESPECIALIZAÇÕES NA FICHA
 
@@ -398,8 +380,6 @@ function escreverFicha() {
     const especializacao = document.getElementById("ficha_especializacao").value;
     const especializacaoHabilidadesBase = habilidadesEspecializacao[especializacao];
     
-    let atributosFichaHTML = "<p><h2>Atributos</h2><ul>";
-
     let personagemFichaHTML = "<p><h2>Habilidades de Origem:</h2><ul>";
 
     origemHabilidadesBase.forEach(habilidade => {
@@ -414,7 +394,6 @@ function escreverFicha() {
     personagemFichaHTML += "</ul>";
     personagemFichaHTML += "</ul>";
 
-    document.getElementById("fichaAtributosAuto").innerHTML = atributosFichaHTML
     document.getElementById("fichaAutomatizada").innerHTML = personagemFichaHTML;
 
 }
