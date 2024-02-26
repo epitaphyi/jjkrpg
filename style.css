@@ -42,8 +42,9 @@ textarea {
     overflow-y: scroll; /* Adiciona barra de rolagem vertical se necessário */
   }
 
-#ficha_pontos_pv_pe {
-    width: 10%;
+.input-wrapper {
+    display: flex; /* Define um layout flexível */
+    align-items: center; /* Alinha os itens verticalmente ao centro */
 }
 
 /* (tava no codigo beta alpha 0.0001, mas provavelmente n vou usar)

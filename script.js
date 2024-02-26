@@ -348,6 +348,8 @@ function SalvarAtributosFinais() { // ACHO QUE TENHO QUE REFAZER TODO ESSE CÓDI
     const nivelAtual = document.getElementById("ficha_nivel").value;
 
     let Valores = {
+        "Pontos de Vida Atual": 0,
+        "Pontos de Energia Amaldiçoada Atual": 0,
         "Pontos de Vida": 0,
         "Pontos de Energia Amaldiçoada": 0,
         "Bônus de Maestria": 2,
@@ -369,6 +371,8 @@ function SalvarAtributosFinais() { // ACHO QUE TENHO QUE REFAZER TODO ESSE CÓDI
                 PVNivel = nivelAtual > 1 ? (5 + (atributosFinais['Constituição'] - 10) / 2) * (nivelAtual - 1): 0; // é um if em uma unica linha, se a condição (nivel atual maior que 1) for true, então faz esse calculo, caso contrario pvnivel vale 0
                 Valores["Pontos de Vida"] = PVInicial + PVNivel;
                 Valores["Pontos de Energia Amaldiçoada"] = 6 * nivelAtual;
+                Valores["Pontos de Vida Atual"] = Valores["Pontos de Vida"];
+                Valores["Pontos de Energia Amaldiçoada Atual"] = Valores["Pontos de Energia Amaldiçoada"];
                 break;
             case "controlador":
             case "suporte":
@@ -376,6 +380,8 @@ function SalvarAtributosFinais() { // ACHO QUE TENHO QUE REFAZER TODO ESSE CÓDI
                 PVNivel = nivelAtual > 1 ? (5 + (atributosFinais['Constituição'] - 10) / 2) * (nivelAtual - 1): 0;
                 Valores["Pontos de Vida"] = PVInicial + PVNivel;
                 Valores["Pontos de Energia Amaldiçoada"] = 5 * nivelAtual;
+                Valores["Pontos de Vida Atual"] = Valores["Pontos de Vida"];
+                Valores["Pontos de Energia Amaldiçoada Atual"] = Valores["Pontos de Energia Amaldiçoada"];
                 break;
             case "lutador":
             case "especialista_em_combate":
@@ -383,12 +389,16 @@ function SalvarAtributosFinais() { // ACHO QUE TENHO QUE REFAZER TODO ESSE CÓDI
                 PVNivel = nivelAtual > 1 ? (6 + (atributosFinais['Constituição'] - 10) / 2) * (nivelAtual - 1): 0;
                 Valores["Pontos de Vida"] = PVInicial + PVNivel;
                 Valores["Pontos de Energia Amaldiçoada"] = 3 * nivelAtual;
+                Valores["Pontos de Vida Atual"] = Valores["Pontos de Vida"];
+                Valores["Pontos de Energia Amaldiçoada Atual"] = Valores["Pontos de Energia Amaldiçoada"];
                 break;
             case "restringido":
                 PVInicial = 16 + (atributosFinais['Constituição'] - 10) / 2;
                 PVNivel = nivelAtual > 1 ? (7 + (atributosFinais['Constituição'] - 10) / 2) * (nivelAtual - 1): 0;
                 Valores["Pontos de Vida"] = PVInicial + PVNivel;
                 Valores["Pontos de Energia Amaldiçoada"] = 3 * nivelAtual;
+                Valores["Pontos de Vida Atual"] = Valores["Pontos de Vida"];
+                Valores["Pontos de Energia Amaldiçoada Atual"] = Valores["Pontos de Energia Amaldiçoada"];
                 break;
         };
     
@@ -409,11 +419,17 @@ function SalvarAtributosFinais() { // ACHO QUE TENHO QUE REFAZER TODO ESSE CÓDI
         // ESCREVER OS VALORES
         let valoresFichaHTML = "<h2>Valores</h2>";
         for (let chave in Valores) { // as chaves são as propriedades (no caso o nome dos atributos), então o atributosFinais[chave] mostra o valor da chave em questão
+            if (chave === "Pontos de Vida Atual" || chave === "Pontos de Energia Amaldiçoada Atual") {
+                continue; // Ignora essas chaves e continua para a próxima iteração do loop
+            }
             switch (chave) {
                 case "Pontos de Vida": // dps pensar em pv temporarios
+                    valoresFichaHTML += `<p>${chave} <input type="number" id="ficha_pontos_pv" value="${Math.floor(Valores["Pontos de Vida Atual"])}" min="0" style="width: 40px;">`;
+                    valoresFichaHTML += `/<input type="number" id="ficha_pontos_pv" value="${Math.floor(Valores[chave])}" style="width: 40px;" readonly></p>`;
+                    break;
                 case "Pontos de Energia Amaldiçoada": // dps pensar em pe temporarios
-                    //valoresFichaHTML += `<p>${chave} ${Math.floor(Valores[chave])}/${Math.floor(Valores[chave])}</p>`;
-                    valoresFichaHTML += `<p>${chave}<input type="number" id="ficha_pontos_pv_pe" value="${Math.floor(Valores[chave])}" min="0" maxlength="3" size="2">/${Math.floor(Valores[chave])}</p>`;
+                    valoresFichaHTML += `<p>${chave} <input type="number" id="ficha_pontos_pe" value="${Math.floor(Valores["Pontos de Energia Amaldiçoada Atual"])}" min="0" maxlength="3" style="width: 40px;">`;
+                    valoresFichaHTML += `/<input type="number" id="ficha_pontos_pv" value="${Math.floor(Valores[chave])}" style="width: 40px;" readonly></p>`;
                     break;
                 case "Bônus de Maestria":
                 case "Iniciativa":
