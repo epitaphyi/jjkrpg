@@ -94,10 +94,20 @@
             </div>
             
             <div id="fichaPericias">
-                <p><h2><b>Pericías</b></h2></p>
-                <p> Carisma +x </p>
+                <div id="fichaPericiasAuto"> <!--script de escrever as pericias-->
+                    <p><h2><b>Pericías</b></h2></p>
+                    <table id="tabelaPericias">
+                        <tr>
+                            <th>Nome</th>
+                            <th>Modificador</th>
+                            <th>Outros</th>
+                            <th>Maestria</th>
+                            <th>Especialização</th>
+                            <th>Total</th>
+                        </tr>
+                    </table>
+                </div>
             </div>
-            <br>
             
             <div id="fichaEquipamentos">
                 <p><h2><b>Equipamentos</b></h2></p>
@@ -208,6 +218,13 @@
                 </div>
                 <br><button type="button" onclick="definirAtributosBonusOrigem()">Definir bônus de atributos da origem</button>
                 <p id="mensagemAtributoBonusOrigem"></p>
+            </div>
+
+            <div id="ficha_escolher_talentos" class="container">
+                <p><h2><b>Escolher Talentos</b></h2></p>
+            </div>
+            <div id="ficha_escolher_equipamentos" class="container">
+                <p><h2><b>Escolher Equipamentos</b></h2></p>
             </div>
         </form>
 

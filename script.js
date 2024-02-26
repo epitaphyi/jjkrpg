@@ -314,7 +314,7 @@ function mostrarMensagemAtributosBonusOrigem(mensagemAtributoBonusOrigem) {
 }
 
 // SALVAR E ESCREVER ATRIBUTOS FINAIS
-function SalvarAtributosFinais() { // ACHO QUE TENHO QUE REFAZER TODO ESSE CÓDIGO, ESTÁ SOMANDO A 0 E PODE SER ADICIONADO BONUS INFINITAMENTE
+function SalvarAtributosFinais() { 
     let atributosBase = objetoAtributosBase;
     let atributosBonus = objetoAtributosBonus;
 
@@ -359,11 +359,13 @@ function SalvarAtributosFinais() { // ACHO QUE TENHO QUE REFAZER TODO ESSE CÓDI
         "Integridade da Alma": 100,
         "Classe de Armadura": 0,
         "Atenção": 0,
+        "Especialização em Perícias": 0,
     };
 
     let PVInicial = 0; 
     let PVNivel = 0;
 
+    // CALCULAR ALGUNS VALORES
     function EscreverValores() {    
         switch (especializacaoSelecionada) {
             case "especialista_em_tecnicas":
@@ -415,11 +417,12 @@ function SalvarAtributosFinais() { // ACHO QUE TENHO QUE REFAZER TODO ESSE CÓDI
         Valores["Iniciativa"] = (atributosFinais['Destreza'] - 10) / 2;
         Valores["Classe de Armadura"] = 10 +  (atributosFinais['Destreza'] - 10) / 2;
         Valores["Atenção"] = 10;
+        Valores["Especialização em Perícias"] = Valores["Bônus de Maestria"] + (Valores["Bônus de Maestria"]/2);
     
         // ESCREVER OS VALORES
         let valoresFichaHTML = "<h2>Valores</h2>";
         for (let chave in Valores) { // as chaves são as propriedades (no caso o nome dos atributos), então o atributosFinais[chave] mostra o valor da chave em questão
-            if (chave === "Pontos de Vida Atual" || chave === "Pontos de Energia Amaldiçoada Atual") {
+            if (chave === "Pontos de Vida Atual" || chave === "Pontos de Energia Amaldiçoada Atual" || chave === "Especialização em Perícias") {
                 continue; // Ignora essas chaves e continua para a próxima iteração do loop
             }
             switch (chave) {
@@ -451,8 +454,119 @@ function SalvarAtributosFinais() { // ACHO QUE TENHO QUE REFAZER TODO ESSE CÓDI
         
     };
 
+    // Dados
+    const objetoPericias = [
+        { nome: "Atletismo", modificador: (Math.floor((atributosFinais['Força']) - 10) / 2), outros: 0, maestria: false, especializacao: false },
+        { nome: "Luta", modificador: (Math.floor((atributosFinais['Força']) - 10) / 2), outros: 0, maestria: false, especializacao: false },
+        { nome: "Pontaria", modificador: (Math.floor((atributosFinais['Força']) - 10) / 2), outros: 0, maestria: false, especializacao: false },
+        { nome: "Acrobacia", modificador: (Math.floor((atributosFinais['Destreza']) - 10) / 2), outros: 0, maestria: false, especializacao: false },
+        { nome: "Reflexos", modificador: (Math.floor((atributosFinais['Destreza']) - 10) / 2), outros: 0, maestria: false, especializacao: false },
+        { nome: "Prestidigitação", modificador: (Math.floor((atributosFinais['Destreza']) - 10) / 2), outros: 0, maestria: false, especializacao: false },
+        { nome: "Furtividade", modificador: (Math.floor((atributosFinais['Destreza']) - 10) / 2), outros: 0, maestria: false, especializacao: false },
+        { nome: "Fortitude", modificador: (Math.floor((atributosFinais['Constituição']) - 10) / 2), outros: 0, maestria: false, especializacao: false },
+        { nome: "Integridade", modificador: (Math.floor((atributosFinais['Constituição']) - 10) / 2), outros: 0, maestria: false, especializacao: false },
+        { nome: "Astúcia", modificador: (Math.floor((atributosFinais['Inteligência']) - 10) / 2), outros: 0, maestria: false, especializacao: false },
+        { nome: "Feitiçaria", modificador: (Math.floor((atributosFinais['Inteligência']) - 10) / 2), outros: 0, maestria: false, especializacao: false },
+        { nome: "Investigação", modificador: (Math.floor((atributosFinais['Inteligência']) - 10) / 2), outros: 0, maestria: false, especializacao: false },
+        { nome: "História", modificador: (Math.floor((atributosFinais['Inteligência']) - 10) / 2), outros: 0, maestria: false, especializacao: false },
+        { nome: "Ofício (Alfaiate)", modificador: (Math.floor((atributosFinais['Inteligência']) - 10) / 2), outros: 0, maestria: false, especializacao: false },
+        { nome: "Ofício (Alquimia)", modificador: (Math.floor((atributosFinais['Inteligência']) - 10) / 2), outros: 0, maestria: false, especializacao: false },
+        { nome: "Ofício (Armeiro)", modificador: (Math.floor((atributosFinais['Inteligência']) - 10) / 2), outros: 0, maestria: false, especializacao: false },
+        { nome: "Ofício (Canalizador)", modificador: (Math.floor((atributosFinais['Inteligência']) - 10) / 2), outros: 0, maestria: false, especializacao: false },
+        { nome: "Ofício (Cozinheiro)", modificador: (Math.floor((atributosFinais['Inteligência']) - 10) / 2), outros: 0, maestria: false, especializacao: false },
+        { nome: "Ofício (Entalhador)", modificador: (Math.floor((atributosFinais['Inteligência']) - 10) / 2), outros: 0, maestria: false, especializacao: false },
+        { nome: "Ofício (Ferreiro)", modificador: (Math.floor((atributosFinais['Inteligência']) - 10) / 2), outros: 0, maestria: false, especializacao: false },
+        { nome: "Ofício (Médico)", modificador: (Math.floor((atributosFinais['Inteligência']) - 10) / 2), outros: 0, maestria: false, especializacao: false },
+        { nome: "Intuição", modificador: (Math.floor((atributosFinais['Sabedoria']) - 10) / 2), outros: 0, maestria: false, especializacao: false },
+        { nome: "Medicina", modificador: (Math.floor((atributosFinais['Sabedoria']) - 10) / 2), outros: 0, maestria: false, especializacao: false },
+        { nome: "Percepção", modificador: (Math.floor((atributosFinais['Sabedoria']) - 10) / 2), outros: 0, maestria: false, especializacao: false },
+        { nome: "Ocultismo", modificador: (Math.floor((atributosFinais['Sabedoria']) - 10) / 2), outros: 0, maestria: false, especializacao: false },
+        { nome: "Persuasão", modificador: (Math.floor((atributosFinais['Carisma']) - 10) / 2), outros: 0, maestria: false, especializacao: false },
+        { nome: "Enganação", modificador: (Math.floor((atributosFinais['Carisma']) - 10) / 2), outros: 0, maestria: false, especializacao: false },
+        { nome: "Intimidação", modificador: (Math.floor((atributosFinais['Carisma']) - 10) / 2), outros: 0, maestria: false, especializacao: false },
+        { nome: "Performance", modificador: (Math.floor((atributosFinais['Carisma']) - 10) / 2), outros: 0, maestria: false, especializacao: false },
+        { nome: "Vontade", modificador: (Math.floor((atributosFinais['Carisma']) - 10) / 2), outros: 0, maestria: false, especializacao: false },
+
+    ];
+
+    // Função para calcular e atualizar os totais
+    function calcularEAtualizarTotais() {
+    objetoPericias.forEach(item => {
+        // Calcular o total baseado no modificador e outros
+        let total = item.modificador + item.outros;
+
+        // Adicionar bônus de especialização, apenas se não houver maestria
+        if (item.especializacao && !item.maestria) {
+            total += 3;
+        } else if (item.maestria) {
+            // Adicionar bônus de maestria, se não houver especialização
+            if (!item.especializacao) {
+                total += Valores["Bônus de Maestria"];
+            } else {
+                total += Valores["Especialização em Perícias"];
+            }
+            // Se houver especialização e maestria, apenas o bônus de especialização é adicionado
+            // pois já inclui o bônus da maestria
+        }
+
+        // Atualizar a tabela
+        const totalCell = document.getElementById(item.nome + '-total');
+        totalCell.textContent = total;
+    });
+}
+
+    // Função para gerar a tabela
+    function gerarTabelaPericias() { // se o usuário salvar os atributos finais novamente, cria outra tabela em vez de sobrepor a antiga
+        const tabela = document.getElementById('tabelaPericias');
+
+        objetoPericias.forEach((item) => {
+            const row = tabela.insertRow();
+            const nomeCell = row.insertCell(0);
+            const modificadorCell = row.insertCell(1);
+            const outrosCell = row.insertCell(2);
+            const maestriaCell = row.insertCell(3);
+            const especializacaoCell = row.insertCell(4);
+            const totalCell = row.insertCell(5);
+
+            nomeCell.textContent = item.nome;
+            modificadorCell.textContent = item.modificador;
+            outrosCell.textContent = item.outros;
+
+            for (let chave in objetoPericias.nome) {
+            if (Math.floor(objetoPericias.nome[chave]) >= 0) {
+                console.log(`Chave: ${chave} Valor: ${Math.floor(objetoPericias.nome[chave])}`);
+            }
+        }
+            // Criar checkbox para a coluna 'Maestria'
+            const checkboxMaestria = document.createElement('input');
+            checkboxMaestria.type = 'checkbox';
+            checkboxMaestria.checked = item.maestria;
+            checkboxMaestria.addEventListener('change', function() {
+                item.maestria = this.checked;
+                calcularEAtualizarTotais();
+            });
+            maestriaCell.appendChild(checkboxMaestria);
+
+            // Criar checkbox para a coluna 'Especialização'
+            const checkboxEspecializacao = document.createElement('input');
+            checkboxEspecializacao.type = 'checkbox';
+            checkboxEspecializacao.checked = item.especializacao;
+            checkboxEspecializacao.addEventListener('change', function() {
+                item.especializacao = this.checked;
+                calcularEAtualizarTotais();
+            });
+            especializacaoCell.appendChild(checkboxEspecializacao);
+
+            // Definir o ID da célula total
+            totalCell.id = item.nome + '-total';
+            totalCell.textContent = item.modificador + item.outros;
+        });
+    }
+
+    // Chamada da função para gerar a tabela
     EscreverAtributos();
     EscreverValores();
+    gerarTabelaPericias();
 
 };
 
