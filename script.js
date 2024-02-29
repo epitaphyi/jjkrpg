@@ -203,17 +203,80 @@ const habilidadesOrigem = {
 
 }
 
+
+// HABILIDADES BASE DE CLASSE
 const habilidadesEspecializacao = {
     lutador: [
-        { nome: "Mestre de Luta", descricao: `Um lutador é um mestre da luta, dedicando-se ao seu corpo` },
-        { nome: "Empolgação", descricao: `Uma boa luta é empolgante e te motiva a se arriscar mais e mais, permitindo movimentos mais fortes e únicos.`}
+        { nome: "Mestre de Luta", descricao: `Um lutador é um mestre da luta, dedicando-se ao seu corpo` }, 
+        { nome: "Empolgação", descricao: `Uma boa luta é empolgante e te motiva a se arriscar mais e mais, permitindo movimentos mais fortes e únicos.`},
     ],
 
     especialista_em_combate: [
         { nome: "Teste", descricao: `teste de descricao`},
-        { nome: "Teste 2", descricao: `teste de descricao 2`}
+        { nome: "Teste 2", descricao: `teste de descricao 2`},
+    ],
+
+    especialista_em_tecnicas: [
+        { nome: "Teste", descricao: `teste de descricao`},
+        { nome: "Teste 2", descricao: `teste de descricao 2`},
+    ],
+
+    controlador: [
+        { nome: "Teste", descricao: `teste de descricao`},
+        { nome: "Teste 2", descricao: `teste de descricao 2`},
+    ],
+
+    suporte: [
+        { nome: "Teste", descricao: `teste de descricao`},
+        { nome: "Teste 2", descricao: `teste de descricao 2`},
+    ],
+
+    restringido: [
+        { nome: "Teste", descricao: `teste de descricao`},
+        { nome: "Teste 2", descricao: `teste de descricao 2`},
     ]
 }
+
+// MAESTRIAS DE CLASSE, pq não juntar nas habilidadesEspecializacao?
+const maestriasEspecializacao = {
+    lutador: [
+        {pericias: `Fortitude, Luta e três entre Atletismo, Acrobacia, Integridade, Intuição, Percepção, Pontaria e Reflexos.`, 
+        armas_armaduras_escudos: `Armas Marciais, Armadura Leve, Média e Escudo Leve.`, 
+        kit_de_ferramentas: `Um kit de ferramentas`}
+    ],
+
+    especialista_em_combate: [
+        {pericias: `Luta, Pontaria e Fortitude. Atletismo ou Acrobacia e três outras quaisquer.`, 
+        armas_armaduras_escudos: `Todas as armas, armaduras e escudos.`, 
+        kit_de_ferramentas: `Dois kits de ferramentas`}
+    ],
+
+    especialista_em_tecnicas: [
+        {pericias: `Astúcia, Feitiçaria, Ocultismo, Vontade e outras três quaisquer.`, 
+        armas_armaduras_escudos: `Armas simples e armas a distância.`, 
+        kit_de_ferramentas: `Dois kits de ferramentas`}    
+    ],
+
+    controlador: [
+        {pericias: `Astúcia, Persuasão, Percepção, Vontade e outras duas quaisquer`, 
+        armas_armaduras_escudos: `Armas Simples. Armadura Leve e Escudo Leve.`, 
+        kit_de_ferramentas: `Um kit de ferramentas`}    
+    ],
+
+    suporte: [
+        {pericias: `Astúcia, Medicina, Prestidigitação, Vontade e outras três quaisquer.`, 
+        armas_armaduras_escudos: `Armas Simples, Armadura Leve a Robusta e Escudos. `, 
+        kit_de_ferramentas: `Dois kits de ferramentas`}
+    ],
+
+    restringido: [
+        {pericias: `Fortitude, Luta, Pontaria, Reflexos, e quatro quaisquer, exceto Feitiçaria.`, 
+        armas_armaduras_escudos: `Todas as armas, armaduras e escudos.`, 
+        kit_de_ferramentas: `Um kit de ferramentas`}
+    ]
+}
+
+
 
 // APARECER OPÇÃO DE CLÃS PARA HERDADO
 document.getElementById("ficha_origem").addEventListener("change", function() { // o addEventListener("change") funciona toda vez que o selecionado for alterado
@@ -615,6 +678,24 @@ document.getElementById("ficha_origem").addEventListener("change", escreverFicha
 document.getElementById("ficha_especializacao").addEventListener("change", escreverFicha);
 
 escreverFicha();
+
+function escreverMaestrias() {
+    const especializacao = document.getElementById("ficha_especializacao").value;
+    const especializacaoSelecionada = maestriasEspecializacao[especializacao];
+    
+    let maestriasFichaHTML = "<h2>Maestrias</h2>";
+    especializacaoSelecionada.forEach(classe => {
+        maestriasFichaHTML += `<p><strong>Perícias</strong> ${classe.pericias}
+        </p><p><strong>Armas, Armaduras e Escudos</strong> ${classe.armas_armaduras_escudos}
+        </p><p><strong>Kits de Ferramentas</strong> ${classe.kit_de_ferramentas}</p>`;
+    });
+
+    document.getElementById("fichaMaestriasAuto").innerHTML = maestriasFichaHTML;
+}
+
+document.getElementById("ficha_especializacao").addEventListener("change", escreverMaestrias);
+
+escreverMaestrias();
 
 // LER ATRIBUTOS BASE, MEIO OBSOLETO
 
