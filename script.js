@@ -273,6 +273,12 @@ const maestriasEspecializacao = {
         {pericias: `Fortitude, Luta, Pontaria, Reflexos, e quatro quaisquer, exceto Feitiçaria.`, 
         armas_armaduras_escudos: `Todas as armas, armaduras e escudos.`, 
         kit_de_ferramentas: `Um kit de ferramentas`}
+    ],
+
+    escolhas: [
+        {pericias: ``,
+        armas_armaduras_escudos: ``,
+        kit_de_ferramentas: ``}
     ]
 }
 
@@ -679,15 +685,16 @@ document.getElementById("ficha_especializacao").addEventListener("change", escre
 
 escreverFicha();
 
+// ESCREVER AS MAESTRIAS
 function escreverMaestrias() {
     const especializacao = document.getElementById("ficha_especializacao").value;
     const especializacaoSelecionada = maestriasEspecializacao[especializacao];
     
     let maestriasFichaHTML = "<h2>Maestrias</h2>";
     especializacaoSelecionada.forEach(classe => {
-        maestriasFichaHTML += `<p><strong>Perícias</strong> ${classe.pericias}
-        </p><p><strong>Armas, Armaduras e Escudos</strong> ${classe.armas_armaduras_escudos}
-        </p><p><strong>Kits de Ferramentas</strong> ${classe.kit_de_ferramentas}</p>`;
+        maestriasFichaHTML += `<textarea id="fichaDescricaoMaestrias" placeholder="Maestrias">Perícias: ${classe.pericias}
+Armas, Armaduras e Escudos: ${classe.armas_armaduras_escudos}
+Kit de Ferramentas: ${classe.kit_de_ferramentas} </textarea>`;
     });
 
     document.getElementById("fichaMaestriasAuto").innerHTML = maestriasFichaHTML;
