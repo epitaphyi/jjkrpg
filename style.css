@@ -40,7 +40,7 @@ textarea {
     min-height: 50px; /* Altura inicial do textarea */
     resize: none; /* Impede o redimensionamento manual */
     overflow-y: scroll; /* Adiciona barra de rolagem vertical se necessário */
-  }
+  }  
 
 .input-wrapper {
     display: flex; /* Define um layout flexível */

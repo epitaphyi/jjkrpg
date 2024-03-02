@@ -203,7 +203,6 @@ const habilidadesOrigem = {
 
 }
 
-
 // HABILIDADES BASE DE CLASSE
 const habilidadesEspecializacao = {
     lutador: [
@@ -281,8 +280,6 @@ const maestriasEspecializacao = {
         kit_de_ferramentas: ``}
     ]
 }
-
-
 
 // APARECER OPÇÃO DE CLÃS PARA HERDADO
 document.getElementById("ficha_origem").addEventListener("change", function() { // o addEventListener("change") funciona toda vez que o selecionado for alterado
@@ -381,6 +378,8 @@ function definirAtributosBonusOrigem() { // validar os atributos base
 function mostrarMensagemAtributosBonusOrigem(mensagemAtributoBonusOrigem) {
     document.getElementById('mensagemAtributoBonusOrigem').textContent = mensagemAtributoBonusOrigem;
 }
+
+let maximoTecnicas = 0;
 
 // SALVAR E ESCREVER ATRIBUTOS FINAIS
 function SalvarAtributosFinais() { 
@@ -487,6 +486,35 @@ function SalvarAtributosFinais() {
         Valores["Classe de Armadura"] = 10 +  (atributosFinais['Destreza'] - 10) / 2;
         Valores["Atenção"] = 10;
         Valores["Especialização em Perícias"] = Valores["Bônus de Maestria"] + (Valores["Bônus de Maestria"]/2);
+
+        // MÁXIMO DE HABILIDADES DE TÉCNICAS
+        switch (especializacaoSelecionada) {
+            case "lutador":
+            case "especialista_em_combate":
+                if (atributosFinais['Força'] > atributosFinais['Destreza']) {
+                    maximoTecnicas = (atributosFinais['Força'] - 10) / 2 + Valores["Bônus de Maestria"];
+                } else {
+                    maximoTecnicas = (atributosFinais['Destreza'] - 10) / 2 + Valores["Bônus de Maestria"];
+                }
+                break;
+            case "controlador":
+            case "suporte":
+                if (atributosFinais['Sabedoria'] > atributosFinais['Carisma']) {
+                    maximoTecnicas = (atributosFinais['Sabedoria'] - 10) / 2 + Math.round(nivelAtual);
+                } else {
+                    maximoTecnicas = (atributosFinais['Carisma'] - 10) / 2 + Math.round(nivelAtual);
+                }                
+                break;
+            case "especialista_em_tecnicas":
+                if (atributosFinais['Inteligência'] > atributosFinais['Sabedoria']) {
+                    maximoTecnicas = ((atributosFinais['Inteligência'] - 10) / 2 + nivelAtual);
+                } else {
+                    maximoTecnicas = (atributosFinais['Sabedoria'] - 10) / 2 + nivelAtual;
+                }                
+                break;
+            case "restringido":
+                break;
+        };
     
         // ESCREVER OS VALORES
         let valoresFichaHTML = "<h2>Valores</h2>";
@@ -692,12 +720,13 @@ function escreverMaestrias() {
     
     let maestriasFichaHTML = "<h2>Maestrias</h2>";
     especializacaoSelecionada.forEach(classe => {
-        maestriasFichaHTML += `<textarea id="fichaDescricaoMaestrias" placeholder="Maestrias">Perícias: ${classe.pericias}
+        maestriasFichaHTML += `<textarea id="fichaDescricaoMaestrias" name="textoResponsivo" placeholder="Maestrias">Perícias: ${classe.pericias}
 Armas, Armaduras e Escudos: ${classe.armas_armaduras_escudos}
 Kit de Ferramentas: ${classe.kit_de_ferramentas} </textarea>`;
     });
 
     document.getElementById("fichaMaestriasAuto").innerHTML = maestriasFichaHTML;
+    resizeTextarea();
 }
 
 document.getElementById("ficha_especializacao").addEventListener("change", escreverMaestrias);
@@ -705,7 +734,6 @@ document.getElementById("ficha_especializacao").addEventListener("change", escre
 escreverMaestrias();
 
 // LER ATRIBUTOS BASE, MEIO OBSOLETO
-
 function lerAtributos() {
     const atributosLidos = objetoAtributosBase;
 
@@ -715,4 +743,60 @@ function lerAtributos() {
     }
     console.log("Leitura de atributos finalizada."); 
 
+}
+
+// CRIAR E DELETAR HABILIDADES DE TÉCNICAS
+let textareaCount = 0; // basicamente serve como um indice.
+const nomesTecnicas = []; // array pra guardar os nomes das técnicas
+
+function adicionarTecnica() {
+    textareaCount++; // incrementa um valor, que irá servir como a index base dos ids
+    const container = document.getElementById('fichaAdicionarHabilidadesTecnicas'); // pega aonde tá 
+
+    const HabilidadesTecnicasDiv = document.createElement('div'); //
+    HabilidadesTecnicasDiv.classList.add('fichaAdicionarHabilidadesTecnicas');
+
+    const nomeTecnicaInput = document.createElement('input');
+    nomeTecnicaInput.type = 'text';
+    nomeTecnicaInput.placeholder = `Nome da Técnica ${textareaCount}`;
+    nomeTecnicaInput.id = 'nome_' + textareaCount;
+    nomeTecnicaInput.name = "nome da tecnica";
+    nomeTecnicaInput.addEventListener('blur', function() {
+        nomesTecnicas.push(nomeTecnicaInput.value); // Armazena o input no array
+    }); 
+    HabilidadesTecnicasDiv.appendChild(nomeTecnicaInput);
+
+    const descricaoTecnicaTextarea = document.createElement('textarea');
+    descricaoTecnicaTextarea.name = "textoResponsivo";
+    descricaoTecnicaTextarea.textContent = `Habilidade Nível ?
+Conjuração: 
+Alcance: 
+Alvo: 
+Duração: 
+Descrição: `;
+    descricaoTecnicaTextarea.id = 'descricao_' + textareaCount;
+    HabilidadesTecnicasDiv.appendChild(descricaoTecnicaTextarea);
+
+    const botaoApagar = document.createElement('button'); // fazer um talvez um pop-up que confirma o delete ou não, para não apagar uma técnica acidentalmente
+    botaoApagar.textContent = 'Apagar';
+    botaoApagar.onclick = function() {
+        container.removeChild(HabilidadesTecnicasDiv);
+    };
+    HabilidadesTecnicasDiv.appendChild(botaoApagar);
+
+    container.appendChild(HabilidadesTecnicasDiv);
+
+    descricaoTecnicaTextarea.addEventListener("input", resizeTextarea); // sem isso o texto não é responsivo pq o codigo do resize de textarea roda uma vez no programa, mas eu jurava que eu tava tentando fazer isso e não dava certo, programar é minha paixão ou eu sou estupido mesmo (provavelmente isso)
+}
+
+// ESCREVER OS NOMES DAS TÉCNICAS COMO UMA LISTA
+function escreverListaTecnicas() {
+    let habilidadesTecnicasHTML = "<h2>Habilidades de Técnicas</h2>";
+    habilidadesTecnicasHTML += `Máximo de Habilidades de Técnicas: ${Math.floor(maximoTecnicas)}`;
+    nomesTecnicas.forEach(nomeTecnica => {
+        habilidadesTecnicasHTML += `<p>${nomeTecnica}</p>`;
+    });
+
+    document.getElementById("fichaHabilidadesTecnicas").innerHTML = habilidadesTecnicasHTML;
+    console.log(nomesTecnicas);
 }
