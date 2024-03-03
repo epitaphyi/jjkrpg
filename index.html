@@ -129,9 +129,19 @@
                 <h2><b>Ficha Personagem</b></h2>
             </div>
 
-            <div id="fichaHabilidadesEspecialização">
+            <div id="fichaHabilidadesEspecializacao">
                 <p><h2><b>Habilidades de Especialização</b></h2></p>
                 <p> habilidade de especialização x </p>
+                <label for="fichaHabilidadesEspecializacao">Habilidade de Especialização 1</label>
+                <select id="fichaHabilidadesEspecializacao">
+                    <option value="inato">Inato</option>
+                    <option value="herdado">Herdado</option>
+                    <option value="derivado">Derivado</option>
+                    <option value="restringido">Restringido</option>
+                    <option value="feto_amaldicoado">Feto Amaldiçoado</option>
+                    <option value="sem_tecnica">Sem Técnica</option>
+                    <option value="corpo_amaldicoado_mutante">Corpo Amaldiçoado Mutante</option>
+                </select><br><br>
             </div>
             
             <div id="fichaTalentos">
@@ -182,6 +192,7 @@
             </div>
 
             <div id="fichaAtributosBase" class="container">
+                <p><h2><b>Definir Atributos Base</b></h2></p>
                 <div class="atributosBase">
                         <label for="forca">Força</label>
                         <input type="number" id="forca" min="8" max="15" value="15">
@@ -200,6 +211,8 @@
             <p id="message"></p>
             <button type="button" onclick="salvarAtributosBase()">Salvar Atributos Base</button>
             <p id="mensagemSalvar"></p>
+            <br>
+
             <div id="ficha_atributos_bonus" class="container">
                 
                 <p><h2><b>Escolher Bônus de Atributos</b></h2></p>
@@ -221,20 +234,13 @@
                 <br><button type="button" onclick="definirAtributosBonusOrigem()">Definir bônus de atributos da origem</button>
                 <p id="mensagemAtributoBonusOrigem"></p>
             </div>
-
-            <div id="ficha_escolher_talentos" class="container">
-                <p><h2><b>Escolher Talentos</b></h2></p>
-            </div>
-
-            <div id="ficha_escolher_equipamentos" class="container">
-                <p><h2><b>Escolher Equipamentos</b></h2></p>
-            </div>
         </form>
 
         <br>
         <button id="salvarBtn">Salvar</button>
 
         <p>Hosteado com o GitHub.</p>
+        <p>Comecei a fazer esse site por volta do dia 7 de fevereiro e terminei ele em x de março.</p>
 
         <script src="script.js"></script>
     </body>
