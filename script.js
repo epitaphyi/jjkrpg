@@ -627,7 +627,6 @@ function SalvarAtributosFinais() {
         cabecalhoRow.insertCell(4).textContent = "Especialização";
         cabecalhoRow.insertCell(5).textContent = "Total";
     
-
         objetoPericias.forEach((item) => { // loop para cada item (nome, modificador, etc) do objeto pericias
             const row = tabela.insertRow(); // insere uma linha na tabela
             const nomeCell = row.insertCell(0); // na linha da tabela 0, definie como nomeCell
@@ -641,11 +640,6 @@ function SalvarAtributosFinais() {
             modificadorCell.textContent = item.modificador; // mesma logica
             outrosCell.textContent = item.outros;
 
-            for (let chave in objetoPericias.nome) { // mesmo coisa de for chave in objeto, REMOVER DEPOIS
-            if (Math.floor(objetoPericias.nome[chave]) >= 0) {
-                console.log(`Chave: ${chave} Valor: ${Math.floor(objetoPericias.nome[chave])}`);
-            }
-        }
             // Criar checkbox para a coluna 'Maestria'
             const checkboxMaestria = document.createElement('input'); // cria um elemento de input
             checkboxMaestria.type = 'checkbox'; // do tipo checkbox, marcar ou não
@@ -672,7 +666,6 @@ function SalvarAtributosFinais() {
         });
     }
 
-    // Chamada da função para gerar a tabela
     EscreverAtributos();
     EscreverValores();
     gerarTabelaPericias();
@@ -684,7 +677,6 @@ function mostrarMensagemAtributosFinais(mensagemAtributosFinais) {
 };
 
 // ESCREVER HABILIDADES DE ORIGENS E ESPECIALIZAÇÕES NA FICHA
-
 function escreverFicha() {
     const origem = document.getElementById("ficha_origem").value;
     const origemHabilidadesBase = habilidadesOrigem[origem];
@@ -760,7 +752,6 @@ function adicionarTecnica() {
     nomeTecnicaInput.type = 'text';
     nomeTecnicaInput.placeholder = `Nome da Técnica ${textareaCount}`;
     nomeTecnicaInput.id = 'nome_' + textareaCount;
-    nomeTecnicaInput.name = "nome da tecnica";
     nomeTecnicaInput.addEventListener('blur', function() {
         nomesTecnicas.push(nomeTecnicaInput.value); // Armazena o input no array
     }); 
@@ -799,4 +790,73 @@ function escreverListaTecnicas() {
 
     document.getElementById("fichaHabilidadesTecnicas").innerHTML = habilidadesTecnicasHTML;
     console.log(nomesTecnicas);
+}
+
+let count = 0;
+
+// ESCREVER A TABELA BASE DE EQUIPAMENTOS
+function gerarTabelaEquipamentos() { // se o usuário salvar os atributos finais novamente, cria outra tabela em vez de sobrepor a antiga
+    const tabela = document.getElementById('tabelaEquipamentos');
+
+    while (tabela.rows.length > 0) { // limpa a tabela para não ser escrita novamente caso o usuário atualize os dados
+        tabela.deleteRow(0); 
+    }
+
+    const cabecalho = tabela.createTHead(); // cria o cabecalho
+    const cabecalhoRow = cabecalho.insertRow(); // cria as linhas do cabecalho
+    cabecalhoRow.insertCell(0).textContent = "Nome do Item"; // insere a coluna de nome
+    cabecalhoRow.insertCell(1).textContent = "Quantidade"; // e etc
+    cabecalhoRow.insertCell(2).textContent = "Espaços";
+    cabecalhoRow.insertCell(3).textContent = "Custo";
+
+    for (i = 0; i < 10; i++) {
+        const row = tabela.insertRow(); // insere uma linha na tabela
+        const nomeCell = row.insertCell(0); // na linha da tabela 0, definie como nomeCell
+        const quantidadeCell = row.insertCell(1); // mesma logica
+        const espacosCell = row.insertCell(2);
+        const custoCell = row.insertCell(3);
+
+        nomeCell.textContent = "‎ ";
+        quantidadeCell.textContent = "‎ ";
+        espacosCell.textContent = "‎ ";
+        custoCell.textContent = "‎ ";
+    };
+};
+
+gerarTabelaEquipamentos();
+
+// ADICIONAR OU REMOVER ESPAÇOS NA TABELA DE EQUIPAMENTOS
+function modificarTabelaEquipamentos() { 
+    const tabela = document.getElementById('tabelaEquipamentos');
+    count++; // incremento pra cada linha de equipamentos, adicionar depois id pra cada valor (pra salvar no final do projeto)
+
+    const row = tabela.insertRow();
+    const nomeCell = row.insertCell(0); // na linha da tabela 0, definie como nomeCell
+    const quantidadeCell = row.insertCell(1); // mesma logica
+    const espacosCell = row.insertCell(2);
+    const custoCell = row.insertCell(3);
+
+    // inputs pra cada tipo de célula
+    var nomeInput = document.createElement('input');
+    nomeInput.type = 'text';
+
+    var quantidadeInput = document.createElement('input');
+    quantidadeInput.type = 'number'; 
+
+    var espacosInput = document.createElement('input');
+    espacosInput.type = 'number'; 
+
+    var custoInput = document.createElement('input');
+    custoInput.type = 'number'; 
+
+    // adicionar o input à célula da tabela
+    nomeCell.appendChild(nomeInput);
+    quantidadeCell.appendChild(quantidadeInput);
+    espacosCell.appendChild(espacosInput);
+    custoCell.appendChild(custoInput);
+
+    const deleteButton = document.getElementById('botaoApagarEquipamentos');
+    deleteButton.onclick = function() {
+        tabela.deleteRow(row.rowIndex); // Remove a linha atual
+    }; 
 }
