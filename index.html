@@ -8,8 +8,7 @@
         <link rel="shortcut icon" type="images/ico" href="images/favicon.ico"/>
     </head>
     <body>
-        <script src="objetos.js"></script>
-        <script type="module" src="script.js"></script>
+        <script src="script.js"></script>
 
         <form id="formFicha">
             <div id="fichaBasico">
@@ -71,7 +70,7 @@
                 </div>
                 <!--<button type="button" onclick="SalvarEscreverAtributos()">Escrever atributos na ficha</button>-->
                 <p id="mensagemAtributosFinais"></p>
-                <button type="button" onclick="SalvarAtributosFinais(), escreverListaTecnicas()">Salvar Atributos Finais</button>
+                <button type="button" onclick="SalvarAtributosFinais()">Salvar Atributos Finais</button>
             </div>
 
             <div id="fichaValores">
@@ -109,32 +108,26 @@
                             <th>Especialização</th>
                             <th>Total</th>
                         </tr>
-                        <p>Salve seus atributos para a tabela de perícias ser calculada.</p>
                     </table>
+                    <p>Salve seus atributos para a tabela de perícias ser calculada.</p>
                 </div>
             </div>
             
             <div id="fichaEquipamentos">
                 <p><h2><b>Equipamentos</b></h2></p>
-                <table id= "tabelaEquipamentos">
-                    <tr>
-                        <th>Nome do Item</th>
-                        <th>Quantidade</th>
-                        <th>Espaço</th>
-                        <th>Custo</th>
-                    </tr>
-                </table>
-                <button type="button" onclick="modificarTabelaEquipamentos()">Adicionar mais espaço na tabela</button>
-                <button type="button" id="botaoApagarEquipamentos">Apagar o espaço mais recente da tabela</button>
+                <p> item x </p>
+                <br>
             </div>
             
             <div id="fichaAutomatizada"> <!--script de escrever habilidades de origem e especialização-->
                 <h2><b>Ficha Personagem</b></h2>
+                <br>
             </div>
 
             <div id="fichaHabilidadesEspecializacao">
                 <p><h2><b>Habilidades de Especialização</b></h2></p>
                 <p> habilidade de especialização x </p>
+<<<<<<< HEAD
                 <label for="fichaHabilidadesEspecializacao">Habilidade de Especialização 1</label>
                 <select id="fichaHabilidadesEspecializacao">
                     <option value="inato">Inato</option>
@@ -145,11 +138,15 @@
                     <option value="sem_tecnica">Sem Técnica</option>
                     <option value="corpo_amaldicoado_mutante">Corpo Amaldiçoado Mutante</option>
                 </select><br><br>
+=======
+                <br>
+>>>>>>> parent of f754455 (sigma 0.8.5)
             </div>
             
             <div id="fichaTalentos">
                 <p><h2><b>Talentos</b></h2></p>
                 <p> talento x </p>
+                <br>
             </div>
 
             <div id="fichaHabilidadesAmaldicoadas">
@@ -163,6 +160,7 @@
                 <p><h2><b>Habilidades de Técnicas</b></h2></p>
                 <p>Máximo de Habilidades de Técnica: </p>
                 <p>Habilidade de técnica x</p>
+                <br>
             </div>
 
             <div id="fichaRosto">
@@ -214,8 +212,6 @@
             <p id="message"></p>
             <button type="button" onclick="salvarAtributosBase()">Salvar Atributos Base</button>
             <p id="mensagemSalvar"></p>
-            <br>
-
             <div id="ficha_atributos_bonus" class="container">
                 
                 <p><h2><b>Escolher Bônus de Atributos</b></h2></p>
