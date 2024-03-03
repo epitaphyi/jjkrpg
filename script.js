@@ -480,18 +480,6 @@ document.getElementById("ficha_especializacao").addEventListener("change", escre
 
 escreverMaestrias();
 
-// LER ATRIBUTOS BASE, MEIO OBSOLETO
-function lerAtributos() {
-    const atributosLidos = objetoAtributosBase;
-
-    for (let atributoLido in atributosLidos) {
-        
-        console.log(`${atributoLido}: ${atributosLidos[atributoLido]}`);
-    }
-    console.log("Leitura de atributos finalizada."); 
-
-}
-
 // CRIAR E DELETAR HABILIDADES DE TÉCNICAS
 let textareaCount = 0; // basicamente serve como um indice.
 const nomesTecnicas = []; // array pra guardar os nomes das técnicas
