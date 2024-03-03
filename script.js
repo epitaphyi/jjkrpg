@@ -861,4 +861,4 @@ function modificarTabelaEquipamentos() {
         tabela.deleteRow(row.rowIndex); // Remove a linha atual
     }; 
 }
- 
+ // teste
