@@ -8,8 +8,6 @@
         <link rel="shortcut icon" type="images/ico" href="images/favicon.ico"/>
     </head>
     <body>
-        <script src="script.js"></script>
-
         <form id="formFicha">
             <div id="fichaBasico">
                 <p><h2><b>Básico</b></h2></p>
@@ -115,8 +113,16 @@
             
             <div id="fichaEquipamentos">
                 <p><h2><b>Equipamentos</b></h2></p>
-                <p> item x </p>
-                <br>
+                <table id="tabelaEquipamentos">
+                    <tr>
+                        <th>Nome do Item</th>
+                        <th>Quantidade</th>
+                        <th>Espaço</th>
+                        <th>Custo</th>
+                    </tr>
+                </table>
+                <button type="button" onclick="modificarTabelaEquipamentos()">Adicionar mais espaço na tabela</button>
+                <button type="button" id="botaoApagarEquipamentos">Apagar o espaço mais recente da tabela</button>
             </div>
             
             <div id="fichaAutomatizada"> <!--script de escrever habilidades de origem e especialização-->
@@ -236,5 +242,7 @@
 
         <p>Hosteado com o GitHub.</p>
         <p>Comecei a fazer esse site por volta do dia 7 de fevereiro e terminei ele em x de março.</p>
+
+        <script src="script.js"></script>
     </body>
 </html>
