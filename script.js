@@ -1,5 +1,5 @@
 // IMPORTA OS OBJETOS DE habilidade.js
-import {habilidadesOrigem, habilidadesBaseEspecializacao, habilidadesEspecializacao, objetoPericias, maestriasEspecializacao} from '/objetos.js';
+import {habilidadesOrigem, habilidadesBaseEspecializacao, habilidadesEspecializacao, objetoPericias, maestriasEspecializacao} from '/hhttps://epitaphyi.github.io/jjkrpg/objetos.js';
 
 // REAJUSTAR O TAMANHO DE TEXTOS PARA A DESCRIÇÃO DO PERSONAGEM
 function resizeTextarea() {
