@@ -1,3 +1,4 @@
+// SIGMA.
 // REAJUSTAR O TAMANHO DE TEXTOS PARA A DESCRIÇÃO DO PERSONAGEM
 function resizeTextarea() {
     var textareas = document.getElementsByName("textoResponsivo"); // pega cada descrição do "rosto" da ficha pelo nome
