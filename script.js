@@ -861,4 +861,6 @@ function modificarTabelaEquipamentos() {
         tabela.deleteRow(row.rowIndex); // Remove a linha atual
     }; 
 }
- // teste
+
+console.log(objeto1.nome); // Saída: "Objeto 1"
+objeto1.metodo(); // Saída: "Método do objeto 1"
