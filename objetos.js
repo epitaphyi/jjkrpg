@@ -1,20 +1,6 @@
 // objetos.js
 
-var objeto1 = {
-    nome: "Objeto 1",
-    metodo: function() {
-      console.log("Método do objeto 1");
-    }
-  };
-  
-  var objeto2 = {
-    nome: "Objeto 2",
-    metodo: function() {
-      console.log("Método do objeto 2");
-    }
-  };
-
-  const habilidadesOrigem = {
+const habilidadesOrigem = {
     inato: [
         { nome: "Bônus de Atributo", descricao: `Um Inato recebe 3 pontos de atributos adicionais para distribuir entre os seus atributos.` },
         { nome: "Talento Natural", descricao: `Um inato é talentoso, tendo a energia 
@@ -148,7 +134,7 @@ var objeto1 = {
 }
 
 // HABILIDADES BASE DE CLASSE
-const habilidadesEspecializacao = {
+const habilidadesBaseEspecializacao = {
     lutador: [
         { nome: "Mestre de Luta", descricao: `Um lutador é um mestre da luta, dedicando-se ao seu corpo` }, 
         { nome: "Empolgação", descricao: `Uma boa luta é empolgante e te motiva a se arriscar mais e mais, permitindo movimentos mais fortes e únicos.`},
@@ -180,6 +166,51 @@ const habilidadesEspecializacao = {
     ]
 }
 
+const habilidadesEspecializacao = {
+    lutador: [
+        {nome: "Aparar Projéteis", 
+        descricao: `Quando receber um ataque a distância, você pode gastar 1 ponto de energia e usar sua reação para tentar aparar o projétil, diminuindo o seu dano em 2d6 + Modificador de Destreza + Nível de Lutador`, 
+        },
+        
+        {nome: "Ataque Inconsequente", 
+        descricao: `Ataque Inconsequente. Você pode sacrificar sua defesa em troca de ataques mais poderosos. Ao realizar um ataque no seu turno, você pode decidir atacar inconsequentemente, recebendo +2 para acertar e somando +4 no dano, mas recebe em troca uma penalidade de 5 na sua Classe de Armadura, até o começo do seu próximo turno. `, 
+        }, 
+     
+        {nome: "Atacar e Recuar", 
+        descricao: `Uma vez por turno, ao realizar a ação de Ataque e acertar o alvo, você pode gastar 1 ponto de energia amaldiçoada para usar a ação Esquivar como uma reação.`,
+        requisito_habilidade: true},
+    
+        {nome: "Fluxo", 
+        descricao: `Conforme se empolga, você cada vez mais se aproxima de entrar “na zona”, um estado de completo foco e imersão na luta. A cada nível de empolgação que você subir, você recebe +1 em rolagens de acerto e +2 em rolagens de dano, até um máximo de +4 e +8, com nível de empolgação 5. `,
+        requisito_nivel: 4},
+    
+        {nome: "", 
+        descricao: ``,
+        requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+    
+        {nome: "", 
+        descricao: ``,
+        requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+    
+        {nome: "", 
+        descricao: ``,
+        requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+        
+    ],
+
+    especialista_em_combate: [
+        {nome: "Arremesos Potentes", 
+        descricao: `Você se torna capaz de extrair o máximo de potencial das armas de arremesso. 
+        Sempre que realizar um ataque com uma arma de arremesso, ela conta como um nível de dano acima. 
+        Além disso, no começo do seu turno você pode gastar 1 ponto de energia amaldiçoada para fazer com que seus ataques com armas de arremesso ignorem RD igual ao seu bônus de maestria.`},
+
+        {nome: "Arremesos Rápido", 
+        descricao: `Uma vez por rodada, quando faz um ataque com uma arma de arremesso, 
+        você pode gastar 1 ponto de energia amaldiçoada para realizar um ataque adicional contra outro alvo, 
+        arremessando outra arma ou uma mesma arma, desde que ela possua a propriedade Retorno.`}
+    
+    ]
+}
 // MAESTRIAS DE CLASSE, pq não juntar nas habilidadesEspecializacao?
 const maestriasEspecializacao = {
     lutador: [
@@ -225,3 +256,17 @@ const maestriasEspecializacao = {
     ]
 }
 
+const Talentos = [
+    {nome: "", 
+    descricao: ``,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+
+    {nome: "", 
+    descricao: ``,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+
+    {nome: "", 
+    descricao: ``,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+
+]

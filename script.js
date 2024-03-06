@@ -492,7 +492,7 @@ function escreverFicha() {
     const origemHabilidadesBase = habilidadesOrigem[origem];
 
     const especializacao = document.getElementById("ficha_especializacao").value;
-    const especializacaoHabilidadesBase = habilidadesEspecializacao[especializacao];
+    const especializacaoHabilidadesBase = habilidadaesBaseEspecializacao[especializacao];
     
     let personagemFichaHTML = "<p><h2>Habilidades de Origem:</h2><ul>";
     origemHabilidadesBase.forEach(habilidade => {
@@ -671,5 +671,3 @@ function modificarTabelaEquipamentos() {
     }; 
 }
 
-console.log(objeto1.nome); // Saída: "Objeto 1"
-objeto1.metodo(); // Saída: "Método do objeto 1"
