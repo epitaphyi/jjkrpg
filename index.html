@@ -29,7 +29,7 @@
                     <option value="corpo_amaldicoado_mutante">Corpo Amaldiçoado Mutante</option>
                 </select><br><br>
 
-                <div hidden id="ficha_clas">
+                <div hidden id="fichaClas">
                     <label for="ficha_clas">Clã</label> 
                     <select id="ficha_clas" name="ficha_clas">
                         <option value="cla1">Clã 1</option>
@@ -132,17 +132,14 @@
 
             <div id="fichaHabilidadesEspecializacao">
                 <p><h2><b>Habilidades de Especialização</b></h2></p>
-                <p> habilidade de especialização x </p>
-                <label for="fichaHabilidadesEspecializacao">Habilidade de Especialização 1</label>
-                <select id="fichaHabilidadesEspecializacao">
-                    <option value="inato">Inato</option>
-                    <option value="herdado">Herdado</option>
-                    <option value="derivado">Derivado</option>
-                    <option value="restringido">Restringido</option>
-                    <option value="feto_amaldicoado">Feto Amaldiçoado</option>
-                    <option value="sem_tecnica">Sem Técnica</option>
-                    <option value="corpo_amaldicoado_mutante">Corpo Amaldiçoado Mutante</option>
-                </select><br><br>
+                <button type="button" onclick="escreverHabilidadesEspecializacao()">Adicionar habilidade de especialização</button>
+                <div id="selectHabilidadesEspecializacao">
+                    <select hidden class="especializacao"></select> <!--forma porca de resolver o array não salvar a primeira habilidade que o usuário seleciona-->
+                </div>
+                <div id="descricoesHabilidadesEsppecializacao">
+
+                </div>
+                <button onclick="salvarArray()" type="button">Salvar array</button>
             </div>
             
             <div id="fichaTalentos">
@@ -216,9 +213,9 @@
             <p id="mensagemSalvar"></p>
             <div id="ficha_atributos_bonus" class="container">
                 
-                <p><h2><b>Escolher Bônus de Atributos</b></h2></p>
-                <label for="ficha_atributos_bonus">Atributos Bônus de Origem</label><br><br> 
-                <div class="ficha_atributos_bonus_origem">
+            <p><h2><b>Escolher Bônus de Atributos</b></h2></p>
+            <label for="ficha_atributos_bonus">Atributos Bônus de Origem</label><br><br> 
+            <div class="ficha_atributos_bonus_origem">
                     <label for="forca">Força</label>
                     <input type="number" id="forca_bonus" min="0" max="3" value="0">
                     <label for="destreza">Destreza</label>
@@ -231,14 +228,11 @@
                     <input type="number" id="sabedoria_bonus" min="0" max="3" value="0">
                     <label for="carisma">Carisma</label>
                     <input type="number" id="carisma_bonus" min="0" max="3" value="0">
-                </div>
-                <br><button type="button" onclick="definirAtributosBonusOrigem()">Definir bônus de atributos da origem</button>
-                <p id="mensagemAtributoBonusOrigem"></p>
+            </div>
+            <button type="button" onclick="definirAtributosBonusOrigem()">Definir bônus de atributos da origem</button>
+            <p id="mensagemAtributoBonusOrigem"></p>
             </div>
         </form>
-
-        <br>
-        <button id="salvarBtn">Salvar</button>
 
         <p>Hosteado com o GitHub.</p>
         <p>Comecei a fazer esse site por volta do dia 7 de fevereiro e terminei ele em x de março.</p>

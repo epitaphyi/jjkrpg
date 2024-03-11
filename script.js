@@ -72,7 +72,7 @@ function mostrarMensagemSalvar(mensagemSalvar) {
 // APARECER OPÇÃO DE CLÃS PARA HERDADO
 document.getElementById("ficha_origem").addEventListener("change", function() { // o addEventListener("change") funciona toda vez que o selecionado for alterado
     const origemSelecionada = document.getElementById("ficha_origem").value; // pega exatamente qual a origem escolhida
-    const divClas = document.getElementById("ficha_clas"); // pega examaente o div onde tá as opções de clãs
+    const divClas = document.getElementById("fichaClas"); // pega examaente o div onde tá as opções de clãs
 
     // Se a origem selecionada for "Herdado", exibir a seção de clãs; caso contrário, ocultá-la
     if (origemSelecionada === "herdado") { // se a origem escolhida for herdada, então
@@ -492,7 +492,7 @@ function escreverFicha() {
     const origemHabilidadesBase = habilidadesOrigem[origem];
 
     const especializacao = document.getElementById("ficha_especializacao").value;
-    const especializacaoHabilidadesBase = habilidadaesBaseEspecializacao[especializacao];
+    const especializacaoHabilidadesBase = habilidadesBaseEspecializacao[especializacao];
     
     let personagemFichaHTML = "<p><h2>Habilidades de Origem:</h2><ul>";
     origemHabilidadesBase.forEach(habilidade => {
@@ -671,3 +671,87 @@ function modificarTabelaEquipamentos() {
     }; 
 }
 
+//document.getElementById("ficha_especializacao").addEventListener("change", escreverHabilidadesEspecializacao);
+
+let arrayHabilidadesEspecializacaoSalvas = [];
+let objHabilidadesEspecializacaoSalvas = {};
+
+let countEspecializacao = 0;
+
+function escreverHabilidadesEspecializacao() {
+    const especializacao = document.getElementById("ficha_especializacao").value;
+    const especializacaoSelecionada = habilidadesEspecializacao[especializacao];
+
+    const selectHabilidadesEspecializacao = document.getElementById("selectHabilidadesEspecializacao"); // escreve aqui
+    
+    countEspecializacao++;
+
+    var novoParagrafo = document.createElement("p"); // Cria um novo parágrafo
+    var novoSelect = document.createElement("select");
+    novoSelect.id = 'select_' + countEspecializacao;
+    novoSelect.classList.add('especializacao');
+    novoParagrafo.appendChild(novoSelect); // Adiciona o select ao novo parágrafo
+
+    especializacaoSelecionada.forEach(habilidade => {
+        var novaOpcao = document.createElement("option");
+        novaOpcao.value = habilidade.nome;
+        novaOpcao.textContent = habilidade.nome;
+        novoSelect.appendChild(novaOpcao);
+    });
+
+    const botaoApagar = document.createElement('button');
+    botaoApagar.textContent = 'Apagar';
+    botaoApagar.onclick = function() {
+        const index = Array.from(selectHabilidadesEspecializacao.children).indexOf(novoParagrafo);
+        if (index !== -1) {
+            selectHabilidadesEspecializacao.removeChild(novoParagrafo); // Remove o parágrafo inteiro
+            removerElemento(index);
+        }
+    };
+    novoParagrafo.appendChild(botaoApagar); // Adiciona o botão "Apagar" ao novo parágrafo
+    selectHabilidadesEspecializacao.appendChild(novoParagrafo); // Adiciona o novo parágrafo ao elemento div
+}
+
+function salvarArray() {
+    const especializacao = document.getElementById("ficha_especializacao").value;
+    const especializacaoSelecionada = habilidadesEspecializacao[especializacao];
+
+    arrayHabilidadesEspecializacaoSalvas = []; // Limpa o array antes de salvar novamente
+    const selects = document.querySelectorAll('select.especializacao');
+    selects.forEach(select => {
+            arrayHabilidadesEspecializacaoSalvas.push(select.value);
+    });
+    arrayHabilidadesEspecializacaoSalvas.shift();
+    console.log('Array salvo:', arrayHabilidadesEspecializacaoSalvas);
+
+    habilidadesEspecializacaoHTML = "";
+
+    especializacaoSelecionada.forEach(habilidade => { // simplesmente nem eu ou o chatgpt consegue fazer isso imprimir o mesmo valor mais de uma vez. simplesmente não tem solução.
+        if (arrayHabilidadesEspecializacaoSalvas.includes(habilidade.nome)) {
+            habilidadesEspecializacaoHTML += `<p><b>${habilidade.nome}. </b>`; 
+            habilidadesEspecializacaoHTML += `${habilidade.descricao}</p>`;
+        }
+    });
+
+    document.getElementById("descricoesHabilidadesEsppecializacao").innerHTML = habilidadesEspecializacaoHTML; // escreve na ficha
+}
+
+function adicionarElemento(elemento) {
+        const index = arrayHabilidadesEspecializacaoSalvas.indexOf(elemento);
+
+        if (index !== -1) {
+            // Se o elemento já existe no array, atualiza-o
+            arrayHabilidadesEspecializacaoSalvas[index] = elemento;
+        } else {
+            // Se o elemento não existe no array, adiciona-o
+            arrayHabilidadesEspecializacaoSalvas.push(elemento);
+        }
+
+        console.log(`Elemento "${elemento}" adicionado/atualizado com sucesso.`);
+}
+
+function removerElemento(index) {
+        const elementoRemovido = arrayHabilidadesEspecializacaoSalvas.splice(index, 1);
+        const elemento = elementoRemovido[0];
+        console.log(`Elemento "${elemento}" removido com sucesso.`);
+}
