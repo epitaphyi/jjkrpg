@@ -139,22 +139,31 @@
                 <div id="selectHabilidadesEspecializacao">
                     <select hidden class="especializacao"></select> <!--forma porca de resolver o array não salvar a primeira habilidade que o usuário seleciona-->
                 </div>
-                <div id="descricoesHabilidadesEsppecializacao">
-
+                <div id="descricoesHabilidadesEspecializacao">
                 </div>
-                <button onclick="salvarArray()" type="button">Salvar array</button>
+                <button onclick="salvarArrayHabilidadesEspecializacao()" type="button">Salvar array</button>
             </div>
             
             <div id="fichaTalentos">
                 <p><h2><b>Talentos</b></h2></p>
-                <p> talento x </p>
-                <br>
+                <button type="button" onclick="escreverTalentos()">Adicionar talento</button>
+                <div id="selectTalentos">
+                    <select hidden class="talento"></select> <!--forma porca de resolver o array não salvar a primeira habilidade que o usuário seleciona-->
+                </div>
+                <div id="descricoesTalentos">
+                </div>
+                <button onclick="salvarArrayTalentos()" type="button">Salvar array</button>
             </div>
 
             <div id="fichaHabilidadesAmaldicoadas">
-                <p><h2><b>Habilidades Amaldiçoadas</b></h2></p>
-                <p> habilidade amaldiçoada x </p>
-                <br>
+                <p><h2><b>Habilidades Amaldiçaodas</b></h2></p>
+                <button type="button" onclick="escreverHabilidadesAmaldicoadas()">Adicionar talento</button>
+                <div id="selectHabilidadesAmaldicoadas">
+                    <select hidden class="amaldicoada"></select> <!--forma porca de resolver o array não salvar a primeira habilidade que o usuário seleciona-->
+                </div>
+                <div id="descricoesHabilidadesAmaldicoadas">
+                </div>
+                <button onclick="salvarArrayHabilidadesAmaldicoadas()" type="button">Salvar array</button>
             </div>
 
 

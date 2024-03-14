@@ -675,8 +675,7 @@ function modificarTabelaEquipamentos() {
     }; 
 }
 
-//document.getElementById("ficha_especializacao").addEventListener("change", escreverHabilidadesEspecializacao);
-
+// SALVAR HABILIDADES DE ESPECIALIZAÇÃO (ESCOLHA)
 let arrayHabilidadesEspecializacaoSalvas = [];
 let objHabilidadesEspecializacaoSalvas = {};
 
@@ -692,7 +691,7 @@ function escreverHabilidadesEspecializacao() {
 
     var novoParagrafo = document.createElement("p"); // Cria um novo parágrafo
     var novoSelect = document.createElement("select");
-    novoSelect.id = 'select_' + countEspecializacao;
+    novoSelect.id = 'select_especializacao_' + countEspecializacao;
     novoSelect.classList.add('especializacao');
     novoParagrafo.appendChild(novoSelect); // Adiciona o select ao novo parágrafo
 
@@ -709,7 +708,7 @@ function escreverHabilidadesEspecializacao() {
         const index = Array.from(selectHabilidadesEspecializacao.children).indexOf(novoParagrafo);
         if (index !== -1) {
             selectHabilidadesEspecializacao.removeChild(novoParagrafo); // Remove o parágrafo inteiro
-            removerElemento(index);
+            removerElementoHabilidadesEspecializacao(index);
         }
     };
     novoParagrafo.appendChild(botaoApagar); // Adiciona o botão "Apagar" ao novo parágrafo
@@ -718,7 +717,7 @@ function escreverHabilidadesEspecializacao() {
 
 let repetido = 0;
 
-function salvarArray() {
+function salvarArrayHabilidadesEspecializacao() {
     const especializacao = document.getElementById("ficha_especializacao").value;
     const especializacaoSelecionada = habilidadesEspecializacao[especializacao];
 
@@ -740,10 +739,10 @@ function salvarArray() {
         }
     });
 
-    document.getElementById("descricoesHabilidadesEsppecializacao").innerHTML = habilidadesEspecializacaoHTML; // escreve na ficha
+    document.getElementById("descricoesHabilidadesEspecializacao").innerHTML = habilidadesEspecializacaoHTML; // escreve na ficha
 }
 
-function adicionarElemento(elemento) {
+function adicionarElementoHabilidadesEspecializao(elemento) {
         const index = arrayHabilidadesEspecializacaoSalvas.indexOf(elemento);
 
         if (index !== -1) {
@@ -757,8 +756,164 @@ function adicionarElemento(elemento) {
         console.log(`Elemento adicionado/atualizado com sucesso.`);
 }
 
-function removerElemento(index) {
+function removerElementoHabilidadesEspecializacao(index) {
         const elementoRemovido = arrayHabilidadesEspecializacaoSalvas.splice(index, 1);
+        const elemento = elementoRemovido[0];
+        console.log(`Elemento removido com sucesso.`);
+}
+
+// SALVAR TALENTOS 
+let arrayTalentosSalvos = [];
+let objTalentosSalvos = {};
+
+let countTalentos = 0;
+
+function escreverTalentos() {
+    const selectTalentos = document.getElementById("selectTalentos"); // escreve aqui
+    
+    countTalentos++;
+
+    var novoParagrafo = document.createElement("p"); // Cria um novo parágrafo
+    var novoSelect = document.createElement("select");
+    novoSelect.id = 'select_talentos_' + countTalentos;
+    novoSelect.classList.add('talento');
+    novoParagrafo.appendChild(novoSelect); // Adiciona o select ao novo parágrafo
+
+    Talentos.forEach(talento => {
+        var novaOpcao = document.createElement("option");
+        novaOpcao.value = talento.nome;
+        novaOpcao.textContent = talento.nome;
+        novoSelect.appendChild(novaOpcao);
+    });
+
+    const botaoApagar = document.createElement('button');
+    botaoApagar.textContent = 'Apagar';
+    botaoApagar.onclick = function() {
+        const index = Array.from(selectTalentos.children).indexOf(novoParagrafo);
+        if (index !== -1) {
+            selectTalentos.removeChild(novoParagrafo); // Remove o parágrafo inteiro
+            removerElementoTalentos(index);
+        }
+    };
+    novoParagrafo.appendChild(botaoApagar); // Adiciona o botão "Apagar" ao novo parágrafo
+    selectTalentos.appendChild(novoParagrafo); // Adiciona o novo parágrafo ao elemento div
+}
+
+
+function salvarArrayTalentos() {
+    arrayTalentosSalvos = []; // Limpa o array antes de salvar novamente
+    const selects = document.querySelectorAll('select.talento');
+    selects.forEach(select => {
+            arrayTalentosSalvos.push(select.value);
+    });
+    arrayTalentosSalvos.shift();
+    console.log('Array salvo:', arrayTalentosSalvos);
+
+    let TalentosHTML = "";
+    
+    arrayTalentosSalvos.forEach(nomeTalento => { // isso foi dificil (pro chagpt) fazer. as vezes o problema tá na raiz mesmo.
+        const talento = Talentos.find(tal => tal.nome === nomeTalento);
+        if (talento) {
+            TalentosHTML += `<p><b>${talento.nome}. </b>`; 
+            TalentosHTML += `${talento.descricao}</p>`;
+        }
+    });
+
+    document.getElementById("descricoesTalentos").innerHTML = TalentosHTML; // escreve na ficha
+}
+
+function adicionarElementoTalentos(elemento) {
+        const index = arrayTalentosSalvos.indexOf(elemento);
+
+        if (index !== -1) {
+            arrayTalentosSalvos[index] = elemento;
+        } else {
+            arrayTalentosSalvos.push(elemento);
+        }
+
+        console.log(`Elemento adicionado/atualizado com sucesso.`);
+}
+
+function removerElementoTalentos(index) {
+        const elementoRemovido = arrayTalentosSalvos.splice(index, 1);
+        const elemento = elementoRemovido[0];
+        console.log(`Elemento removido com sucesso.`);
+}
+
+// SALVAR HABILIDADES AMALDIÇOADAS 
+let arrayHabilidadesAmaldicoadasSalvas = [];
+let objHabilidadesAmaldicoadasSalvas = {};
+
+let countHabilidadesAmaldicoadas = 0;
+
+function escreverHabilidadesAmaldicoadas() {
+    const selectHabilidadesAmaldicoadas = document.getElementById("selectHabilidadesAmaldicoadas"); // escreve aqui
+    
+    countHabilidadesAmaldicoadas++;
+
+    var novoParagrafo = document.createElement("p"); // Cria um novo parágrafo
+    var novoSelect = document.createElement("select");
+    novoSelect.id = 'select_amaldicoadas_' + countHabilidadesAmaldicoadas;
+    novoSelect.classList.add('talento');
+    novoParagrafo.appendChild(novoSelect); // Adiciona o select ao novo parágrafo
+
+    habilidadesAmaldicoadas.forEach(habilidadeAmaldicoada => {
+        var novaOpcao = document.createElement("option");
+        novaOpcao.value = habilidadeAmaldicoada.nome;
+        novaOpcao.textContent = habilidadeAmaldicoada.nome;
+        novoSelect.appendChild(novaOpcao);
+    });
+
+    const botaoApagar = document.createElement('button');
+    botaoApagar.textContent = 'Apagar';
+    botaoApagar.onclick = function() {
+        const index = Array.from(selectHabilidadesAmaldicoadas.children).indexOf(novoParagrafo);
+        if (index !== -1) {
+            selectHabilidadesAmaldicoadas.removeChild(novoParagrafo); // Remove o parágrafo inteiro
+            removerElementoHabilidadesAmaldicoadas(index);
+        }
+    };
+    novoParagrafo.appendChild(botaoApagar); // Adiciona o botão "Apagar" ao novo parágrafo
+    selectHabilidadesAmaldicoadas.appendChild(novoParagrafo); // Adiciona o novo parágrafo ao elemento div
+}
+
+
+function salvarArrayHabilidadesAmaldicoadas() {
+    arrayHabilidadesAmaldicoadasSalvas = []; // Limpa o array antes de salvar novamente
+    const selects = document.querySelectorAll('select.talento');
+    selects.forEach(select => {
+            arrayHabilidadesAmaldicoadasSalvas.push(select.value);
+    });
+    arrayHabilidadesAmaldicoadasSalvas.shift();
+    console.log('Array salvo:', arrayHabilidadesAmaldicoadasSalvas);
+
+    let habilidadesAmaldicoadasHTML = "";
+    
+    arrayHabilidadesAmaldicoadasSalvas.forEach(nomeHabilidadeAmaldicoada => { // isso foi dificil (pro chagpt) fazer. as vezes o problema tá na raiz mesmo.
+        const habilidadeAmaldicoada = habilidadesAmaldicoadas.find(ha => ha.nome === nomeHabilidadeAmaldicoada);
+        if (habilidadeAmaldicoada) {
+            habilidadesAmaldicoadasHTML += `<p><b>${habilidadeAmaldicoada.nome}. </b>`; 
+            habilidadesAmaldicoadasHTML += `${habilidadeAmaldicoada.descricao}</p>`;
+        }
+    });
+
+    document.getElementById("descricoesHabilidadesAmaldicoadas").innerHTML = habilidadesAmaldicoadasHTML; // escreve na ficha
+}
+
+function adicionarElementoHabilidadesAmaldicoadas(elemento) {
+        const index = arrayHabilidadesAmaldicoadasSalvas.indexOf(elemento);
+
+        if (index !== -1) {
+            arrayHabilidadesAmaldicoadasSalvas[index] = elemento;
+        } else {
+            arrayHabilidadesAmaldicoadasSalvas.push(elemento);
+        }
+
+        console.log(`Elemento adicionado/atualizado com sucesso.`);
+}
+
+function removerElementoHabilidadesAmaldicoadas(index) {
+        const elementoRemovido = arrayHabilidadesAmaldicoadasSalvas.splice(index, 1);
         const elemento = elementoRemovido[0];
         console.log(`Elemento removido com sucesso.`);
 }

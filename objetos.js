@@ -257,12 +257,12 @@ const maestriasEspecializacao = {
 }
 
 const Talentos = [
-    {nome: "", 
-    descricao: ``,
+    {nome: "Talento 1", 
+    descricao: `Descricao`,
     requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
 
-    {nome: "", 
-    descricao: ``,
+    {nome: "Talento 2", 
+    descricao: `Descricao`,
     requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
 
     {nome: "", 
@@ -270,3 +270,19 @@ const Talentos = [
     requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
 
 ]
+
+const habilidadesAmaldicoadas = [
+    {nome: "Habilidade Amaldiçoada 1", 
+    descricao: `Descricao`,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+
+    {nome: "Habilidade Amaldiçoada 2", 
+    descricao: `Descricao`,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+
+    {nome: "", 
+    descricao: ``,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+
+]
+
