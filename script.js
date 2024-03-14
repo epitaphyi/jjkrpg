@@ -580,8 +580,12 @@ Descrição: `;
 
     const botaoApagar = document.createElement('button'); // fazer um talvez um pop-up que confirma o delete ou não, para não apagar uma técnica acidentalmente
     botaoApagar.textContent = 'Apagar';
+    var confirmarApagar = false;
     botaoApagar.onclick = function() {
-        container.removeChild(HabilidadesTecnicasDiv);
+        confirmarApagar = confirm("Você quer apagar essa técnica?");
+        if (confirmarApagar) {
+            container.removeChild(HabilidadesTecnicasDiv);
+        }
     };
     HabilidadesTecnicasDiv.appendChild(botaoApagar);
 
@@ -712,6 +716,8 @@ function escreverHabilidadesEspecializacao() {
     selectHabilidadesEspecializacao.appendChild(novoParagrafo); // Adiciona o novo parágrafo ao elemento div
 }
 
+let repetido = 0;
+
 function salvarArray() {
     const especializacao = document.getElementById("ficha_especializacao").value;
     const especializacaoSelecionada = habilidadesEspecializacao[especializacao];
@@ -724,10 +730,11 @@ function salvarArray() {
     arrayHabilidadesEspecializacaoSalvas.shift();
     console.log('Array salvo:', arrayHabilidadesEspecializacaoSalvas);
 
-    habilidadesEspecializacaoHTML = "";
-
-    especializacaoSelecionada.forEach(habilidade => { // simplesmente nem eu ou o chatgpt consegue fazer isso imprimir o mesmo valor mais de uma vez. simplesmente não tem solução.
-        if (arrayHabilidadesEspecializacaoSalvas.includes(habilidade.nome)) {
+    let habilidadesEspecializacaoHTML = "";
+    
+    arrayHabilidadesEspecializacaoSalvas.forEach(nomeHabilidade => { // isso foi dificil (pro chagpt) fazer. as vezes o problema tá na raiz mesmo.
+        const habilidade = especializacaoSelecionada.find(hab => hab.nome === nomeHabilidade);
+        if (habilidade) {
             habilidadesEspecializacaoHTML += `<p><b>${habilidade.nome}. </b>`; 
             habilidadesEspecializacaoHTML += `${habilidade.descricao}</p>`;
         }
@@ -747,11 +754,11 @@ function adicionarElemento(elemento) {
             arrayHabilidadesEspecializacaoSalvas.push(elemento);
         }
 
-        console.log(`Elemento "${elemento}" adicionado/atualizado com sucesso.`);
+        console.log(`Elemento adicionado/atualizado com sucesso.`);
 }
 
 function removerElemento(index) {
         const elementoRemovido = arrayHabilidadesEspecializacaoSalvas.splice(index, 1);
         const elemento = elementoRemovido[0];
-        console.log(`Elemento "${elemento}" removido com sucesso.`);
+        console.log(`Elemento removido com sucesso.`);
 }
