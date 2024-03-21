@@ -1,5 +1,6 @@
 // objetos.js
 
+// HABILIDADES BASE DE ORIGEM
 const habilidadesOrigem = {
     inato: [
         { nome: "Bônus de Atributo", descricao: `Um Inato recebe 3 pontos de atributos adicionais para distribuir entre os seus atributos.` },
@@ -133,6 +134,24 @@ const habilidadesOrigem = {
 
 }
 
+// CARAACTERISTICAS DE ANATOMIA DE FETO AMALDIÇOADO
+let arrayAnatomia = [];
+let objAnatomia = {};
+
+const caracteristicasAnatomia = [
+    {nome: "Talento 1", 
+    descricao: `Descricao`,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+
+    {nome: "Talento 2", 
+    descricao: `Descricao`,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+
+    {nome: "", 
+    descricao: ``,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+]
+
 // HABILIDADES BASE DE CLASSE
 const habilidadesBaseEspecializacao = {
     lutador: [
@@ -165,6 +184,10 @@ const habilidadesBaseEspecializacao = {
         { nome: "Teste 2", descricao: `teste de descricao 2`},
     ]
 }
+
+// HABILIDADES DE CLASSE
+let arrayHabilidadesEspecializacaoSalvas = [];
+let objHabilidadesEspecializacaoSalvas = {};
 
 const habilidadesEspecializacao = {
     lutador: [
@@ -256,6 +279,10 @@ const maestriasEspecializacao = {
     ]
 }
 
+// TALENTOS
+let arrayTalentosSalvos = [];
+let objTalentosSalvos = {};
+
 const Talentos = [
     {nome: "Talento 1", 
     descricao: `Descricao`,
@@ -271,6 +298,10 @@ const Talentos = [
 
 ]
 
+// HABILIDADES AMALDIÇOADAS
+let arrayHabilidadesAmaldicoadasSalvas = [];
+let objHabilidadesAmaldicoadasSalvas = {};
+
 const habilidadesAmaldicoadas = [
     {nome: "Habilidade Amaldiçoada 1", 
     descricao: `Descricao`,
@@ -285,4 +316,3 @@ const habilidadesAmaldicoadas = [
     requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
 
 ]
-

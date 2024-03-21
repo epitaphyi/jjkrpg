@@ -168,7 +168,8 @@ function mostrarMensagemAtributosBonusOrigem(mensagemAtributoBonusOrigem) {
 }
 
 let maximoTecnicas = 0;
-
+let PVfinal = 0;
+        
 // SALVAR E ESCREVER ATRIBUTOS FINAIS
 function SalvarAtributosFinais() { 
     let atributosBase = objetoAtributosBase;
@@ -218,10 +219,11 @@ function SalvarAtributosFinais() {
         "Especialização em Perícias": 0,
     };
 
+
     let PVInicial = 0; 
     let PVNivel = 0;
 
-    // CALCULAR ALGUNS VALORES
+    // CALCULAR VALORES
     function EscreverValores() {    
         switch (especializacaoSelecionada) {
             case "especialista_em_tecnicas":
@@ -303,7 +305,19 @@ function SalvarAtributosFinais() {
             case "restringido":
                 break;
         };
-    
+
+        PVatual = Valores["Pontos de Vida Atual"];
+        PEatual = Valores["Pontos de Energia Amaldiçoada Atual"]; 
+        window.modificarValores = function() {
+            PVmodificado = parseInt(document.getElementById("modificarPV").value);
+            PVatual += PVmodificado; 
+            document.getElementById("pontosVidaAtual").innerText = Math.floor(PVatual);
+
+            PEmodificado = parseInt(document.getElementById("modificarPE").value);
+            PEatual += PEmodificado; 
+            document.getElementById("pontosEnergiaAtual").innerText = Math.floor(PEatual);
+        }
+        
         // ESCREVER OS VALORES
         let valoresFichaHTML = "<h2>Valores</h2>";
         for (let chave in Valores) { // as chaves são as propriedades (no caso o nome dos atributos), então o atributosFinais[chave] mostra o valor da chave em questão
@@ -312,12 +326,16 @@ function SalvarAtributosFinais() {
             }
             switch (chave) {
                 case "Pontos de Vida": // dps pensar em pv temporarios
-                    valoresFichaHTML += `<p>${chave} <input type="number" id="ficha_pontos_pv" value="${Math.floor(Valores["Pontos de Vida Atual"])}" min="0" style="width: 40px;">`;
-                    valoresFichaHTML += `/<input type="number" id="ficha_pontos_pv" value="${Math.floor(Valores[chave])}" style="width: 40px;" readonly></p>`;
+                    valoresFichaHTML += `<p>${chave} <span id="pontosVidaAtual">${Math.floor(PVatual)}</span>`;
+                    valoresFichaHTML += `/${Math.floor(Valores[chave])}</p>`;
+                    valoresFichaHTML += `<input type="number" id="modificarPV" value="0"></input>`;
+                    valoresFichaHTML += `<button type="button" onclick="modificarValores()">Modificar PV</button>`;
                     break;
                 case "Pontos de Energia Amaldiçoada": // dps pensar em pe temporarios
-                    valoresFichaHTML += `<p>${chave} <input type="number" id="ficha_pontos_pe" value="${Math.floor(Valores["Pontos de Energia Amaldiçoada Atual"])}" min="0" maxlength="3" style="width: 40px;">`;
-                    valoresFichaHTML += `/<input type="number" id="ficha_pontos_pv" value="${Math.floor(Valores[chave])}" style="width: 40px;" readonly></p>`;
+                    valoresFichaHTML += `<p>${chave} <span id="pontosEnergiaAtual">${Math.floor(PEatual)}</span>`;
+                    valoresFichaHTML += `/${Math.floor(Valores[chave])}</p>`;
+                    valoresFichaHTML += `<input type="number" id="modificarPE" value="0"></input>`;
+                    valoresFichaHTML += `<button type="button" onclick="modificarValores()">Modificar PE</button>`;
                     break;
                 case "Bônus de Maestria":
                 case "Iniciativa":
@@ -487,33 +505,37 @@ function mostrarMensagemAtributosFinais(mensagemAtributosFinais) {
 };
 
 // ESCREVER HABILIDADES DE ORIGENS E ESPECIALIZAÇÕES NA FICHA
-function escreverFicha() {
+function escreverHabilidadesBase() {
     const origem = document.getElementById("ficha_origem").value;
     const origemHabilidadesBase = habilidadesOrigem[origem];
 
     const especializacao = document.getElementById("ficha_especializacao").value;
     const especializacaoHabilidadesBase = habilidadesBaseEspecializacao[especializacao];
     
-    let personagemFichaHTML = "<p><h2>Habilidades de Origem:</h2><ul>";
+    let habilidadesOrigemFichaHTML = "<p><h2>Habilidades de Origem:</h2><ul>";
     origemHabilidadesBase.forEach(habilidade => {
-        personagemFichaHTML += `<li><strong>${habilidade.nome}</strong>: ${habilidade.descricao}</li>`;
+        habilidadesOrigemFichaHTML += `<li><strong>${habilidade.nome}</strong>: ${habilidade.descricao}</li>`;
     });
-    personagemFichaHTML += "</ul>";
+    
+    if (origem != "feto_amaldicoado") {
+        habilidadesOrigemFichaHTML += "</ul>";
+    }
 
-    personagemFichaHTML += "<h2><b>Habilidades Base de Especialização</b></h2><ul>";
+    let habilidadesEspecializacaoBaseHTML = "<h2><b>Habilidades Base de Especialização</b></h2><ul>";
     especializacaoHabilidadesBase.forEach(habilidadeBase => {
-        personagemFichaHTML += `<li><strong>${habilidadeBase.nome}</strong>: ${habilidadeBase.descricao}</li>`;
+        habilidadesEspecializacaoBaseHTML += `<li><strong>${habilidadeBase.nome}</strong>: ${habilidadeBase.descricao}</li>`;
     });
-    personagemFichaHTML += "</ul>";
+    habilidadesEspecializacaoBaseHTML += "</ul>";
 
-    document.getElementById("fichaAutomatizada").innerHTML = personagemFichaHTML;
+    document.getElementById("fichaHabilidadesOrigem").innerHTML = habilidadesOrigemFichaHTML;
+    document.getElementById("fichaEspecializacaoBase").innerHTML = habilidadesEspecializacaoBaseHTML;
 
 }
 
-document.getElementById("ficha_origem").addEventListener("change", escreverFicha);
-document.getElementById("ficha_especializacao").addEventListener("change", escreverFicha);
+document.getElementById("ficha_origem").addEventListener("change", escreverHabilidadesBase);
+document.getElementById("ficha_especializacao").addEventListener("change", escreverHabilidadesBase);
 
-escreverFicha();
+escreverHabilidadesBase();
 
 // ESCREVER AS MAESTRIAS
 function escreverMaestrias() {
@@ -676,9 +698,6 @@ function modificarTabelaEquipamentos() {
 }
 
 // SALVAR HABILIDADES DE ESPECIALIZAÇÃO (ESCOLHA)
-let arrayHabilidadesEspecializacaoSalvas = [];
-let objHabilidadesEspecializacaoSalvas = {};
-
 let countEspecializacao = 0;
 
 function escreverHabilidadesEspecializacao() {
@@ -763,9 +782,6 @@ function removerElementoHabilidadesEspecializacao(index) {
 }
 
 // SALVAR TALENTOS 
-let arrayTalentosSalvos = [];
-let objTalentosSalvos = {};
-
 let countTalentos = 0;
 
 function escreverTalentos() {
@@ -841,9 +857,6 @@ function removerElementoTalentos(index) {
 }
 
 // SALVAR HABILIDADES AMALDIÇOADAS 
-let arrayHabilidadesAmaldicoadasSalvas = [];
-let objHabilidadesAmaldicoadasSalvas = {};
-
 let countHabilidadesAmaldicoadas = 0;
 
 function escreverHabilidadesAmaldicoadas() {
@@ -854,7 +867,7 @@ function escreverHabilidadesAmaldicoadas() {
     var novoParagrafo = document.createElement("p"); // Cria um novo parágrafo
     var novoSelect = document.createElement("select");
     novoSelect.id = 'select_amaldicoadas_' + countHabilidadesAmaldicoadas;
-    novoSelect.classList.add('talento');
+    novoSelect.classList.add('habilidade_amaldicoada');
     novoParagrafo.appendChild(novoSelect); // Adiciona o select ao novo parágrafo
 
     habilidadesAmaldicoadas.forEach(habilidadeAmaldicoada => {
@@ -877,10 +890,9 @@ function escreverHabilidadesAmaldicoadas() {
     selectHabilidadesAmaldicoadas.appendChild(novoParagrafo); // Adiciona o novo parágrafo ao elemento div
 }
 
-
 function salvarArrayHabilidadesAmaldicoadas() {
     arrayHabilidadesAmaldicoadasSalvas = []; // Limpa o array antes de salvar novamente
-    const selects = document.querySelectorAll('select.talento');
+    const selects = document.querySelectorAll('select.habilidade_amaldicoada');
     selects.forEach(select => {
             arrayHabilidadesAmaldicoadasSalvas.push(select.value);
     });
@@ -913,7 +925,143 @@ function adicionarElementoHabilidadesAmaldicoadas(elemento) {
 }
 
 function removerElementoHabilidadesAmaldicoadas(index) {
-        const elementoRemovido = arrayHabilidadesAmaldicoadasSalvas.splice(index, 1);
-        const elemento = elementoRemovido[0];
-        console.log(`Elemento removido com sucesso.`);
+        arrayHabilidadesAmaldicoadasSalvas.splice(index, 1);
 }
+
+// APARECER OPÇÕES DE ESPECIALIZACAO DO FETO AMALDICOADO
+document.getElementById("ficha_origem").addEventListener("change", function() {
+    const origemSelecionada = document.getElementById("ficha_origem").value; // pega exatamente qual a origem escolhida
+    const divFeto = document.getElementById("fichaFetoAmaldicoado"); // pega examaente o div onde tá as opções de clãs
+
+    if (origemSelecionada === "feto_amaldicoado") { 
+        divFeto.style.display = "block"; 
+    } else { // caso contrário
+        divFeto.style.display = "none"; // muda o display para none, fazendo com que sua linha não apareça, e por ventura, nem o texto em si por conta do hidden no div
+    }
+});
+
+let countCaracteristicasAnatomia = 0;
+
+function escreverAnatomia() {
+    const selectCaracteristicasAnatomia = document.getElementById("selectCaracteristicasAnatomia"); // escreve aqui
+    
+    countCaracteristicasAnatomia++;
+
+    var novoParagrafo = document.createElement("p"); // Cria um novo parágrafo
+    var novoSelect = document.createElement("select");
+    novoSelect.id = 'select_caracteristicas_anatomia_' + countCaracteristicasAnatomia;
+    novoSelect.classList.add('anatomia');
+    novoParagrafo.appendChild(novoSelect); // Adiciona o select ao novo parágrafo
+
+    caracteristicasAnatomia.forEach(caracteristicaAnatomia => {
+        var novaOpcao = document.createElement("option");
+        novaOpcao.value = caracteristicaAnatomia.nome;
+        novaOpcao.textContent = caracteristicaAnatomia.nome;
+        novoSelect.appendChild(novaOpcao);
+    });
+
+    const botaoApagar = document.createElement('button');
+    botaoApagar.textContent = 'Apagar';
+    botaoApagar.onclick = function() {
+        const index = Array.from(selectCaracteristicasAnatomia.children).indexOf(novoParagrafo);
+        if (index !== -1) {
+            selectCaracteristicasAnatomia.removeChild(novoParagrafo); // Remove o parágrafo inteiro
+            removerElementoAnatomia(index);
+        }
+    };
+    novoParagrafo.appendChild(botaoApagar); // Adiciona o botão "Apagar" ao novo parágrafo
+    selectCaracteristicasAnatomia.appendChild(novoParagrafo); // Adiciona o novo parágrafo ao elemento div
+}
+
+function salvarArrayAnatomia() {
+    arrayAnatomia = []; // Limpa o array antes de salvar novamente
+    const selects = document.querySelectorAll('select.anatomia');
+    selects.forEach(select => {
+        arrayAnatomia.push(select.value);
+    });
+    arrayAnatomia.shift();
+    console.log('Array salvo:', arrayAnatomia);
+
+    let anatomiaHTML = "";
+
+    if (arrayAnatomia.length > 0) {
+        anatomiaHTML += "<b>Características de Anatomia:</b><ul>";
+    }
+    arrayAnatomia.forEach(nomeAnatomia => { 
+        const habilidadeAnatomia = caracteristicasAnatomia.find(ca => ca.nome === nomeAnatomia);
+        if (habilidadeAnatomia) {
+            anatomiaHTML += `<li><strong>${habilidadeAnatomia.nome}</strong>: ${habilidadeAnatomia.descricao}</li>`;
+        }
+        anatomiaHTML += `</ul>`;
+    });
+
+    document.getElementById("fichaCaracteristicasAnatomia").innerHTML = anatomiaHTML; // escreve na ficha
+}
+
+function adicionarElementoAnatomia(elemento) {
+        const index = arrayAnatomia.indexOf(elemento);
+
+        if (index !== -1) {
+            arrayAnatomia[index] = elemento;
+        } else {
+            arrayAnatomia.push(elemento);
+        }
+
+        console.log(`Elemento adicionado/atualizado com sucesso.`);
+}
+
+function removerElementoAnatomia(index) {
+        arrayAnatomia.splice(index, 1);
+}
+
+
+// ROLAR DADOS
+var d6 = {
+    lados: 6,
+    rolar: function () {
+        var randomNumber = Math.floor(Math.random() * this.lados) + 1;
+        return randomNumber;
+    }
+}
+
+function printNumber(number) {
+    var placeholder = document.getElementById('placeholder');
+    placeholder.innerHTML = number;
+}
+
+function rollDiceWithAnimation() {
+    var result = d6.rolar();
+    var fakeResults = [];
+    
+    // Gerar resultados falsos próximos ao resultado real
+    for (var i = 0; i < 5; i++) {
+        var fakeResult = (result + Math.floor(Math.random() * 5) + 1) % 6 + 1; // Resultado próximo
+        fakeResults.push(fakeResult);
+    }
+    
+    // Embaralhar a ordem dos resultados falsos
+    fakeResults.sort(function() {
+        return 0.5 - Math.random();
+    });
+    
+    var index = 0;
+    var interval = setInterval(function() {
+        printNumber(fakeResults[index]);
+        index++;
+        if (index >= fakeResults.length) {
+            clearInterval(interval);
+            // Exibir o resultado real após a animação dos resultados falsos
+            setTimeout(function() {
+                printNumber(result);
+            }, Math.floor(Math.random() * 5000) + 500); // Tempo de espera aleatório antes de exibir o resultado real (em milissegundos)
+        }
+    }, Math.floor(Math.random() * 200) + 100); // Intervalo aleatório entre os resultados falsos (em milissegundos)
+}
+
+var button = document.getElementById('button');
+
+button.onclick = function() {
+    rollDiceWithAnimation();
+};
+
+

@@ -47,6 +47,17 @@ textarea {
     align-items: center; /* Alinha os itens verticalmente ao centro */
 }
 
+#placeholder {
+    height: 100px;
+    width: 100px;
+    padding: 50px;
+    margin: 50px auto;
+    border: 1px solid gray;
+    border-radius: 10px;  
+    font-size: 80px;
+    text-align: center; /* Adicionando o alinhamento central */
+}
+
 /* (tava no codigo beta alpha 0.0001, mas provavelmente n vou usar)
 div {
     border-bottom: 1px solid #000;
