@@ -1,4 +1,59 @@
 // objetos.js
+// objetos = {}
+// arrays = []
+let userInfo = {
+    nome : "", // define propriedade
+    nivel : "",
+    origem : "",
+    clas : "",
+    especializacao : "",
+    tipo_de_mulher : "",
+    exp : "",
+    atributos_base: "",
+    bonus_de_atributos_racial: "",
+    maestrias: "",
+    pericias: "",
+    pericias_maestrias: "",
+    pericias_especializacoes: "",
+    equipamentos: "",
+    habilidades_especializacao: "",
+    talentos: "",
+    habilidades_amaldicoadas: "",
+    aparencia: "",
+    personalidade: "",
+    historico: "",
+    tecnica_inata: "",
+    lista_de_tecnicas: "",
+};
+
+let atributosFinais = {
+    Força: 0, 
+    Destreza: 0, 
+    Constituição: 0, 
+    Inteligência: 0, 
+    Sabedoria: 0,
+    Carisma: 0,
+};
+
+let arrayPericias = [];
+let arrayMaestriasPericias = [];
+let arrayEspecializacoesPericias = [];
+
+let Valores = {
+    "Pontos de Vida Atual": 0,
+    "Pontos de Energia Amaldiçoada Atual": 0,
+    "Pontos de Vida": 0,
+    "Pontos de Energia Amaldiçoada": 0,
+    "Bônus de Maestria": 2,
+    "Iniciativa": 0,
+    "Movimento": 9,
+    "Movimento de Voo": 0,
+    "Integridade da Alma": 100,
+    "Classe de Armadura": 0,
+    "Atenção": 0,
+    "Especialização em Perícias": 0,
+};
+
 
 // HABILIDADES BASE DE ORIGEM
 const habilidadesOrigem = {

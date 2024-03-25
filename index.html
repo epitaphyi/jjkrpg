@@ -8,176 +8,264 @@
         <link rel="shortcut icon" type="images/ico" href="images/favicon.ico"/>
     </head>
     <body>
-        <form id="formFicha">
-            <div id="fichaBasico">
-                <p><h2><b>Básico</b></h2></p>
+        <div class="tabs">
+            <button type="button" class="tab-btn" onclick="openTab('abaPersonagem')">Personagem </button>
+            <button type="button" class="tab-btn" onclick="openTab('abaRosto')">Rosto</button>
+            <button type="button" class="tab-btn" onclick="openTab('abaInvocacoes')">Invocações</button>
+            <button type="button" class="tab-btn" onclick="openTab('tab3')">tab 3</button>
 
-                <label for="ficha_nome">Nome</label>
-                <input type="text" id="ficha_nome" name="ficha_nome"> <br><br>
+        </div>
+        <div id="abaPersonagem" class="tab-content active">
+            <form id="formFicha">
+                <div id="fichaBasico">
+                    <p><h2><b>Básico</b></h2></p>
 
-                <label for="ficha_nivel">Nível</label>
-                <input type="number" id="ficha_nivel" name="ficha_nivel" min="1" max="20" value="1"> <br><br>
+                    <label for="ficha_nome">Nome</label>
+                    <input type="text" id="ficha_nome" name="ficha_nome"> <br><br>
 
-                <label for="ficha_origem">Origem</label>
-                <select id="ficha_origem" name="ficha_origem">
-                    <option value="inato">Inato</option>
-                    <option value="herdado">Herdado</option>
-                    <option value="derivado">Derivado</option>
-                    <option value="restringido">Restringido</option>
-                    <option value="feto_amaldicoado">Feto Amaldiçoado</option>
-                    <option value="sem_tecnica">Sem Técnica</option>
-                    <option value="corpo_amaldicoado_mutante">Corpo Amaldiçoado Mutante</option>
-                </select><br><br>
+                    <label for="ficha_nivel">Nível</label>
+                    <input type="number" id="ficha_nivel" name="ficha_nivel" min="1" max="20" value="1"> <br><br>
 
-                <div hidden id="fichaClas">
-                    <label for="ficha_clas">Clã</label> 
-                    <select id="ficha_clas" name="ficha_clas">
-                        <option value="cla1">Clã 1</option>
-                        <option value="cla2">Clã 2</option>
-                    </select>
+                    <label for="ficha_origem">Origem</label>
+                    <select id="ficha_origem" name="ficha_origem">
+                        <option value="inato">Inato</option>
+                        <option value="herdado">Herdado</option>
+                        <option value="derivado">Derivado</option>
+                        <option value="restringido">Restringido</option>
+                        <option value="feto_amaldicoado">Feto Amaldiçoado</option>
+                        <option value="sem_tecnica">Sem Técnica</option>
+                        <option value="corpo_amaldicoado_mutante">Corpo Amaldiçoado Mutante</option>
+                    </select><br><br>
+
+                    <div hidden id="fichaClas">
+                        <label for="ficha_clas">Clã</label> 
+                        <select id="ficha_clas" name="ficha_clas">
+                            <option value="cla1">Clã 1</option>
+                            <option value="cla2">Clã 2</option>
+                        </select>
+                        <br>
+                    </div>
+
+                    <label for="ficha_especializacao">Especialização</label>
+                    <select id="ficha_especializacao" name="ficha_especializacao">
+                        <option value="lutador">Lutador</option>
+                        <option value="especialista_em_combate">Especialista em Combate</option>
+                        <option value="especialista_em_tecnicas">Especialista em Técnicas</option>
+                        <option value="controlador">Controlador</option>
+                        <option value="suporte">Suporte</option>
+                        <option value="restringido">Restringido</option>
+                    </select><br><br>
+
+                    <label for="ficha_tipo_de_mulher">Tipo de Mulher</label>
+                    <input type="text" id="ficha_tipo_de_mulher" name="ficha_tipo_de_mulher"> <br><br>
+
+                    <label for="ficha_exp">Pontos de Experiência</label>
+                    <input type="text" id="ficha_exp" name="ficha_exp"> <br><br>
+                </div>
+
+                <div id="fichaAtributos" class="container">
+                    <div id="fichaAtributosAuto"> <!--script de escrever os atributos-->
+                        <h2><b>Atributos</b></h2>
+                        <p><b>Calculado automaticamente, vá para o fundo da ficha para adicionar os atributos base e os atributos bônus de origem.</b><p>
+                        <p> Força 10 (+0)</p>
+                        <p> Destreza 10 (+0)</p>
+                        <p> Constituição 10 (+0)</p>
+                        <p> inteligência 10 (+0)</p>
+                        <p> Sabedoria 10 (+0)</p>
+                        <p> Carisma 10 (+0)</p>
+
+                    </div>
+                    <!--<button type="button" onclick="SalvarEscreverAtributos()">Escrever atributos na ficha</button>-->
+                    <p id="mensagemAtributosFinais"></p>
+                    <button type="button" onclick="SalvarAtributosFinais()">Salvar Atributos Finais</button>
+                </div>
+
+                <div id="fichaValores">
+                    <div id="fichaValoresAuto"> <!--script de escrever os valores-->
+                        <p><h2><b>Valores</b></h2></p>
+                        <p><b>Calculado automaticamente baseado nos atributos.</b></p>
+                        <p> Pontos de Vida ??/?? </p>
+                        <p> Pontos de Energia Amaldiçoada ??/?? </p>
+                        <p> Bônus de Maestria +2 </p>
+                        <p> Iniciativa ? </p>
+                        <p> Movimento 9 metros </p>
+                        <p> Integridade da Alma 100 </p>
+                        <p> Classe de Armadura ?</p>
+                        <p> Atenção ? </p>
+                    </div>
+                </div>
+
+                <div id="fichaMaestrias">
+                    <div id="fichaMaestriasAuto"> <!--script de escrever as maestrias (de classe)-->
+                        <p><h2><b>Maestrias</b></h2></p>
+                        <p><b>Calculado automaticamente baseado na especialização escolhida.</b></p>
+                        <p> (Perícias) </p>
+                        <p> (Armas, Armaduras e Escudos) </p>
+                        <p> (Kit de Ferramentas)</p>
+                    </div>
+                </div>
+                
+                <div id="fichaPericias">
+                    <div id="fichaPericiasAuto"> <!--script de escrever as pericias-->
+                        <p><h2><b>Pericías</b></h2></p>
+                        <p><b>Primeiro salve seus atributos para a tabela ser criada.</b></p>
+                        <table id="tabelaPericias">
+                            <tr>
+                                <th>Nome</th>
+                                <th>Modificador</th>
+                                <th>Outros</th>
+                                <th>Maestria</th>
+                                <th>Especialização</th>
+                                <th>Total</th>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                
+                <div id="fichaEquipamentos">
+                    <p><h2><b>Equipamentos</b></h2></p>
+                    <table id="tabelaEquipamentos">
+                        <tr>
+                            <th>Nome do Item</th>
+                            <th>Quantidade</th>
+                            <th>Espaço</th>
+                            <th>Custo</th>
+                        </tr>
+                    </table>
+                    <div id="espacosEquipamentos"></div>
+                    <button type="button" onclick="modificarTabelaEquipamentos()">Adicionar mais espaço na tabela</button>
+                    <button type="button" id="botaoApagarEquipamentos">Apagar o espaço mais recente da tabela</button>
+                </div>
+                
+                <div id="fichaHabilidadesBase"> <!--script de escrever habilidades de origem e especialização-->
+                    <div id="fichaHabilidadesOrigem">
+                    </div>
+                    <div id="fichaCaracteristicasAnatomia">
+                    </div>
+                    <div id="fichaEspecializacaoBase">
+                    </div>
+                </div>
+                
+                <div id="fichaHabilidadesEspecializacao">
+                    <p><h2><b>Habilidades de Especialização</b></h2></p>
+                    <button type="button" onclick="escreverHabilidadesEspecializacao()">Adicionar habilidade de especialização</button>
+                    <div id="selectHabilidadesEspecializacao">
+                        <select hidden class="especializacao"></select> <!--forma porca de resolver o array não salvar a primeira habilidade que o usuário seleciona-->
+                    </div>
+                    <div id="descricoesHabilidadesEspecializacao">
+                    </div>
+                    <button onclick="salvarArrayHabilidadesEspecializacao()" type="button">Salvar array</button>
+                </div>
+                
+                <div id="fichaTalentos">
+                    <p><h2><b>Talentos</b></h2></p>
+                    <button type="button" onclick="escreverTalentos()">Adicionar talento</button>
+                    <div id="selectTalentos">
+                        <select hidden class="talento"></select> <!--forma porca de resolver o array não salvar a primeira habilidade que o usuário seleciona-->
+                    </div>
+                    <div id="descricoesTalentos">
+                    </div>
+                    <button onclick="salvarArrayTalentos()" type="button">Salvar array</button>
+                </div>
+
+                <div id="fichaHabilidadesAmaldicoadas">
+                    <p><h2><b>Habilidades Amaldiçaodas</b></h2></p>
+                    <button type="button" onclick="escreverHabilidadesAmaldicoadas()">Adicionar talento</button>
+                    <div id="selectHabilidadesAmaldicoadas">
+                        <select hidden class="habilidade_amaldicoada"></select> <!--forma porca de resolver o array não salvar a primeira habilidade que o usuário seleciona-->
+                    </div>
+                    <div id="descricoesHabilidadesAmaldicoadas">
+                    </div>
+                    <button onclick="salvarArrayHabilidadesAmaldicoadas()" type="button">Salvar array</button>
+                </div>
+
+                <div id="fichaHabilidadesTecnicas">
+                    <p><h2><b>Habilidades de Técnicas</b></h2></p>
+                    <p>Máximo de Habilidades de Técnica: </p>
+                    <p>Habilidade de técnica x</p>
                     <br>
                 </div>
 
-                <label for="ficha_especializacao">Especialização</label>
-                <select id="ficha_especializacao" name="ficha_especializacao">
-                    <option value="lutador">Lutador</option>
-                    <option value="especialista_em_combate">Especialista em Combate</option>
-                    <option value="especialista_em_tecnicas">Especialista em Técnicas</option>
-                    <option value="controlador">Controlador</option>
-                    <option value="suporte">Suporte</option>
-                    <option value="restringido">Restringido</option>
-                </select><br><br>
+                <div id="fichaListaTecnicas">
+                    <p><h2><b>Lista de Técnicas</b></h2></p>
+                    <div id="fichaAdicionarHabilidadesTecnicas"></div>
+                    <button type="button" onclick="adicionarTecnica(), resizeTextarea(), escreverListaTecnicas()">Adicionar Habilidade de Técnica</button>
+                    <button type="button" onclick="salvarTecnicas()">Salvar técnicas</button>
+                    <br><br>
+                </div>
 
-                <label for="ficha_tipo_de_mulher">Tipo de Mulher</label>
-                <input type="text" id="ficha_tipo_de_mulher" name="ficha_tipo_de_mulher"> <br><br>
+                <div id="fichaAtributosBase" class="container">
+                    <p><h2><b>Definir Atributos Base</b></h2></p>
+                    <div class="atributosBase">
+                            <label for="forca">Força</label>
+                            <input type="number" id="forca" min="8" max="15" value="10">
+                            <label for="destreza">Destreza</label>
+                            <input type="number" id="destreza" min="8" max="15" value="10">
+                            <label for="constituicao">Constituição</label>
+                            <input type="number" id="constituicao" min="8" max="15" value="10">
+                            <label for="inteligencia">Inteligência</label>
+                            <input type="number" id="inteligencia" min="8" max="15" value="10">
+                            <label for="sabedoria">Sabedoria</label>
+                            <input type="number" id="sabedoria" min="8" max="15" value="10">
+                            <label for="carisma">Carisma</label>
+                            <input type="number" id="carisma" min="8" max="15" value="10">
+                    </div>
+                <button type="button" onclick="validarAtributosBase()">Validar Atributos Base</button>
+                <p id="message"></p>
+                <button type="button" onclick="salvarAtributosBase()">Salvar Atributos Base</button>
+                <p id="mensagemSalvar"></p>
+                <div id="ficha_atributos_bonus" class="container">
+                    
+                <p><h2><b>Escolher Bônus de Atributos</b></h2></p>
+                <label for="ficha_atributos_bonus">Atributos Bônus de Origem</label><br><br> 
+                <div class="ficha_atributos_bonus_origem">
+                        <label for="forca">Força</label>
+                        <input type="number" id="forca_bonus" min="0" max="3" value="0">
+                        <label for="destreza">Destreza</label>
+                        <input type="number" id="destreza_bonus" min="0" max="3" value="0">
+                        <label for="constituicao">Constituição</label>
+                        <input type="number" id="constituicao_bonus" min="0" max="3" value="0">
+                        <label for="inteligencia">Inteligência</label>
+                        <input type="number" id="inteligencia_bonus" min="0" max="3" value="0">
+                        <label for="sabedoria">Sabedoria</label>
+                        <input type="number" id="sabedoria_bonus" min="0" max="3" value="0">
+                        <label for="carisma">Carisma</label>
+                        <input type="number" id="carisma_bonus" min="0" max="3" value="0">
+                </div>
+                <button type="button" onclick="definirAtributosBonusOrigem()">Definir bônus de atributos da origem</button>
+                <p id="mensagemAtributoBonusOrigem"></p>
+                </div>
 
-                <label for="ficha_exp">Pontos de Experiência</label>
-                <input type="text" id="ficha_exp" name="ficha_exp"> <br><br>
-            </div>
+                <div hidden id="fichaFetoAmaldicoado">
+                    <p><h2><b>Características de Anatomia</b></h2></p>
+                    <button type="button" onclick="escreverAnatomia()">Adicionar característica de anatomia</button>
+                    <div id="selectCaracteristicasAnatomia">
+                        <select hidden class="anatomia"></select> 
+                    </div>
+                    <button onclick="salvarArrayAnatomia()" type="button">Salvar array</button>
+                </div>
+            </form>
 
-            <div id="fichaAtributos" class="container">
-                <div id="fichaAtributosAuto"> <!--script de escrever os atributos-->
-                    <h2><b>Atributos</b></h2>
-                    <p><b>Calculado automaticamente, vá para o fundo da ficha para adicionar os atributos base e os atributos bônus de origem.</b><p>
-                    <p> Força 10 (+0)</p>
-                    <p> Destreza 10 (+0)</p>
-                    <p> Constituição 10 (+0)</p>
-                    <p> inteligencia 10 (+0)</p>
-                    <p> Sabedoria 10 (+0)</p>
-                    <p> Carisma 10 (+0)</p>
+            <p>Hosteado com o GitHub.</p>
+            <p>Comecei a fazer esse site por volta do dia 7 de fevereiro e terminei ele em x de março.</p>
 
-                </div>
-                <!--<button type="button" onclick="SalvarEscreverAtributos()">Escrever atributos na ficha</button>-->
-                <p id="mensagemAtributosFinais"></p>
-                <button type="button" onclick="SalvarAtributosFinais()">Salvar Atributos Finais</button>
-            </div>
+            <p id="dado6"></p>
+            <button id="button_dado6" type="button">Roll Dice</button><br><br><br><br>
 
-            <div id="fichaValores">
-                <div id="fichaValoresAuto"> <!--script de escrever os valores-->
-                    <p><h2><b>Valores</b></h2></p>
-                    <p><b>Calculado automaticamente baseado nos atributos.</b></p>
-                    <p> Pontos de Vida ??/?? </p>
-                    <p> Pontos de Energia Amaldiçoada ??/?? </p>
-                    <p> Bônus de Maestria +2 </p>
-                    <p> Iniciativa ? </p>
-                    <p> Movimento 9 metros </p>
-                    <p> Integridade da Alma 100 </p>
-                    <p> Classe de Armadura ?</p>
-                    <p> Atenção ? </p>
-                </div>
-            </div>
+            <button type="button" onclick="salvar()">Salvar Informações</button>
 
-            <div id="fichaMaestrias">
-                <div id="fichaMaestriasAuto"> <!--script de escrever as maestrias (de classe)-->
-                    <p><h2><b>Maestrias</b></h2></p>
-                    <p><b>Calculado automaticamente baseado na especialização escolhida.</b></p>
-                    <p> (Perícias) </p>
-                    <p> (Armas, Armaduras e Escudos) </p>
-                    <p> (Kit de Ferramentas)</p>
-                </div>
-            </div>
-            
-            <div id="fichaPericias">
-                <div id="fichaPericiasAuto"> <!--script de escrever as pericias-->
-                    <p><h2><b>Pericías</b></h2></p>
-                    <p><b>Primeiro salve seus atributos para a tabela ser criada.</b></p>
-                    <table id="tabelaPericias">
-                        <tr>
-                            <th>Nome</th>
-                            <th>Modificador</th>
-                            <th>Outros</th>
-                            <th>Maestria</th>
-                            <th>Especialização</th>
-                            <th>Total</th>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-            
-            <div id="fichaEquipamentos">
-                <p><h2><b>Equipamentos</b></h2></p>
-                <table id="tabelaEquipamentos">
-                    <tr>
-                        <th>Nome do Item</th>
-                        <th>Quantidade</th>
-                        <th>Espaço</th>
-                        <th>Custo</th>
-                    </tr>
-                </table>
-                <button type="button" onclick="modificarTabelaEquipamentos()">Adicionar mais espaço na tabela</button>
-                <button type="button" id="botaoApagarEquipamentos">Apagar o espaço mais recente da tabela</button>
-            </div>
-            
-            <div id="fichaHabilidadesBase"> <!--script de escrever habilidades de origem e especialização-->
-                <div id="fichaHabilidadesOrigem">
-                </div>
-                <div id="fichaCaracteristicasAnatomia">
-                </div>
-                <div id="fichaEspecializacaoBase">
-                </div>
-            </div>
-            
-            <div id="fichaHabilidadesEspecializacao">
-                <p><h2><b>Habilidades de Especialização</b></h2></p>
-                <button type="button" onclick="escreverHabilidadesEspecializacao()">Adicionar habilidade de especialização</button>
-                <div id="selectHabilidadesEspecializacao">
-                    <select hidden class="especializacao"></select> <!--forma porca de resolver o array não salvar a primeira habilidade que o usuário seleciona-->
-                </div>
-                <div id="descricoesHabilidadesEspecializacao">
-                </div>
-                <button onclick="salvarArrayHabilidadesEspecializacao()" type="button">Salvar array</button>
-            </div>
-            
-            <div id="fichaTalentos">
-                <p><h2><b>Talentos</b></h2></p>
-                <button type="button" onclick="escreverTalentos()">Adicionar talento</button>
-                <div id="selectTalentos">
-                    <select hidden class="talento"></select> <!--forma porca de resolver o array não salvar a primeira habilidade que o usuário seleciona-->
-                </div>
-                <div id="descricoesTalentos">
-                </div>
-                <button onclick="salvarArrayTalentos()" type="button">Salvar array</button>
-            </div>
+            <h2>Informações Salvas:</h2>
+            <textarea id="infoSalva"name="textoResponsivo" rows="5" cols="50"></textarea><br><br>
+        
+            <h2>Carregar Informações:</h2>
+            <textarea id="infoCarregada" name="textoResponsivo" rows="5" cols="50"></textarea><br><br>
+            <button type="button" onclick="carregar()">Carregar Informações</button><br><br>
+        
+            <h2>Fazer Download do Arquivo JSON:</h2>
+            <button type="button" onclick="baixar()">Download JSON</button>
+        </div>
 
-            <div id="fichaHabilidadesAmaldicoadas">
-                <p><h2><b>Habilidades Amaldiçaodas</b></h2></p>
-                <button type="button" onclick="escreverHabilidadesAmaldicoadas()">Adicionar talento</button>
-                <div id="selectHabilidadesAmaldicoadas">
-                    <select hidden class="habilidade_amaldicoada"></select> <!--forma porca de resolver o array não salvar a primeira habilidade que o usuário seleciona-->
-                </div>
-                <div id="descricoesHabilidadesAmaldicoadas">
-                </div>
-                <button onclick="salvarArrayHabilidadesAmaldicoadas()" type="button">Salvar array</button>
-            </div>
-
-
-            <div id="fichaHabilidadesTecnicas">
-                <p><h2><b>Habilidades de Técnicas</b></h2></p>
-                <p>Máximo de Habilidades de Técnica: </p>
-                <p>Habilidade de técnica x</p>
-                <br>
-            </div>
-
+        <div id="abaRosto" class="tab-content">
             <div id="fichaRosto">
                 <div id="fichaAparencia">
                     <p><h2><b>Aparência</b></h2></p>
@@ -199,73 +287,17 @@
                     <textarea id="fichaDescricaoTecnicaInata" name="textoResponsivo" placeholder="Descreva sua técnica inata e como ela funciona"></textarea>
                 </div>
             </div>
+        </div>
 
-            <div id="fichaListaTecnicas">
-                <p><h2><b>Lista de Técnicas</b></h2></p>
-                <div id="fichaAdicionarHabilidadesTecnicas"></div>
-                <button type="button" onclick="adicionarTecnica(), resizeTextarea(), escreverListaTecnicas()">Adicionar Habilidade de Técnica</button>
-                <br><br>
-            </div>
+        <div id="abaInvocacoes" class="tab-content">
+            <h2>Conteúdo da Tab 2</h2>
+            <p>Este é o conteúdo da segunda aba.</p>
+        </div>
 
-            <div id="fichaAtributosBase" class="container">
-                <p><h2><b>Definir Atributos Base</b></h2></p>
-                <div class="atributosBase">
-                        <label for="forca">Força</label>
-                        <input type="number" id="forca" min="8" max="15" value="15">
-                        <label for="destreza">Destreza</label>
-                        <input type="number" id="destreza" min="8" max="15" value="14">
-                        <label for="constituicao">Constituição</label>
-                        <input type="number" id="constituicao" min="8" max="15" value="13">
-                        <label for="inteligencia">Inteligência</label>
-                        <input type="number" id="inteligencia" min="8" max="15" value="12">
-                        <label for="sabedoria">Sabedoria</label>
-                        <input type="number" id="sabedoria" min="8" max="15" value="10">
-                        <label for="carisma">Carisma</label>
-                        <input type="number" id="carisma" min="8" max="15" value="8">
-                </div>
-            <button type="button" onclick="validarAtributosBase()">Validar Atributos Base</button>
-            <p id="message"></p>
-            <button type="button" onclick="salvarAtributosBase()">Salvar Atributos Base</button>
-            <p id="mensagemSalvar"></p>
-            <div id="ficha_atributos_bonus" class="container">
-                
-            <p><h2><b>Escolher Bônus de Atributos</b></h2></p>
-            <label for="ficha_atributos_bonus">Atributos Bônus de Origem</label><br><br> 
-            <div class="ficha_atributos_bonus_origem">
-                    <label for="forca">Força</label>
-                    <input type="number" id="forca_bonus" min="0" max="3" value="0">
-                    <label for="destreza">Destreza</label>
-                    <input type="number" id="destreza_bonus" min="0" max="3" value="0">
-                    <label for="constituicao">Constituição</label>
-                    <input type="number" id="constituicao_bonus" min="0" max="3" value="0">
-                    <label for="inteligencia">Inteligência</label>
-                    <input type="number" id="inteligencia_bonus" min="0" max="3" value="0">
-                    <label for="sabedoria">Sabedoria</label>
-                    <input type="number" id="sabedoria_bonus" min="0" max="3" value="0">
-                    <label for="carisma">Carisma</label>
-                    <input type="number" id="carisma_bonus" min="0" max="3" value="0">
-            </div>
-            <button type="button" onclick="definirAtributosBonusOrigem()">Definir bônus de atributos da origem</button>
-            <p id="mensagemAtributoBonusOrigem"></p>
-            </div>
-
-            <div hidden id="fichaFetoAmaldicoado">
-                <p><h2><b>Características de Anatomia</b></h2></p>
-                <button type="button" onclick="escreverAnatomia()">Adicionar característica de anatomia</button>
-                <div id="selectCaracteristicasAnatomia">
-                    <select hidden class="anatomia"></select> 
-                </div>
-                <button onclick="salvarArrayAnatomia()" type="button">Salvar array</button>
-            </div>
-        </form>
-
-        <p>Hosteado com o GitHub.</p>
-        <p>Comecei a fazer esse site por volta do dia 7 de fevereiro e terminei ele em x de março.</p>
-
-        <p id="placeholder">
-  
-        </p>
-        <button id="button" type="button">Roll Dice</button>
+        <div id="tab3" class="tab-content">
+            <h2>Conteúdo da Tab 3</h2>
+            <p>Este é o conteúdo da terceira aba.</p>
+        </div>
 
         <script src="objetos.js"></script>
         <script src="script.js"></script>

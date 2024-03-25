@@ -1,9 +1,16 @@
+.tab-content {
+    display: none;
+}
+.tab-content.active {
+    display: block;
+}
+
 body {
     font-family: Arial, sans-serif;
     color: white;
     background-color: #251f1f;
     padding: 20px;
-  }
+}
 
 
 label {
@@ -47,7 +54,11 @@ textarea {
     align-items: center; /* Alinha os itens verticalmente ao centro */
 }
 
-#placeholder {
+input[type='number']{ /* altera a largura dos input number */
+    width: 50px;
+} 
+
+#dado6 {
     height: 100px;
     width: 100px;
     padding: 50px;
@@ -56,6 +67,12 @@ textarea {
     border-radius: 10px;  
     font-size: 80px;
     text-align: center; /* Adicionando o alinhamento central */
+}
+
+input::-webkit-outer-spin-button, /* esconde as setas de (aumentar ou diminuir) input number */
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 /* (tava no codigo beta alpha 0.0001, mas provavelmente n vou usar)
