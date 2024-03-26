@@ -1,20 +1,12 @@
-// TROCAR DE ABA
-  // Função para abrir a aba desejada e ocultar as outras
-  function openTab(tabName) {
+// TROCAR ABAS
+function openTab(tabName) {
     var i, tabContent;
-    // Esconder todos os conteúdos da aba
     tabContent = document.getElementsByClassName("tab-content");
     for (i = 0; i < tabContent.length; i++) {
       tabContent[i].classList.remove("active");
     }
-    // Mostrar apenas o conteúdo da aba selecionada
     document.getElementById(tabName).classList.add("active");
   }
-
-  // Por padrão, abrir a primeira aba ao carregar a página
-  window.onload = function() {
-    openTab('abaPersonagem');
-  };
 
 // REAJUSTAR O TAMANHO DE TEXTOS PARA A DESCRIÇÃO DO PERSONAGEM
 function resizeTextarea() {
@@ -627,7 +619,7 @@ function adicionarTecnica() {
     textareaCount++; // incrementa um valor, que irá servir como a index base dos ids
     const container = document.getElementById('fichaAdicionarHabilidadesTecnicas'); // pega aonde tá 
 
-    const HabilidadesTecnicasDiv = document.createElement('div'); //
+    const HabilidadesTecnicasDiv = document.createElement('div'); 
     HabilidadesTecnicasDiv.classList.add('fichaAdicionarHabilidadesTecnicas');
 
     const nomeTecnicaInput = document.createElement('input');
@@ -681,74 +673,104 @@ function escreverListaTecnicas() {
 function salvarTecnicas() { 
 }
 
-let countEquipamentos = 0;
-
 // ESCREVER A TABELA BASE DE EQUIPAMENTOS
-function gerarTabelaEquipamentos() { // se o usuário salvar os atributos finais novamente, cria outra tabela em vez de sobrepor a antiga
+
+let countEquipamentos = 0;
+let inputIds = [];
+
+function gerarTabelaEquipamentos() { // gerada somente uma vez
     const tabela = document.getElementById('tabelaEquipamentos');
 
-    while (tabela.rows.length > 0) { // limpa a tabela para não ser escrita novamente caso o usuário atualize os dados
-        tabela.deleteRow(0); 
+    while (tabela.rows.length > 0) {
+        tabela.deleteRow(0);
     }
 
-    const cabecalho = tabela.createTHead(); // cria o cabecalho
-    const cabecalhoRow = cabecalho.insertRow(); // cria as linhas do cabecalho
-    cabecalhoRow.insertCell(0).textContent = "Nome do Item"; // insere a coluna de nome
-    cabecalhoRow.insertCell(1).textContent = "Quantidade"; // e etc
+    const cabecalho = tabela.createTHead();
+    const cabecalhoRow = cabecalho.insertRow();
+    cabecalhoRow.insertCell(0).textContent = "Nome do Item";
+    cabecalhoRow.insertCell(1).textContent = "Quantidade";
     cabecalhoRow.insertCell(2).textContent = "Espaços";
     cabecalhoRow.insertCell(3).textContent = "Custo";
+}
 
-    for (i = 0; i < 10; i++) {
-        const row = tabela.insertRow(); // insere uma linha na tabela
-        const nomeCell = row.insertCell(0); // na linha da tabela 0, definie como nomeCell
-        const quantidadeCell = row.insertCell(1); // mesma logica
-        const espacosCell = row.insertCell(2);
-        const custoCell = row.insertCell(3);
-
-        nomeCell.textContent = "‎ ";
-        quantidadeCell.textContent = "‎ ";
-        espacosCell.textContent = "‎ ";
-        custoCell.textContent = "‎ ";
-    };
-
-};
-
-gerarTabelaEquipamentos();
-
-// ADICIONAR OU REMOVER ESPAÇOS NA TABELA DE EQUIPAMENTOS
-function modificarTabelaEquipamentos() { 
+// MODIFICAR A TABELA
+function modificarTabelaEquipamentos() {
     const tabela = document.getElementById('tabelaEquipamentos');
-    countEquipamentos++; // incremento pra cada linha de equipamentos, adicionar depois id pra cada valor (pra salvar no final do projeto)
 
     const row = tabela.insertRow();
-    const nomeCell = row.insertCell(0); // na linha da tabela 0, definie como nomeCell
-    const quantidadeCell = row.insertCell(1); // mesma logica
+    const nomeCell = row.insertCell(0);
+    const quantidadeCell = row.insertCell(1);
     const espacosCell = row.insertCell(2);
     const custoCell = row.insertCell(3);
 
-    // inputs pra cada tipo de célula
+    countEquipamentos++;
+
+    var rowIndex = tabela.rows.length - 1;
+    var nomeInputId = 'equipament_nome_id_' + countEquipamentos;
+    var quantidadeInputId = 'equipament_quantidade_id_' + countEquipamentos;
+    var espacosInputId = 'equipament_espacos_id_' + countEquipamentos;
+    var custoInputId = 'equipament_custo_id_' + countEquipamentos;
+
+    inputIds.push({
+        nomeInputId: nomeInputId,
+        quantidadeInputId: quantidadeInputId,
+        espacosInputId: espacosInputId,
+        custoInputId: custoInputId
+    });
+
     var nomeInput = document.createElement('input');
+    var quantidadeInput = document.createElement('input');
+    var espacosInput = document.createElement('input');
+    var custoInput = document.createElement('input');
+
+    nomeInput.id = nomeInputId;
     nomeInput.type = 'text';
 
-    var quantidadeInput = document.createElement('input');
-    quantidadeInput.type = 'number'; 
+    quantidadeInput.id = quantidadeInputId;
+    quantidadeInput.type = 'number';
 
-    var espacosInput = document.createElement('input');
-    espacosInput.type = 'number'; 
+    espacosInput.id = espacosInputId;
+    espacosInput.type = 'number';
 
-    var custoInput = document.createElement('input');
-    custoInput.type = 'number'; 
+    custoInput.id = custoInputId;
+    custoInput.type = 'number';
 
-    // adicionar o input à célula da tabela
     nomeCell.appendChild(nomeInput);
     quantidadeCell.appendChild(quantidadeInput);
     espacosCell.appendChild(espacosInput);
     custoCell.appendChild(custoInput);
 
-    const deleteButton = document.getElementById('botaoApagarEquipamentos');
-    deleteButton.onclick = function() {
-        tabela.deleteRow(row.rowIndex); // Remove a linha atual
-    }; 
+    // Adicionando o botão de exclusão
+    if (countEquipamentos > 15) {
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = 'Excluir';
+        deleteButton.onclick = function() {
+            const rowIndex = row.rowIndex;
+            
+            tabela.deleteRow(rowIndex);
+    
+            // Removendo o objeto correspondente do array de IDs
+            inputIds.splice(rowIndex - 1, 1);
+    
+            // Atualizando os IDs restantes
+            for (let i = rowIndex - 1; i < inputIds.length; i++) {
+                inputIds[i].nomeInputId = 'equipament_nome_id_' + (i + 1);
+                inputIds[i].quantidadeInputId = 'equipament_quantidade_id_' + (i + 1);
+                inputIds[i].espacosInputId = 'equipament_espacos_id_' + (i + 1);
+                inputIds[i].custoInputId = 'equipament_custo_id_' + (i + 1);
+    
+                document.getElementById('equipament_nome_id_' + (i + 1)).id = inputIds[i].nomeInputId;
+                document.getElementById('equipament_quantidade_id_' + (i + 1)).id = inputIds[i].quantidadeInputId;
+                document.getElementById('equipament_espacos_id_' + (i + 1)).id = inputIds[i].espacosInputId;
+                document.getElementById('equipament_custo_id_' + (i + 1)).id = inputIds[i].custoInputId;
+            }
+        };
+        row.appendChild(deleteButton);
+    }
+}
+
+for (let i = 0; i < 15; i++) {
+    modificarTabelaEquipamentos();
 }
 
 // SALVAR HABILIDADES DE ESPECIALIZAÇÃO (ESCOLHA)

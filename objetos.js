@@ -39,6 +39,9 @@ let arrayPericias = [];
 let arrayMaestriasPericias = [];
 let arrayEspecializacoesPericias = [];
 
+let arrayEquipamentosID = [];
+let arrayTalentosID = [];
+
 let Valores = {
     "Pontos de Vida Atual": 0,
     "Pontos de Energia Amaldiçoada Atual": 0,

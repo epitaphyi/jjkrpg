@@ -9,12 +9,40 @@
     </head>
     <body>
         <div class="tabs">
-            <button type="button" class="tab-btn" onclick="openTab('abaPersonagem')">Personagem </button>
-            <button type="button" class="tab-btn" onclick="openTab('abaRosto')">Rosto</button>
-            <button type="button" class="tab-btn" onclick="openTab('abaInvocacoes')">Invocações</button>
-            <button type="button" class="tab-btn" onclick="openTab('tab3')">tab 3</button>
+            <button class="tab-btn" onclick="openTab('abaPersonagem')">Personagem</button>
+            <button class="tab-btn" onclick="openTab('abaRosto')">Rosto</button>
+            <button class="tab-btn" onclick="openTab('abaInvocacoes')">Invocações</button>
+          </div>
+        
+        <div id="abaRosto" class="tab-content">
+            <div id="fichaRosto">
+                <div id="fichaAparencia">
+                    <p><h2><b>Aparência</b></h2></p>
+                    <textarea id="fichaDescricaoAparencia" name="textoResponsivo" placeholder="Descreva sua aparência"></textarea>
+                </div>
 
+                <div id="fichaTracosPersonalidade">
+                    <p><h2><b>Traços de Personalidade</b></h2></p>
+                    <textarea id="fichaDescricaoTracosPersonalidade" name="textoResponsivo" placeholder="Descreva como é sua personalidade"></textarea>
+                </div>
+                
+                <div id="fichaHistorico">
+                    <p><h2><b>Histórico do Personagem</b></h2></p>
+                    <textarea id="fichaDescricaoHistorico" name="textoResponsivo" placeholder="Descreva sua história"></textarea>
+                </div>
+                
+                <div id="fichaTecnicaInata">
+                    <p><h2><b>Técnica Inata</b></h2></p>
+                    <textarea id="fichaDescricaoTecnicaInata" name="textoResponsivo" placeholder="Descreva sua técnica inata e como ela funciona"></textarea>
+                </div>
+            </div>
         </div>
+        
+        <div id="abaInvocacoes" class="tab-content">
+            <h2>Conteúdo da Tab 3</h2>
+            <p>Este é o conteúdo da terceira aba.</p>
+        </div>
+        
         <div id="abaPersonagem" class="tab-content active">
             <form id="formFicha">
                 <div id="fichaBasico">
@@ -124,6 +152,7 @@
                 
                 <div id="fichaEquipamentos">
                     <p><h2><b>Equipamentos</b></h2></p>
+                    <div id="espacosEquipamentos"></div><br>
                     <table id="tabelaEquipamentos">
                         <tr>
                             <th>Nome do Item</th>
@@ -131,10 +160,8 @@
                             <th>Espaço</th>
                             <th>Custo</th>
                         </tr>
-                    </table>
-                    <div id="espacosEquipamentos"></div>
+                    </table><br>
                     <button type="button" onclick="modificarTabelaEquipamentos()">Adicionar mais espaço na tabela</button>
-                    <button type="button" id="botaoApagarEquipamentos">Apagar o espaço mais recente da tabela</button>
                 </div>
                 
                 <div id="fichaHabilidadesBase"> <!--script de escrever habilidades de origem e especialização-->
@@ -194,7 +221,7 @@
                     <br><br>
                 </div>
 
-                <div id="fichaAtributosBase" class="container">
+                <div id="fichaAtributosBase" class="container"> <!--problema aqui nos tab-->
                     <p><h2><b>Definir Atributos Base</b></h2></p>
                     <div class="atributosBase">
                             <label for="forca">Força</label>
@@ -210,6 +237,7 @@
                             <label for="carisma">Carisma</label>
                             <input type="number" id="carisma" min="8" max="15" value="10">
                     </div>
+
                 <button type="button" onclick="validarAtributosBase()">Validar Atributos Base</button>
                 <p id="message"></p>
                 <button type="button" onclick="salvarAtributosBase()">Salvar Atributos Base</button>
@@ -263,40 +291,6 @@
         
             <h2>Fazer Download do Arquivo JSON:</h2>
             <button type="button" onclick="baixar()">Download JSON</button>
-        </div>
-
-        <div id="abaRosto" class="tab-content">
-            <div id="fichaRosto">
-                <div id="fichaAparencia">
-                    <p><h2><b>Aparência</b></h2></p>
-                    <textarea id="fichaDescricaoAparencia" name="textoResponsivo" placeholder="Descreva sua aparência"></textarea>
-                </div>
-
-                <div id="fichaTracosPersonalidade">
-                    <p><h2><b>Traços de Personalidade</b></h2></p>
-                    <textarea id="fichaDescricaoTracosPersonalidade" name="textoResponsivo" placeholder="Descreva como é sua personalidade"></textarea>
-                </div>
-                
-                <div id="fichaHistorico">
-                    <p><h2><b>Histórico do Personagem</b></h2></p>
-                    <textarea id="fichaDescricaoHistorico" name="textoResponsivo" placeholder="Descreva sua história"></textarea>
-                </div>
-                
-                <div id="fichaTecnicaInata">
-                    <p><h2><b>Técnica Inata</b></h2></p>
-                    <textarea id="fichaDescricaoTecnicaInata" name="textoResponsivo" placeholder="Descreva sua técnica inata e como ela funciona"></textarea>
-                </div>
-            </div>
-        </div>
-
-        <div id="abaInvocacoes" class="tab-content">
-            <h2>Conteúdo da Tab 2</h2>
-            <p>Este é o conteúdo da segunda aba.</p>
-        </div>
-
-        <div id="tab3" class="tab-content">
-            <h2>Conteúdo da Tab 3</h2>
-            <p>Este é o conteúdo da terceira aba.</p>
         </div>
 
         <script src="objetos.js"></script>
