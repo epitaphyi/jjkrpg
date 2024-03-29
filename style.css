@@ -38,6 +38,7 @@ button:hover {
 
 table, th, td {
     border: 1px solid white;
+    align-items: center;
 }
 
 textarea {
@@ -46,7 +47,25 @@ textarea {
     min-height: 50px; /* Altura inicial do textarea */
     resize: none; /* Impede o redimensionamento manual */
     overflow-y: scroll; /* Adiciona barra de rolagem vertical se necessário */
-  }  
+    background: #251f1f;
+    color: white;
+}
+
+input {
+    background: #251f1f;
+    color: white;
+}
+
+select {
+    background: #251f1f;
+    color: white;
+}
+
+button {
+    background: #fffff0;
+    color: black;
+}
+
 
 .input-wrapper {
     display: flex; /* Define um layout flexível */
@@ -56,6 +75,13 @@ textarea {
 input[type='number']{ /* altera a largura dos input number */
     width: 50px;
 } 
+
+.clean-border { /* input dos equipamentos */
+    border: none;
+    background: #251f1f;
+    color: white;
+    text-align: center;
+}
 
 #dado6 {
     height: 100px;
@@ -72,6 +98,11 @@ input::-webkit-outer-spin-button, /* esconde as setas de (aumentar ou diminuir) 
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+
+.scroll {
+    height: 1000px;
+    background-color: lightgreen;
 }
 
 /* (tava no codigo beta alpha 0.0001, mas provavelmente n vou usar)

@@ -21,6 +21,15 @@ document.getElementsByName("textoResponsivo").forEach(function(textarea) {
     textarea.addEventListener("input", resizeTextarea);
 });
 
+// SCROLLAR PARA CIMA E BAIXO
+function scrollToTop() {
+    window.scrollTo(0, 0);
+}
+
+function scrollToBottom() {
+    window.scrollTo(10000, 10000);
+}
+
 // VALIDAR ATRIBUTOS BASE
 const attributeValues = [15, 14, 13, 12, 10, 8]; // atributos base
 
@@ -311,14 +320,42 @@ function SalvarAtributosFinais() {
                 break;
         };
 
-        PVatual = Valores["Pontos de Vida Atual"];
-        PEatual = Valores["Pontos de Energia Amaldiçoada Atual"]; 
+        let PVatual = Valores["Pontos de Vida Atual"];
+        let PEatual = Valores["Pontos de Energia Amaldiçoada Atual"]; 
+        let percentualPV = Math.floor(PVatual) * 100 / Math.floor(Valores['Pontos de Vida']);
+        let percentualPE = Math.floor(PEatual) * 100 / Math.floor(Valores['Pontos de Energia Amaldiçoada']);
 
         alterarPV = function() { // função para modificar pv
             PVmodificado = parseInt(document.getElementById("modificarPV").value);
+            percentualPV = Math.floor(PVatual) * 100 / Math.floor(Valores['Pontos de Vida']);
             PVatual += PVmodificado; 
-            document.getElementById("pontosVidaAtual").innerText = Math.floor(PVatual);
+            if (percentualPV > 100) {
+                document.getElementById("pontosVidaAtual").innerHTML = `<span style="color:darkorchid"id="pontosVidaAtual">${Math.floor(PVatual)}</span>`;
+            } else if ((percentualPV == 100 && percentualPV > 75)) {
+                document.getElementById("pontosVidaAtual").innerHTML = `<span style="color:chartreuse"id="pontosVidaAtual">${Math.floor(PVatual)}</span>`;
+            }
         }
+
+        /* problemas: tá mostrando a cor errada, testei no nivel 20 e simplesmente não tava aparecendo o valor atual nos Valores do html embora o console.log mostrasse corretamente
+        alterarPV = function() { // função para modificar pv
+            PVmodificado = parseInt(document.getElementById("modificarPV").value);
+            percentualPV = Math.floor(PVatual) * 100 / Math.floor(Valores['Pontos de Vida']);
+            console.log(PVatual);
+            console.log(percentualPV);
+            PVatual += PVmodificado; 
+            if (Math.floor(percentualPV) > 100) {
+                document.getElementById("pontosVidaAtual").innerHTML = `<span style="color:darkorchid"id="pontosVidaAtual">${Math.floor(PVatual)}</span>`;
+            } else if (Math.floor(percentualPV) == 100 && percentualPV > 75) {
+                document.getElementById("pontosVidaAtual").innerHTML = `<span style="color:chartreuse"id="pontosVidaAtual">${Math.floor(PVatual)}</span>`;
+            } else if (Math.floor(percentualPV) == 75 && percentualPV > 50) {
+                document.getElementById("pontosVidaAtual").innerHTML = `<span style="color:lightgreen"id="pontosVidaAtual">${Math.floor(PVatual)}</span>`;
+            } else if (Math.floor(percentualPV) == 50 && percentualPV > 25) {
+                document.getElementById("pontosVidaAtual").innerHTML = `<span style="color:khaki"id="pontosVidaAtual">${Math.floor(PVatual)}</span>`;
+            } else if (Math.floor(percentualPV) == 25 && percentualPV > 0) {
+                document.getElementById("pontosVidaAtual").innerHTML = `<span style="color:lightcoral"id="pontosVidaAtual">${Math.floor(PVatual)}</span>`;
+            } 
+        }
+        */
 
         alterarPE = function() { // função para modificar pe
             PEmodificado = parseInt(document.getElementById("modificarPE").value);
@@ -327,32 +364,34 @@ function SalvarAtributosFinais() {
         }
 
         reiniciarPV = function() { // função para reiniciar pv
-            modificado = parseInt(document.getElementById("modificarPV").value);
+            PVatual = Valores["Pontos de Vida Atual"];
+            PVmodificado = parseInt(document.getElementById("modificarPV").value);
             document.getElementById("pontosVidaAtual").innerText = Math.floor(Valores["Pontos de Vida"]);
         }
 
         reiniciarPE = function() { // função para reiniciar pe
+            PEatual = Valores["Pontos de Energia Amaldiçoada Atual"]; 
             PEmodificado = parseInt(document.getElementById("modificarPE").value);
             document.getElementById("pontosEnergiaAtual").innerText = Math.floor(Valores["Pontos de Energia Amaldiçoada"]);
         }
-        
+
         // ESCREVER OS VALORES
         let valoresFichaHTML = "<h2>Valores</h2>";
         for (let chave in Valores) { // as chaves são as propriedades (no caso o nome dos atributos), então o atributosFinais[chave] mostra o valor da chave em questão
             if (chave === "Pontos de Vida Atual" || chave === "Pontos de Energia Amaldiçoada Atual" || chave === "Especialização em Perícias") {
                 continue; // Ignora essas chaves e continua para a próxima iteração do loop
             }
-            switch (chave) {
-                case "Pontos de Vida": // dps pensar em pv temporarios
-                    valoresFichaHTML += `<p>${chave} <span id="pontosVidaAtual">${Math.floor(PVatual)}</span>`;
-                    valoresFichaHTML += `/${Math.floor(Valores[chave])}</p>`;
+            switch (chave) { // roxo > 100
+                case "Pontos de Vida": // verde escuro = 100 > 75 // verde claro = 75 > 50 // amarelo = 50 > 25 > // vermelho = 25 > 0 //  
+                    valoresFichaHTML += `<p>${chave} <span style="color:green"id="pontosVidaAtual">${Math.floor(PVatual)}</span>`;
+                    valoresFichaHTML += `<span style="color:green">/${Math.floor(Valores[chave])}</span></p>`;
                     valoresFichaHTML += `<input type="number" id="modificarPV" value="0"></input>`;
                     valoresFichaHTML += `<button type="button" onclick="alterarPV()">Modificar PV</button>`;
                     valoresFichaHTML += `<button type="button" onclick="reiniciarPV()">Reiniciar PV</button>`
                     break;
                 case "Pontos de Energia Amaldiçoada": // dps pensar em pe temporarios
-                    valoresFichaHTML += `<p>${chave} <span id="pontosEnergiaAtual">${Math.floor(PEatual)}</span>`;
-                    valoresFichaHTML += `/${Math.floor(Valores[chave])}</p>`;
+                    valoresFichaHTML += `<p>${chave} <span style="color:lightgreen" id="pontosEnergiaAtual">${Math.floor(PEatual)}</span>`;
+                    valoresFichaHTML += `<span style="color:lightgreen">/${Math.floor(Valores[chave])}</span></p>`;
                     valoresFichaHTML += `<input type="number" id="modificarPE" value="0" size="10"></input>`;
                     valoresFichaHTML += `<button type="button" onclick="alterarPE()">Modificar PE</button>`;
                     valoresFichaHTML += `<button type="button" onclick="reiniciarPE()">Reiniciar PE</button>`
@@ -377,9 +416,7 @@ function SalvarAtributosFinais() {
         
     };
 
-    // Dados
-    function functionArrayPericias() {
-        arrayPericias = [ // array das pericias com modificadores, outros bonus, bonus de maestria e especialização
+    arrayPericias = [ // array das pericias com modificadores, outros bonus, bonus de maestria e especialização
             { nome: "Atletismo", modificador:Math.floor((atributosFinais['Força'] - 10) / 2), atributo: "Força", outros: 0, maestria: false, especializacao: false },
             { nome: "Luta", modificador:Math.floor((atributosFinais['Força'] - 10) / 2), atributo: "Força", outros: 0, maestria: false, especializacao: false },
             { nome: "Pontaria", modificador:Math.floor((atributosFinais['Força'] - 10) / 2), atributo: "Força", outros: 0, maestria: false, especializacao: false },
@@ -409,9 +446,7 @@ function SalvarAtributosFinais() {
             { nome: "Enganação", modificador:Math.floor((atributosFinais['Carisma'] - 10) / 2), atributo: "Carisma", outros: 0, maestria: false, especializacao: false },
             { nome: "Intimidação", modificador:Math.floor((atributosFinais['Carisma'] - 10) / 2), atributo: "Carisma", outros: 0, maestria: false, especializacao: false },
             { nome: "Performance", modificador:Math.floor((atributosFinais['Carisma'] - 10) / 2), atributo: "Carisma", outros: 0, maestria: false, especializacao: false },
-            { nome: "Vontade", modificador:Math.floor((atributosFinais['Carisma'] - 10) / 2), atributo: "Carisma", outros: 0, maestria: false, especializacao: false }
-        ];
-    }
+            { nome: "Vontade", modificador:Math.floor((atributosFinais['Carisma'] - 10) / 2), atributo: "Carisma", outros: 0, maestria: false, especializacao: false }]
 
     function periciasDestrezaForca() {
         arrayPericias.forEach(item => {
@@ -501,6 +536,7 @@ function SalvarAtributosFinais() {
         totalCell.id = item.nome + '-total'; // o id de totalcell vai ser igual o nome do item atual + -total no final (concatenação)
         totalCell.textContent = item.modificador + item.outros; // o conteudo textual na celula do total é o mod + outros (obvio que se tiver maestria ou especialização, vai add tbm)
         });
+
     }
 
     EscreverAtributos();
@@ -527,8 +563,6 @@ function calcularEAtualizarTotais(arrayUsada) { //calcula e atualiza os valores 
             // Se houver especialização e maestria, apenas o bônus de especialização é adicionado
             // pois já inclui o bônus da maestria
         }
-
-        console.log(`Total: ${total}`);
         let totalCell = "";
         
         // Atualizar a tabela
@@ -597,18 +631,6 @@ Kit de Ferramentas: ${classe.kit_de_ferramentas} </textarea>`;
 document.getElementById("ficha_especializacao").addEventListener("change", escreverMaestrias);
 
 escreverMaestrias();
-
-// LER ATRIBUTOS BASE, MEIO OBSOLETO
-function lerAtributos() {
-    const atributosLidos = objetoAtributosBase;
-
-    for (let atributoLido in atributosLidos) {
-        
-        console.log(`${atributoLido}: ${atributosLidos[atributoLido]}`);
-    }
-    console.log("Leitura de atributos finalizada."); 
-
-}
 
 // CRIAR E DELETAR HABILIDADES DE TÉCNICAS
 let textareaCount = 0; // basicamente serve como um indice.
@@ -725,15 +747,19 @@ function modificarTabelaEquipamentos() {
 
     nomeInput.id = nomeInputId;
     nomeInput.type = 'text';
+    nomeInput.classList = 'clean-border';
 
     quantidadeInput.id = quantidadeInputId;
     quantidadeInput.type = 'number';
+    quantidadeInput.classList = 'clean-border';
 
     espacosInput.id = espacosInputId;
     espacosInput.type = 'number';
+    espacosInput.classList = 'clean-border';
 
     custoInput.id = custoInputId;
     custoInput.type = 'number';
+    custoInput.classList = 'clean-border';
 
     nomeCell.appendChild(nomeInput);
     quantidadeCell.appendChild(quantidadeInput);
@@ -1065,10 +1091,7 @@ function salvarArrayAnatomia() {
     }
     arrayAnatomia.forEach(nomeAnatomia => { 
         const habilidadeAnatomia = caracteristicasAnatomia.find(ca => ca.nome === nomeAnatomia);
-        if (habilidadeAnatomia) {
-            anatomiaHTML += `<li><strong>${habilidadeAnatomia.nome}</strong>: ${habilidadeAnatomia.descricao}</li>`;
-        }
-        anatomiaHTML += `</ul>`;
+        anatomiaHTML += `<li><strong>${habilidadeAnatomia.nome}</strong>: ${habilidadeAnatomia.descricao}</li>`;
     });
 
     document.getElementById("fichaCaracteristicasAnatomia").innerHTML = anatomiaHTML; // escreve na ficha
@@ -1082,7 +1105,6 @@ function adicionarElementoAnatomia(elemento) {
         } else {
             arrayAnatomia.push(elemento);
         }
-
         console.log(`Elemento adicionado/atualizado com sucesso.`);
 }
 
@@ -1247,4 +1269,4 @@ function baixar() {
 
 salvarAtributosBase();
 definirAtributosBonusOrigem();
-SalvarAtributosFinais()
+SalvarAtributosFinais();

@@ -10,8 +10,10 @@
     <body>
         <div class="tabs">
             <button class="tab-btn" onclick="openTab('abaPersonagem')">Personagem</button>
+            <button class="tab-btn" onclick="openTab('abaEquipamentos')">Equipamentos</button>
             <button class="tab-btn" onclick="openTab('abaRosto')">Rosto</button>
             <button class="tab-btn" onclick="openTab('abaInvocacoes')">Invocações</button>
+            <button class="tab-btn" onclick="openTab('abaSalvarCarregar')">Salvar e Carregar</button>
           </div>
         
         <div id="abaRosto" class="tab-content">
@@ -42,10 +44,43 @@
             <h2>Conteúdo da Tab 3</h2>
             <p>Este é o conteúdo da terceira aba.</p>
         </div>
+
+        <div id="abaEquipamentos" class="tab-content">
+            <div id="fichaEquipamentos">
+                <p><h2><b>Equipamentos</b></h2></p>
+                <div id="espacosEquipamentos"></div><br>
+                <table id="tabelaEquipamentos">
+                    <tr>
+                        <th>Nome do Item</th>
+                        <th>Quantidade</th>
+                        <th>Espaço</th>
+                        <th>Custo</th>
+                    </tr>
+                </table><br>
+                <button type="button" onclick="modificarTabelaEquipamentos()">Adicionar mais espaço na tabela</button>
+            </div>
+        </div>
+
+        <div id="abaSalvarCarregar" class="tab-content">
+            <h2><b>Salvar e Carregar</b></h2><br>
+            <button type="button" onclick="salvar()">Salvar Informações</button>
+
+            <h2>Informações Salvas:</h2>
+            <textarea id="infoSalva"name="textoResponsivo" rows="5" cols="50"></textarea><br><br>
+        
+            <h2>Carregar Informações:</h2>
+            <textarea id="infoCarregada" name="textoResponsivo" rows="5" cols="50"></textarea><br><br>
+            <button type="button" onclick="carregar()">Carregar Informações</button><br><br>
+        
+            <h2>Fazer Download do Arquivo JSON:</h2>
+            <button type="button" onclick="baixar()">Download JSON</button><br><br>
+            
+        </div>
         
         <div id="abaPersonagem" class="tab-content active">
             <form id="formFicha">
                 <div id="fichaBasico">
+                    <br><button type="button" onclick="scrollToBottom()">Ir para baixo</button>
                     <p><h2><b>Básico</b></h2></p>
 
                     <label for="ficha_nome">Nome</label>
@@ -148,20 +183,6 @@
                             </tr>
                         </table>
                     </div>
-                </div>
-                
-                <div id="fichaEquipamentos">
-                    <p><h2><b>Equipamentos</b></h2></p>
-                    <div id="espacosEquipamentos"></div><br>
-                    <table id="tabelaEquipamentos">
-                        <tr>
-                            <th>Nome do Item</th>
-                            <th>Quantidade</th>
-                            <th>Espaço</th>
-                            <th>Custo</th>
-                        </tr>
-                    </table><br>
-                    <button type="button" onclick="modificarTabelaEquipamentos()">Adicionar mais espaço na tabela</button>
                 </div>
                 
                 <div id="fichaHabilidadesBase"> <!--script de escrever habilidades de origem e especialização-->
@@ -280,17 +301,7 @@
             <p id="dado6"></p>
             <button id="button_dado6" type="button">Roll Dice</button><br><br><br><br>
 
-            <button type="button" onclick="salvar()">Salvar Informações</button>
-
-            <h2>Informações Salvas:</h2>
-            <textarea id="infoSalva"name="textoResponsivo" rows="5" cols="50"></textarea><br><br>
-        
-            <h2>Carregar Informações:</h2>
-            <textarea id="infoCarregada" name="textoResponsivo" rows="5" cols="50"></textarea><br><br>
-            <button type="button" onclick="carregar()">Carregar Informações</button><br><br>
-        
-            <h2>Fazer Download do Arquivo JSON:</h2>
-            <button type="button" onclick="baixar()">Download JSON</button>
+            <button type="button" onclick="scrollToTop()">Ir para o topo</button>
         </div>
 
         <script src="objetos.js"></script>
