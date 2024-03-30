@@ -8,14 +8,6 @@ function openTab(tabName) {
     document.getElementById(tabName).classList.add("active");
   }
 
-// REAJUSTAR O TAMANHO DE TEXTOS PARA A DESCRIÇÃO DO PERSONAGEM
-function resizeTextarea() {
-    var textareas = document.getElementsByName("textoResponsivo"); // pega cada descrição do "rosto" da ficha pelo nome
-    textareas.forEach(function(textarea) { // para cada descrição de rosto, realiza a função abaixo
-      textarea.style.height = ""; // Redefine a altura para calcular a altura real
-      textarea.style.height = textarea.scrollHeight + "px"; // Define a altura conforme o conteúdo
-    });
-}
 
 document.getElementsByName("textoResponsivo").forEach(function(textarea) {
     textarea.addEventListener("input", resizeTextarea);
@@ -322,57 +314,65 @@ function SalvarAtributosFinais() {
 
         let PVatual = Valores["Pontos de Vida Atual"];
         let PEatual = Valores["Pontos de Energia Amaldiçoada Atual"]; 
-        let percentualPV = Math.floor(PVatual) * 100 / Math.floor(Valores['Pontos de Vida']);
-        let percentualPE = Math.floor(PEatual) * 100 / Math.floor(Valores['Pontos de Energia Amaldiçoada']);
 
-        alterarPV = function() { // função para modificar pv
+        alterarPV = function() { // função para modificar pe
             PVmodificado = parseInt(document.getElementById("modificarPV").value);
-            percentualPV = Math.floor(PVatual) * 100 / Math.floor(Valores['Pontos de Vida']);
-            PVatual += PVmodificado; 
+            PVatual += PVmodificado;
+            let percentualPV = Math.floor(PVatual) * 100 / Math.floor(Valores["Pontos de Vida"]);
+            document.getElementById("pontosVidaAtual").innerText = Math.floor(PVatual);
+
+            let cor;
             if (percentualPV > 100) {
-                document.getElementById("pontosVidaAtual").innerHTML = `<span style="color:darkorchid"id="pontosVidaAtual">${Math.floor(PVatual)}</span>`;
-            } else if ((percentualPV == 100 && percentualPV > 75)) {
-                document.getElementById("pontosVidaAtual").innerHTML = `<span style="color:chartreuse"id="pontosVidaAtual">${Math.floor(PVatual)}</span>`;
+                cor = "Blueviolet";
+            } else if (percentualPV >= 76) {
+                cor = "DarkOliveGreen";
+            } else if (percentualPV >= 51) {
+                cor = "Chartreuse";
+            } else if (percentualPV >= 26) {
+                cor = "Khaki";
+            } else {
+                cor = "LightCoral";
             }
+            document.getElementById("pontosVidaAtual").style.color = cor;
+            document.getElementById("pontosVidaTotal").style.color = cor;
         }
-
-        /* problemas: tá mostrando a cor errada, testei no nivel 20 e simplesmente não tava aparecendo o valor atual nos Valores do html embora o console.log mostrasse corretamente
-        alterarPV = function() { // função para modificar pv
-            PVmodificado = parseInt(document.getElementById("modificarPV").value);
-            percentualPV = Math.floor(PVatual) * 100 / Math.floor(Valores['Pontos de Vida']);
-            console.log(PVatual);
-            console.log(percentualPV);
-            PVatual += PVmodificado; 
-            if (Math.floor(percentualPV) > 100) {
-                document.getElementById("pontosVidaAtual").innerHTML = `<span style="color:darkorchid"id="pontosVidaAtual">${Math.floor(PVatual)}</span>`;
-            } else if (Math.floor(percentualPV) == 100 && percentualPV > 75) {
-                document.getElementById("pontosVidaAtual").innerHTML = `<span style="color:chartreuse"id="pontosVidaAtual">${Math.floor(PVatual)}</span>`;
-            } else if (Math.floor(percentualPV) == 75 && percentualPV > 50) {
-                document.getElementById("pontosVidaAtual").innerHTML = `<span style="color:lightgreen"id="pontosVidaAtual">${Math.floor(PVatual)}</span>`;
-            } else if (Math.floor(percentualPV) == 50 && percentualPV > 25) {
-                document.getElementById("pontosVidaAtual").innerHTML = `<span style="color:khaki"id="pontosVidaAtual">${Math.floor(PVatual)}</span>`;
-            } else if (Math.floor(percentualPV) == 25 && percentualPV > 0) {
-                document.getElementById("pontosVidaAtual").innerHTML = `<span style="color:lightcoral"id="pontosVidaAtual">${Math.floor(PVatual)}</span>`;
-            } 
-        }
-        */
 
         alterarPE = function() { // função para modificar pe
             PEmodificado = parseInt(document.getElementById("modificarPE").value);
             PEatual += PEmodificado; 
+            let percentualPE = Math.floor(PEatual) * 100 / Math.floor(Valores["Pontos de Energia Amaldiçoada"]);
             document.getElementById("pontosEnergiaAtual").innerText = Math.floor(PEatual);
+
+            let cor;
+            if (percentualPE > 100) { // altera as cores dependendo da percentual atual
+                cor = "Blueviolet"; // roxo 
+            } else if (percentualPE >= 76) {
+                cor = "DarkOliveGreen"; // verde escuro
+            } else if (percentualPE >= 51) {
+                cor = "Chartreuse"; // verde claro
+            } else if (percentualPE >= 26) {
+                cor = "Khaki"; // amarelo desaturado
+            } else {
+                cor = "LightCoral"; // vermelho claro
+            }
+            document.getElementById("pontosEnergiaAtual").style.color = cor; // isso que muda a cor
+            document.getElementById("pontosEnergiaTotal").style.color = cor;
         }
 
         reiniciarPV = function() { // função para reiniciar pv
             PVatual = Valores["Pontos de Vida Atual"];
             PVmodificado = parseInt(document.getElementById("modificarPV").value);
             document.getElementById("pontosVidaAtual").innerText = Math.floor(Valores["Pontos de Vida"]);
+            document.getElementById("pontosVidaAtual").style.color = "DarkOliveGreen"; // reinicia a cor para a "padrão" 
+            document.getElementById("pontosVidaTotal").style.color = "DarkOliveGreen";
         }
 
         reiniciarPE = function() { // função para reiniciar pe
             PEatual = Valores["Pontos de Energia Amaldiçoada Atual"]; 
             PEmodificado = parseInt(document.getElementById("modificarPE").value);
             document.getElementById("pontosEnergiaAtual").innerText = Math.floor(Valores["Pontos de Energia Amaldiçoada"]);
+            document.getElementById("pontosEnergiaAtual").style.color = "DarkOliveGreen";
+            document.getElementById("pontosEnergiaTotal").style.color = "DarkOliveGreen";
         }
 
         // ESCREVER OS VALORES
@@ -383,15 +383,15 @@ function SalvarAtributosFinais() {
             }
             switch (chave) { // roxo > 100
                 case "Pontos de Vida": // verde escuro = 100 > 75 // verde claro = 75 > 50 // amarelo = 50 > 25 > // vermelho = 25 > 0 //  
-                    valoresFichaHTML += `<p>${chave} <span style="color:green"id="pontosVidaAtual">${Math.floor(PVatual)}</span>`;
-                    valoresFichaHTML += `<span style="color:green">/${Math.floor(Valores[chave])}</span></p>`;
+                    valoresFichaHTML += `<p>${chave} <span id="pontosVidaAtual">${Math.floor(PVatual)}</span>`;
+                    valoresFichaHTML += `<span id="pontosVidaTotal">/${Math.floor(Valores[chave])}</span></p>`;
                     valoresFichaHTML += `<input type="number" id="modificarPV" value="0"></input>`;
                     valoresFichaHTML += `<button type="button" onclick="alterarPV()">Modificar PV</button>`;
                     valoresFichaHTML += `<button type="button" onclick="reiniciarPV()">Reiniciar PV</button>`
                     break;
                 case "Pontos de Energia Amaldiçoada": // dps pensar em pe temporarios
-                    valoresFichaHTML += `<p>${chave} <span style="color:lightgreen" id="pontosEnergiaAtual">${Math.floor(PEatual)}</span>`;
-                    valoresFichaHTML += `<span style="color:lightgreen">/${Math.floor(Valores[chave])}</span></p>`;
+                    valoresFichaHTML += `<p>${chave} <span id="pontosEnergiaAtual">${Math.floor(PEatual)}</span>`;
+                    valoresFichaHTML += `<span id="pontosEnergiaTotal">/${Math.floor(Valores[chave])}</span></p>`;
                     valoresFichaHTML += `<input type="number" id="modificarPE" value="0" size="10"></input>`;
                     valoresFichaHTML += `<button type="button" onclick="alterarPE()">Modificar PE</button>`;
                     valoresFichaHTML += `<button type="button" onclick="reiniciarPE()">Reiniciar PE</button>`
@@ -413,6 +413,7 @@ function SalvarAtributosFinais() {
             }
         }
         document.getElementById("fichaValoresAuto").innerHTML = valoresFichaHTML;
+        alterarPV(), alterarPE();
         
     };
 
@@ -462,81 +463,79 @@ function SalvarAtributosFinais() {
     function gerarTabelaPericias() { 
         const tabela = document.getElementById('tabelaPericias');
 
-        while (tabela.rows.length > 0) { // limpa a tabela para não ser escrita novamente caso o usuário atualize os dados
+        // Limpa a tabela para não ser escrita novamente caso o usuário atualize os dados
+        while (tabela.rows.length > 0) { 
             tabela.deleteRow(0); 
         }
-
-        const cabecalho = tabela.createTHead(); // cria o cabecalho
-        const cabecalhoRow = cabecalho.insertRow(); // cria as linhas do cabecalho
-        cabecalhoRow.insertCell(0).textContent = "Nome"; // insere a coluna de nome
-        cabecalhoRow.insertCell(1).textContent = "Modificador"; // e etc
+        
+        const cabecalho = tabela.createTHead(); // Cria o cabeçalho
+        const cabecalhoRow = cabecalho.insertRow(); // Cria as linhas do cabeçalho
+        cabecalhoRow.insertCell(0).textContent = "Nome"; // Insere a coluna de nome
+        cabecalhoRow.insertCell(1).textContent = "Modificador"; // Etc.
         cabecalhoRow.insertCell(2).textContent = "Outros";
         cabecalhoRow.insertCell(3).textContent = "Maestria";
         cabecalhoRow.insertCell(4).textContent = "Especialização";
         cabecalhoRow.insertCell(5).textContent = "Total";
-    
-        arrayPericias.forEach((item) => { // loop para cada item (nome, modificador, etc) do objeto pericias
-            const row = tabela.insertRow(); // insere uma linha na tabela
-            const nomeCell = row.insertCell(0); // na linha da tabela 0, definie como nomeCell
-            const modificadorCell = row.insertCell(1); // mesma logica
+        
+        arrayPericias.forEach((item) => { // Loop para cada item (nome, modificador, etc) do objeto perícias
+            const row = tabela.insertRow(); // Insere uma linha na tabela
+            const nomeCell = row.insertCell(0); // Na linha da tabela 0, define como nomeCell
+            const modificadorCell = row.insertCell(1); // Mesma lógica para as outras células
             const outrosCell = row.insertCell(2);
             const maestriaCell = row.insertCell(3);
             const especializacaoCell = row.insertCell(4);
             const totalCell = row.insertCell(5);
-
-        if (atributosFinais['Destreza'] > atributosFinais['Força']) { // se destreza for maior que força, então o atributo do lado do nome do pericia aparece destreza em vez de força (que é padrão)
-            if (item.nome === "Luta" || item.nome === "Pontaria") {
-                item.atributo = "Destreza";
-                nomeCell.textContent = `${item.nome} [${item.atributo}]`;
-                periciasDestrezaForca();
+        
+            if (atributosFinais['Destreza'] > atributosFinais['Força']) { 
+                if (item.nome === "Luta" || item.nome === "Pontaria") {
+                    item.atributo = "Destreza";
+                    nomeCell.textContent = `${item.nome} [${item.atributo}]`;
+                    periciasDestrezaForca();
+                } 
             } 
-        } 
-
-        nomeCell.textContent = `${item.nome} [${item.atributo}]`; // no nomeCell, escreve o nome da pericia da instância atual
-        modificadorCell.textContent = item.modificador; // mesma logica
-        outrosCell.textContent = item.outros;
-
-        // Criar checkbox para a coluna 'Maestria'
-        if (item.nome != "Luta" && item.nome != "Pontaria") {
-            const checkboxMaestria = document.createElement('input'); // cria um elemento de input
-            checkboxMaestria.type = 'checkbox'; // do tipo checkbox, marcar ou não
-            checkboxMaestria.id = 'pericia_checkbox_maestria_' + item.nome; 
-            checkboxMaestria.checked = item.maestria; // se estar marcado, define maestria como true, caso contrário maestria continuára sendo false
-            checkboxMaestria.addEventListener('change', function() { // se o checkbox sofrer uma alteração (ser marcado ou não)
-                    item.maestria = this.checked; // marca a maestria
-                    calcularEAtualizarTotais(arrayPericias); // e executa a função de atualização
+        
+            nomeCell.textContent = `${item.nome} [${item.atributo}]`; 
+            modificadorCell.textContent = item.modificador; 
+            outrosCell.textContent = item.outros;
+        
+            if (item.nome != "Luta" && item.nome != "Pontaria") {
+                const checkboxMaestria = document.createElement('input');
+                checkboxMaestria.type = 'checkbox';
+                checkboxMaestria.id = 'pericia_checkbox_maestria_' + item.nome; 
+                checkboxMaestria.checked = item.maestria;
+                checkboxMaestria.addEventListener('change', function() {
+                    item.maestria = this.checked;
+                    calcularEAtualizarTotais(arrayPericias);
                     if (this.checked) {
-                        arrayMaestriasPericias.push(item.nome); // adiciona o item no array para salvar
+                        arrayMaestriasPericias.push(item.nome);
                     } else {
-                        arrayMaestriasPericias = arrayMaestriasPericias.filter(nome => nome !== item.nome); // remove ele do array caso seja desmarcado
+                        arrayMaestriasPericias = arrayMaestriasPericias.filter(nome => nome !== item.nome);
                     }
-                }); 
+                });
                 
-            maestriaCell.appendChild(checkboxMaestria); // e adiciona o checkbox na celulá da maestria
-    
-             // Criar checkbox para a coluna 'Especialização', mesma logica de cima
-            const checkboxEspecializacao = document.createElement('input');
-            checkboxEspecializacao.type = 'checkbox';
-            checkboxEspecializacao.id = 'pericia_checkbox_especializacao_' + item.nome; 
-            checkboxEspecializacao.checked = item.especializacao;
-            checkboxEspecializacao.addEventListener('change', function() {
-                item.especializacao = this.checked;
-                calcularEAtualizarTotais(arrayPericias);
-                if (this.checked) {
-                    arrayEspecializacoesPericias.push(item.nome);
-                } else {
-                    arrayEspecializacoesPericias = arrayEspecializacoesPericias.filter(nome => nome !== item.nome);
-                }
-            });
-            
-            especializacaoCell.appendChild(checkboxEspecializacao);
-        }
-
-        // Definir o ID da célula total
-        totalCell.id = item.nome + '-total'; // o id de totalcell vai ser igual o nome do item atual + -total no final (concatenação)
-        totalCell.textContent = item.modificador + item.outros; // o conteudo textual na celula do total é o mod + outros (obvio que se tiver maestria ou especialização, vai add tbm)
+                maestriaCell.appendChild(checkboxMaestria);
+        
+                const checkboxEspecializacao = document.createElement('input');
+                checkboxEspecializacao.type = 'checkbox';
+                checkboxEspecializacao.id = 'pericia_checkbox_especializacao_' + item.nome; 
+                checkboxEspecializacao.checked = item.especializacao;
+                checkboxEspecializacao.addEventListener('change', function() {
+                    item.especializacao = this.checked;
+                    calcularEAtualizarTotais(arrayPericias);
+                    if (this.checked) {
+                        arrayEspecializacoesPericias.push(item.nome);
+                    } else {
+                        arrayEspecializacoesPericias = arrayEspecializacoesPericias.filter(nome => nome !== item.nome);
+                    }
+                });
+                
+                especializacaoCell.appendChild(checkboxEspecializacao);
+            }
+        
+            totalCell.id = item.nome + '-total'; 
+            totalCell.textContent = item.modificador + item.outros; 
         });
-
+        
     }
 
     EscreverAtributos();
@@ -625,12 +624,13 @@ Kit de Ferramentas: ${classe.kit_de_ferramentas} </textarea>`;
     });
 
     document.getElementById("fichaMaestriasAuto").innerHTML = maestriasFichaHTML;
-    resizeTextarea();
+    document.getElementById("fichaMaestriasAuto").addEventListener("change", resizeTextarea);
+
 }
 
 document.getElementById("ficha_especializacao").addEventListener("change", escreverMaestrias);
-
 escreverMaestrias();
+
 
 // CRIAR E DELETAR HABILIDADES DE TÉCNICAS
 let textareaCount = 0; // basicamente serve como um indice.
@@ -677,7 +677,8 @@ Descrição: `;
 
     container.appendChild(HabilidadesTecnicasDiv);
 
-    descricaoTecnicaTextarea.addEventListener("input", resizeTextarea); // sem isso o texto não é responsivo pq o codigo do resize de textarea roda uma vez no programa, mas eu jurava que eu tava tentando fazer isso e não dava certo, programar é minha paixão ou eu sou estupido mesmo (provavelmente isso)
+    descricaoTecnicaTextarea.addEventListener("input", resizeTextarea); // sem isso o texto não é responsivo pq o codigo do resize de textarea roda uma vez no programa, 
+    // mas eu jurava que eu tava tentando fazer isso e não dava certo, programar é minha paixão ou eu sou estupido mesmo (provavelmente isso)
 }
 
 // ESCREVER OS NOMES DAS TÉCNICAS COMO UMA LISTA
@@ -727,7 +728,7 @@ function modificarTabelaEquipamentos() {
 
     countEquipamentos++;
 
-    var rowIndex = tabela.rows.length - 1;
+    //var rowIndex = tabela.rows.length - 1; acho que serve pra definir id, mas ver isso dps
     var nomeInputId = 'equipament_nome_id_' + countEquipamentos;
     var quantidadeInputId = 'equipament_quantidade_id_' + countEquipamentos;
     var espacosInputId = 'equipament_espacos_id_' + countEquipamentos;
@@ -747,19 +748,19 @@ function modificarTabelaEquipamentos() {
 
     nomeInput.id = nomeInputId;
     nomeInput.type = 'text';
-    nomeInput.classList = 'clean-border';
+    nomeInput.classList.add('clean-border');
 
     quantidadeInput.id = quantidadeInputId;
     quantidadeInput.type = 'number';
-    quantidadeInput.classList = 'clean-border';
+    quantidadeInput.classList.add('clean-border');
 
     espacosInput.id = espacosInputId;
     espacosInput.type = 'number';
-    espacosInput.classList = 'clean-border';
+    espacosInput.classList.add('clean-border');
 
     custoInput.id = custoInputId;
     custoInput.type = 'number';
-    custoInput.classList = 'clean-border';
+    custoInput.classList.add('clean-border');
 
     nomeCell.appendChild(nomeInput);
     quantidadeCell.appendChild(quantidadeInput);
@@ -1110,6 +1111,15 @@ function adicionarElementoAnatomia(elemento) {
 
 function removerElementoAnatomia(index) {
         arrayAnatomia.splice(index, 1);
+}
+
+// REAJUSTAR O TAMANHO DE TEXTOS PARA A DESCRIÇÃO DO PERSONAGEM
+function resizeTextarea() {
+    var textareas = document.getElementsByName("textoResponsivo");
+    Array.from(textareas).forEach(function(textarea) {
+        textarea.style.height = "";
+        textarea.style.height = textarea.scrollHeight + "px";
+    });
 }
 
 // ROLAR DADOS

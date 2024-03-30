@@ -1,7 +1,8 @@
 .tab-content {
     display: none;
-  }
-  .tab-content.active {
+}
+  
+.tab-content.active {
     display: block;
   }
 
@@ -13,14 +14,25 @@ body {
 }
 
 label {
-    /*font-weight: bold; */
     margin-right: 5px;
 }
 
-input[type="text"] {
-    padding: 5px;
-    border: 1px solid #ccc; /* adicione uma borda para tornar o campo visível */
-    border-radius: 4px;
+th, td, tr { 
+    border: 1px solid white;
+    text-align: center;
+    padding: 0 10px;
+}
+
+.clean-border {
+    border: none;
+    input[type="text"] {
+        border: none;
+    }
+    
+}
+
+input {
+    border: 1px solid white; 
 }
 
 button {
@@ -36,13 +48,9 @@ button:hover {
     background-color: #0056b3;
 }
 
-table, th, td {
-    border: 1px solid white;
-    align-items: center;
-}
-
 textarea {
     font-family: Arial, sans-serif;
+    font-size: medium;
     width: 100%;
     min-height: 50px; /* Altura inicial do textarea */
     resize: none; /* Impede o redimensionamento manual */
@@ -66,22 +74,14 @@ button {
     color: black;
 }
 
-
 .input-wrapper {
     display: flex; /* Define um layout flexível */
     align-items: center; /* Alinha os itens verticalmente ao centro */
 }
 
-input[type='number']{ /* altera a largura dos input number */
+input[type='number'] { /* altera a largura dos input number */
     width: 50px;
 } 
-
-.clean-border { /* input dos equipamentos */
-    border: none;
-    background: #251f1f;
-    color: white;
-    text-align: center;
-}
 
 #dado6 {
     height: 100px;
@@ -104,11 +104,3 @@ input::-webkit-inner-spin-button {
     height: 1000px;
     background-color: lightgreen;
 }
-
-/* (tava no codigo beta alpha 0.0001, mas provavelmente n vou usar)
-div {
-    border-bottom: 1px solid #000;
-    margin-bottom: 10px;
-    padding-bottom: 10px;
-  }
-*/ 
