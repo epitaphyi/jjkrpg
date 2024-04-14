@@ -70,11 +70,10 @@
         
             <h2>Carregar Informações:</h2>
             <textarea id="infoCarregada" name="textoResponsivo" rows="5" cols="50"></textarea><br><br>
-            <button type="button" onclick="carregar()">Carregar Informações</button><br><br>
+            <button type="button" id="carregar-btn" onclick="carregar()">Carregar Informações</button><br><br>
         
             <h2>Fazer Download do Arquivo JSON:</h2>
             <button type="button" onclick="baixar()">Download JSON</button><br><br>
-            
         </div>
         
         <div id="abaPersonagem" class="tab-content active">
@@ -228,12 +227,12 @@
                 <div id="fichaListaTecnicas">
                     <p><h2><b>Lista de Técnicas</b></h2></p>
                     <div id="fichaAdicionarHabilidadesTecnicas"></div>
-                    <button type="button" onclick="adicionarTecnica(), resizeTextarea(), escreverListaTecnicas()">Adicionar Habilidade de Técnica</button>
+                    <button type="button" onclick="adicionarTecnica(), resizeTextarea()">Adicionar Habilidade de Técnica</button>
                     <button type="button" onclick="salvarTecnicas()">Salvar técnicas</button>
                     <br><br>
                 </div>
 
-                <div id="fichaAtributosBase" class="container"> <!--problema aqui nos tab-->
+                <div id="fichaAtributosBase" class="container"> 
                     <p><h2><b>Definir Atributos Base</b></h2></p>
                     <div class="atributosBase">
                             <label for="forca">Força</label>
@@ -280,8 +279,7 @@
                     <p><h2><b>Características de Anatomia</b></h2></p>
                     <button type="button" onclick="escreverAnatomia()">Adicionar característica de anatomia</button>
                     <div id="selectCaracteristicasAnatomia">
-                        <select hidden class="anatomia"></select> 
-                    </div>
+                        <select hidden class="anatomia"></select>
                     <button onclick="salvarArrayAnatomia()" type="button">Salvar array</button>
                 </div>
             </form>
@@ -293,6 +291,21 @@
             <button id="button_dado6" type="button">Roll Dice</button><br><br><br><br>
 
             <button type="button" onclick="scrollToTop()">Ir para o topo</button>
+
+            <div hidden id="NatanaelNegrini">
+                <br><h2>Arsenal Amaldiçoado</h2><br>
+                <label for="label_escolher_maldicao">Escolher Maldição</label>
+                <select id="select_escolher_maldicao" name="ficha_arsenal_amaldicoado">
+                    <option id="option_maldicao_!" value="Lírica">Lírica</option>
+                    <option id="option_maldicao_2" value="Devorador">Devorador</option>
+                    <option id="option_maldicao_3" value="Maripanso">Maripanso</option>
+                </select><br><br>
+                <button type="button" id="escolher-maldicao-btn" onclick="usar_arsenal()">Escolher Maldição</button>
+                <p id="p_maldicao_escolhida">Maldição escolhida: </p>
+                <p id="p_turnos_transformacao">Turnos disponíveis: </p>
+                <button type="button" id="aumentar-turno-transformacao-btn" onclick="alterar_turnos(-1)">Diminuir turno por 1</button>
+                <button type="button" id="diminuir-turno-transformacao-btn" onclick="alterar_turnos(1)">Aumentar turno por 1</button>
+            </div>
         </div>
     <script src="objetos.js"></script>
     <script src="script.js"></script>

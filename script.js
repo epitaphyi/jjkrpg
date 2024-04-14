@@ -312,8 +312,8 @@ function SalvarAtributosFinais() {
                 break;
         };
 
-        let PVatual = Valores["Pontos de Vida Atual"];
-        let PEatual = Valores["Pontos de Energia Amaldiçoada Atual"]; 
+        PVatual = Valores["Pontos de Vida Atual"];
+        PEatual = Valores["Pontos de Energia Amaldiçoada Atual"]; 
 
         alterarPV = function() { // função para modificar pe
             PVmodificado = parseInt(document.getElementById("modificarPV").value);
@@ -330,8 +330,10 @@ function SalvarAtributosFinais() {
                 cor = "Chartreuse";
             } else if (percentualPV >= 26) {
                 cor = "Khaki";
-            } else {
+            } else if (percentualPV >= 0) {
                 cor = "LightCoral";
+            } else {
+                cor = "Crimson";
             }
             document.getElementById("pontosVidaAtual").style.color = cor;
             document.getElementById("pontosVidaTotal").style.color = cor;
@@ -344,16 +346,18 @@ function SalvarAtributosFinais() {
             document.getElementById("pontosEnergiaAtual").innerText = Math.floor(PEatual);
 
             let cor;
-            if (percentualPE > 100) { // altera as cores dependendo da percentual atual
+            if (percentualPE > 100) { // altera as cores dependendo da percentual atual, se for maior que 100%
                 cor = "Blueviolet"; // roxo 
-            } else if (percentualPE >= 76) {
+            } else if (percentualPE >= 76) { // se não for maior que 100, então igual ou maior que 76
                 cor = "DarkOliveGreen"; // verde escuro
-            } else if (percentualPE >= 51) {
-                cor = "Chartreuse"; // verde claro
-            } else if (percentualPE >= 26) {
+            } else if (percentualPE >= 51) { // se não for maior que 76, então igual ou maior que 51
+                cor = "Chartreuse"; // verde claro 
+            } else if (percentualPE >= 26) { // se não for maior que 51, então igual ou maior que 26
                 cor = "Khaki"; // amarelo desaturado
-            } else {
+            } else if (percentualPE >= 0) { // se não for maior que 26, então igual ou maior que 0
                 cor = "LightCoral"; // vermelho claro
+            } else { // // se não for maior que 0
+                cor = "Crimson"; // vermelho escuro
             }
             document.getElementById("pontosEnergiaAtual").style.color = cor; // isso que muda a cor
             document.getElementById("pontosEnergiaTotal").style.color = cor;
@@ -536,11 +540,17 @@ function SalvarAtributosFinais() {
             totalCell.textContent = item.modificador + item.outros; 
         });
         
-    }
-
+}
     EscreverAtributos();
     EscreverValores();
     gerarTabelaPericias();
+
+    // CARREGA AS PERICIAS NO DOCUMENTO
+    document.getElementById("carregar-btn").addEventListener("click", gerarTabelaPericias);  // se botão de carregar for clicado, gera a tabela com as maestrias e especializacoes marcadas
+    const carregar_btn = document.getElementById("carregar-btn"); // necessário para
+    carregar_btn.addEventListener('click', function() { // isso, que precisa ser uma função porque caso contrário irá começar com arrayPericias vazio (já que ele não é definido com o carregamento do documento, até então)
+        document.getElementById("carregar-btn").addEventListener("click", calcularEAtualizarTotais(arrayPericias)); 
+    }); 
 };
 
 function calcularEAtualizarTotais(arrayUsada) { //calcula e atualiza os valores de total, bonus de maestria e especialização das pericias
@@ -618,14 +628,17 @@ function escreverMaestrias() {
     
     let maestriasFichaHTML = "<h2>Maestrias</h2>";
     especializacaoSelecionada.forEach(classe => {
-        maestriasFichaHTML += `<textarea id="fichaDescricaoMaestrias" name="textoResponsivo" placeholder="Maestrias">Perícias: ${classe.pericias}
+        maestriasFichaHTML += `<textarea class="fichaDescricaoMaestrias" name="textoResponsivo" placeholder="Maestrias">Perícias: ${classe.pericias}
 Armas, Armaduras e Escudos: ${classe.armas_armaduras_escudos}
-Kit de Ferramentas: ${classe.kit_de_ferramentas} </textarea>`;
+Kit de Ferramentas: ${classe.kit_de_ferramentas}</textarea>`;
     });
 
     document.getElementById("fichaMaestriasAuto").innerHTML = maestriasFichaHTML;
-    document.getElementById("fichaMaestriasAuto").addEventListener("change", resizeTextarea);
 
+    resizeTextarea(); // chamar o resizeTextarea para iniciar na página como texto responsivo (sem input do usuário)
+    document.querySelectorAll(".fichaDescricaoMaestrias").forEach(textarea => { // transforma essa BOSTA em texto resposnvio
+        textarea.addEventListener("input", resizeTextarea); // Sério porque algumas coisas tão simples são tão dificeis de fazer? 
+    });
 }
 
 document.getElementById("ficha_especializacao").addEventListener("change", escreverMaestrias);
@@ -634,12 +647,10 @@ escreverMaestrias();
 
 // CRIAR E DELETAR HABILIDADES DE TÉCNICAS
 let textareaCount = 0; // basicamente serve como um indice.
-const nomesTecnicas = []; // array pra guardar os nomes das técnicas
-const descricoesTecnicas = [];
 
 function adicionarTecnica() {
-    textareaCount++; // incrementa um valor, que irá servir como a index base dos ids
-    const container = document.getElementById('fichaAdicionarHabilidadesTecnicas'); // pega aonde tá 
+    textareaCount++; // incrementa um valor, que irá servir como o índice base dos ids
+    const container = document.getElementById('fichaAdicionarHabilidadesTecnicas'); // pega onde está 
 
     const HabilidadesTecnicasDiv = document.createElement('div'); 
     HabilidadesTecnicasDiv.classList.add('fichaAdicionarHabilidadesTecnicas');
@@ -648,24 +659,23 @@ function adicionarTecnica() {
     nomeTecnicaInput.type = 'text';
     nomeTecnicaInput.placeholder = `Nome da Técnica ${textareaCount}`;
     nomeTecnicaInput.id = 'nome_' + textareaCount;
-    nomeTecnicaInput.addEventListener('blur', function() {
-        nomesTecnicas.push(nomeTecnicaInput.value); // Armazena o input no array
-    }); 
     HabilidadesTecnicasDiv.appendChild(nomeTecnicaInput);
 
     const descricaoTecnicaTextarea = document.createElement('textarea');
     descricaoTecnicaTextarea.name = "textoResponsivo";
-    descricaoTecnicaTextarea.textContent = `Habilidade Nível ?
+    descricaoTecnicaTextarea.textContent = `Habilidade Nível ? 
 Conjuração: 
 Alcance: 
 Alvo: 
 Duração: 
 Descrição: `;
     descricaoTecnicaTextarea.id = 'descricao_' + textareaCount;
+    descricaoTecnicaTextarea.setAttribute('data-original-height', descricaoTecnicaTextarea.clientHeight); // salva a altura do textarea (supostamente)
     HabilidadesTecnicasDiv.appendChild(descricaoTecnicaTextarea);
 
     const botaoApagar = document.createElement('button'); // fazer um talvez um pop-up que confirma o delete ou não, para não apagar uma técnica acidentalmente
     botaoApagar.textContent = 'Apagar';
+    botaoApagar.id = 'apagar_' + textareaCount
     var confirmarApagar = false;
     botaoApagar.onclick = function() {
         confirmarApagar = confirm("Você quer apagar essa técnica?");
@@ -676,24 +686,39 @@ Descrição: `;
     HabilidadesTecnicasDiv.appendChild(botaoApagar);
 
     container.appendChild(HabilidadesTecnicasDiv);
-
-    descricaoTecnicaTextarea.addEventListener("input", resizeTextarea); // sem isso o texto não é responsivo pq o codigo do resize de textarea roda uma vez no programa, 
-    // mas eu jurava que eu tava tentando fazer isso e não dava certo, programar é minha paixão ou eu sou estupido mesmo (provavelmente isso)
+    descricaoTecnicaTextarea.addEventListener("input", resizeTextarea); 
+    // sem isso o texto não é responsivo pq o código do resize de textarea roda uma vez no programa, 
+    // mas eu jurava que eu tava tentando fazer isso e não dava certo, programar é minha paixão ou eu sou estupido mesmo (provavelmente isso
 }
 
-// ESCREVER OS NOMES DAS TÉCNICAS COMO UMA LISTA
-function escreverListaTecnicas() {
-    let habilidadesTecnicasHTML = "<h2>Habilidades de Técnicas</h2>";
-    habilidadesTecnicasHTML += `Máximo de Habilidades de Técnicas: ${Math.floor(maximoTecnicas)}`;
-    nomesTecnicas.forEach(nomeTecnica => {
-        habilidadesTecnicasHTML += `<p>${nomeTecnica}</p>`;
-    });
+// SALVAR AS HABILIDADES DE TÉCNICAS E ESCREVER NO HTML
 
-    document.getElementById("fichaHabilidadesTecnicas").innerHTML = habilidadesTecnicasHTML;
+function salvarTecnicas() {
+    nomesTecnicas = []; 
+    descricoesTecnicas = [];
+    descricoesTecnicasAltura = [];
+    
+    const container = document.getElementById('fichaAdicionarHabilidadesTecnicas');
+    const tecnicaDivs = container.getElementsByClassName('fichaAdicionarHabilidadesTecnicas');
+    for (let i = 0; i < tecnicaDivs.length; i++) {
+        const nomeInput = tecnicaDivs[i].querySelector('input');
+        const descricaoTextarea = tecnicaDivs[i].querySelector('textarea');
+        nomesTecnicas.push(nomeInput.value);
+        descricoesTecnicas.push(descricaoTextarea.value);
+        descricoesTecnicasAltura.push(descricaoTextarea.style.height); 
+    }
+
     console.log(nomesTecnicas);
-}
+    console.log(descricoesTecnicas);
+    console.log(descricoesTecnicasAltura);
 
-function salvarTecnicas() { 
+    let habilidadesTecnicasHTML = "<h2>Habilidades de Técnicas</h2>";
+    habilidadesTecnicasHTML += `Máximo de Habilidades de Técnicas: ${Math.floor(maximoTecnicas)} <p>`;
+    nomesTecnicas.forEach((nomeTecnica, index) => {
+        habilidadesTecnicasHTML += `<li>${nomeTecnica}</li>`;
+    });
+    habilidadesTecnicasHTML += `</p>`;
+    document.getElementById("fichaHabilidadesTecnicas").innerHTML = habilidadesTecnicasHTML;
 }
 
 // ESCREVER A TABELA BASE DE EQUIPAMENTOS
@@ -843,13 +868,20 @@ function salvarArrayHabilidadesEspecializacao() {
     const especializacao = document.getElementById("ficha_especializacao").value;
     const especializacaoSelecionada = habilidadesEspecializacao[especializacao];
 
-    arrayHabilidadesEspecializacaoSalvas = []; // Limpa o array antes de salvar novamente
+    if (infoCarregada == 0) {
+        arrayHabilidadesEspecializacaoSalvas = []; // Limpa o array antes de salvar novamente
+    }
     const selects = document.querySelectorAll('select.especializacao');
     selects.forEach(select => {
             arrayHabilidadesEspecializacaoSalvas.push(select.value);
     });
-    arrayHabilidadesEspecializacaoSalvas.shift();
-    console.log('Array salvo:', arrayHabilidadesEspecializacaoSalvas);
+    if (infoCarregada > 0) {
+        arrayHabilidadesEspecializacaoSalvas.pop();
+    }
+    if (infoCarregada == 0) {
+        arrayHabilidadesEspecializacaoSalvas.shift();
+    }
+    console.log('Habilidades de Especialização Salvas:', arrayHabilidadesEspecializacaoSalvas);
 
     let habilidadesEspecializacaoHTML = "";
     
@@ -879,8 +911,6 @@ function adicionarElementoHabilidadesEspecializao(elemento) {
 }
 
 function removerElementoHabilidadesEspecializacao(index) {
-        const elementoRemovido = arrayHabilidadesEspecializacaoSalvas.splice(index, 1);
-        const elemento = elementoRemovido[0];
         console.log(`Elemento removido com sucesso.`);
 }
 
@@ -918,15 +948,23 @@ function escreverTalentos() {
     selectTalentos.appendChild(novoParagrafo); // Adiciona o novo parágrafo ao elemento div
 }
 
-
 function salvarArrayTalentos() {
-    arrayTalentosSalvos = []; // Limpa o array antes de salvar novamente
+        console.log(nomesTecnicas);
+    console.log(descricoesTecnicas);
+    if (infoCarregada == 0) {  
+        arrayTalentosSalvos = []; 
+    }
     const selects = document.querySelectorAll('select.talento');
     selects.forEach(select => {
             arrayTalentosSalvos.push(select.value);
     });
-    arrayTalentosSalvos.shift();
-    console.log('Array salvo:', arrayTalentosSalvos);
+    if (infoCarregada > 0) {
+        arrayTalentosSalvos.pop();
+    }
+    if (infoCarregada == 0) {
+        arrayTalentosSalvos.shift();
+    }
+    console.log('Talentos salvos:', arrayTalentosSalvos);
 
     let TalentosHTML = "";
     
@@ -994,13 +1032,20 @@ function escreverHabilidadesAmaldicoadas() {
 }
 
 function salvarArrayHabilidadesAmaldicoadas() {
-    arrayHabilidadesAmaldicoadasSalvas = []; // Limpa o array antes de salvar novamente
+    if (infoCarregada == 0) {
+        arrayHabilidadesAmaldicoadasSalvas = []; 
+    }
     const selects = document.querySelectorAll('select.habilidade_amaldicoada');
     selects.forEach(select => {
             arrayHabilidadesAmaldicoadasSalvas.push(select.value);
     });
-    arrayHabilidadesAmaldicoadasSalvas.shift();
-    console.log('Array salvo:', arrayHabilidadesAmaldicoadasSalvas);
+    if (infoCarregada > 0) { 
+        arrayHabilidadesAmaldicoadasSalvas.pop();
+    }
+    if (infoCarregada == 0) { 
+        arrayHabilidadesAmaldicoadasSalvas.shift();
+    }
+    console.log('Habilidades Amaldiçoadas salvas:', arrayHabilidadesAmaldicoadasSalvas);
 
     let habilidadesAmaldicoadasHTML = "";
     
@@ -1077,13 +1122,20 @@ function escreverAnatomia() {
 }
 
 function salvarArrayAnatomia() {
-    arrayAnatomia = []; // Limpa o array antes de salvar novamente
+    if (infoCarregada == 0) {
+        arrayAnatomia = []; 
+    }
     const selects = document.querySelectorAll('select.anatomia');
     selects.forEach(select => {
         arrayAnatomia.push(select.value);
     });
-    arrayAnatomia.shift();
-    console.log('Array salvo:', arrayAnatomia);
+    if (infoCarregada > 0) {
+        arrayAnatomia.pop();
+    }
+    if (infoCarregada == 0) {
+        arrayAnatomia.shift();    
+    }
+    console.log('Características de Anatomia salvas:', arrayAnatomia);
 
     let anatomiaHTML = "";
 
@@ -1092,7 +1144,7 @@ function salvarArrayAnatomia() {
     }
     arrayAnatomia.forEach(nomeAnatomia => { 
         const habilidadeAnatomia = caracteristicasAnatomia.find(ca => ca.nome === nomeAnatomia);
-        anatomiaHTML += `<li><strong>${habilidadeAnatomia.nome}</strong>: ${habilidadeAnatomia.descricao}</li>`;
+            anatomiaHTML += `<li><p><strong>${habilidadeAnatomia.nome}</strong>: ${habilidadeAnatomia.descricao}</p></li>`;
     });
 
     document.getElementById("fichaCaracteristicasAnatomia").innerHTML = anatomiaHTML; // escreve na ficha
@@ -1133,22 +1185,62 @@ function resizeTextarea() {
 var d6 = {
     lados: 6,
     roll: function () {
-      var randomNumber = Math.floor(Math.random() * this.lados) + 1;
-      return randomNumber;
+      var randomNumber_d6 = Math.floor(Math.random() * this.lados) + 1;
+      return randomNumber_d6;
     }
   }
-    
-  function printNumber(number) {
+
+function printNumber(number) {
     var dado6 = document.getElementById('dado6');
     dado6.innerHTML = number;
-  }
+}
   
-  var button_dado6 = document.getElementById('button_dado6');
+var button_dado6 = document.getElementById('button_dado6');
   
-  button_dado6.onclick = function() {
+button_dado6.onclick = function() {
     var result = d6.roll();
     printNumber(result);
-  };
+};
+
+// ARSENAL AMALDIÇOADO
+document.getElementById("ficha_nome").addEventListener("change", function() {
+    if (document.getElementById("ficha_nome").value == "Natanael Negrini") {
+        const div = document.getElementById("NatanaelNegrini");
+        div.style.display = "block"; 
+    }
+})
+    
+const select_maldicoes = document.getElementById('select_escolher_maldicao');
+const p_maldicao_escolhida = document.getElementById('p_maldicao_escolhida');
+const maldicoes = ["Lírica", "Devorador", "Maripanso"];
+let maldicao_escolhida = "";
+
+var turnos = 0;
+let turnos_transformacaoHTML = ``;
+
+function usar_arsenal() {
+    var roll_d6 = Math.floor(Math.random() * 6) + 1;
+    turnos = Math.floor(Math.random() * 4) + 1 + 1;
+    if (roll_d6 != 1) {
+        maldicao_escolhida = select_maldicoes.value;
+    } else {
+        var maldicao_aleatoria = maldicoes[Math.floor(Math.random()*maldicoes.length)]; // a variavel pode ser entendida assim: array[indice sorteado aleatoriamente]
+        while (maldicao_aleatoria == select_maldicoes.value) {
+            maldicao_aleatoria = maldicoes[Math.floor(Math.random()*maldicoes.length)];
+        }
+        maldicao_escolhida = maldicao_aleatoria;
+    } 
+    p_maldicao_escolhida.textContent = `Maldição escolhida: ${maldicao_escolhida}`;
+    turnos_transformacaoHTML = `Turnos disponíveis: ${turnos}`;
+    document.getElementById('p_turnos_transformacao').innerHTML = turnos_transformacaoHTML;
+}
+
+function alterar_turnos(modificador) {
+    turnos += modificador;
+    turnos_transformacaoHTML = `Turnos disponíveis: ${turnos}`;
+    document.getElementById('p_turnos_transformacao').innerHTML = turnos_transformacaoHTML;
+    modificador = 0;
+}
   
 // SALVAR TUDO
 function salvar() {
@@ -1162,33 +1254,62 @@ function salvar() {
     const especializacao = document.getElementById('ficha_especializacao').value;
     const tipo_de_mulher = document.getElementById('ficha_tipo_de_mulher').value;
     const exp = document.getElementById('ficha_exp').value;
-    const maestrias = document.getElementById('fichaDescricaoMaestrias').value;
+    const pv_atual = PVatual;
+    const pe_atual = PEatual;
+
+    const maestrias = [];
+    document.querySelectorAll('.fichaDescricaoMaestrias').forEach(textarea => {
+        maestrias.push(textarea.value);
+    });
+
     const aparencia = document.getElementById('fichaDescricaoAparencia').value;
     const personalidade = document.getElementById('fichaDescricaoTracosPersonalidade').value;
     const historico = document.getElementById('fichaDescricaoHistorico').value;
     const tecnica_inata = document.getElementById('fichaDescricaoTecnicaInata').value;
-    const pericias_maestrias = arrayMaestriasPericias;
-    const pericias_especializacoes = arrayEspecializacoesPericias;
-    const pericias = arrayPericias;
 
+    const pericias = arrayPericias.map(item => ({ // ser sincero champ, n sei como isso funciona
+        nome: item.nome,
+        maestria: item.maestria,
+        especializacao: item.especializacao
+    }));
+
+    const habilidades_especializacao = arrayHabilidadesEspecializacaoSalvas;
+    const talentos = arrayTalentosSalvos;
+    const habilidades_amaldicoadas = arrayHabilidadesAmaldicoadasSalvas;
+    const anatomia = arrayAnatomia;
+
+    const nomes_tecnicas = nomesTecnicas;
+    const descricoes_tecnicas = descricoesTecnicas;
+    const descricoes_tecnicas_altura = descricoesTecnicasAltura;
+
+    //const maldicao_escolhida = maldicao_escolhida;
+    //const turnos = turnos;
+    
     userInfo.nome = nome;
     userInfo.nivel = nivel;
     userInfo.origem = origem;
     userInfo.especializacao = especializacao;
     userInfo.tipo_de_mulher = tipo_de_mulher;
-    userInfo.exp = exp;
+    userInfo.exp = exp
     userInfo.atributos_base = objetoAtributosBase;
     userInfo.bonus_de_atributos_racial = objetoAtributosBonus;
+    userInfo.pv_atual = pv_atual;
+    userInfo.pe_atual = pe_atual;
     userInfo.maestrias = maestrias;
     userInfo.aparencia = aparencia;
     userInfo.personalidade = personalidade;
     userInfo.historico = historico;
     userInfo.tecnica_inata = tecnica_inata;
-    userInfo.pericias_maestrias = pericias_maestrias;
-    userInfo.pericias_especializacoes = pericias_especializacoes;
     userInfo.pericias = pericias;
-
-    console.log(userInfo);
+    userInfo.habilidades_especializacao = habilidades_especializacao;
+    userInfo.talentos = talentos;
+    userInfo.habilidades_amaldicoadas = habilidades_amaldicoadas;
+    userInfo.anatomia = anatomia;
+    userInfo.nomes_tecnicas = nomes_tecnicas;
+    userInfo.descricoes_tecnicas = descricoes_tecnicas;
+    userInfo.descricoes_tecnicas_altura = descricoes_tecnicas_altura;
+    //userInfo.maldicao_escolhida = maldicao_escolhida;
+    //userInfo.turnos = turnos;
     
     const jsonString = JSON.stringify(userInfo);
     document.getElementById('infoSalva').value = jsonString;
@@ -1230,8 +1351,23 @@ function carregar() {
         // salva os atributos finais "automaticamente"
         SalvarAtributosFinais();
 
+        // pv e pe modificados, atualmente não funciona
+        document.querySelectorAll('#pontosVidaAtual').forEach(element => {
+            if (element.tagName.toLowerCase() === 'input') {
+                element.value = PVatual; // Use value para definir o valor de um elemento de entrada
+            } else {
+                element.textContent = PVatual; // Use textContent para definir o conteúdo de um elemento de texto
+            }
+         });
+
         // maestrias (de especialização)
-        document.getElementById('fichaDescricaoMaestrias').value = userInfo.maestrias || "";
+        const maestrias = userInfo.maestrias || []; // Obtém as maestrias do objeto userInfo
+        const textareaElements = document.querySelectorAll('.fichaDescricaoMaestrias'); // Seleciona todos os elementos com a classe 'fichaDescricaoMaestrias'
+    
+        // Itera sobre cada elemento e atribui o valor correspondente de maestrias, se existir
+        textareaElements.forEach((textarea, index) => {
+            textarea.value = maestrias[index] || ""; // Atribui o valor da maestria ou uma string vazia se não houver valor
+        });
 
         // rosto
         document.getElementById('fichaDescricaoAparencia').value = userInfo.aparencia || '';
@@ -1239,25 +1375,50 @@ function carregar() {
         document.getElementById('fichaDescricaoHistorico').value = userInfo.historico || '';
         document.getElementById('fichaDescricaoTecnicaInata').value = userInfo.tecnica_inata || '';
 
-        // pericias
-        // procure por todo os ids que começam com 'pericia_checkbox_maestria' e 'pericia_checkbox_especializacao'
-        // se possuir o mesmo nome de qualquer elemento nos arrays de maestria e especializacao
-        // define esse checkbox como true 
-        arrayPericias = userInfo.pericias;
+        // pericias estão salvas na função de gerarTabelaPericias
 
-        var checkboxes = document.querySelectorAll('input[type="checkbox"][id^="pericia_checkbox_maestria_"]');
-        checkboxes.forEach(function(checkbox) {
-            userInfo.pericias_maestrias.forEach(pericia_maestria => {
-                if (checkbox.id.includes(pericia_maestria)) {
-                    checkbox.checked = true;
-                    calcularEAtualizarTotais(arrayMaestriasPericias);
-                    console.log("Teste 0");
-                }
-            })
-        });
+        // arsenal amaldiçoado - sim eu perdi tempo na "ultima" semana antes da primeira sessão pra beneficiar meu personagem >:)
+        //document.getElementById('p_maldicao_escolhida').value = userInfo.maldicao_escolhida || '';
+        
+        // habilidades de escolha
+        infoCarregada += 1; // isso garante que o programa leia que em vez do usuário estar escrevendo coisas novas, ele está carregando as info
 
-        console.log(arrayMaestriasPericias);
+        // a maneira que todos estão sendo salvos é simplesmente salvar o array das habilidades respectivas no 
+        // userInfo, e então passar do userInfo para as arrays do programa
+        arrayHabilidadesEspecializacaoSalvas = userInfo.habilidades_especializacao || [];
+        salvarArrayHabilidadesEspecializacao();
 
+        arrayTalentosSalvos = userInfo.talentos || [];
+        salvarArrayTalentos();
+
+        arrayHabilidadesAmaldicoadasSalvas = userInfo.habilidades_amaldicoadas || [];
+        salvarArrayHabilidadesAmaldicoadas();
+
+        arrayAnatomia = userInfo.anatomia || [];
+        document.getElementById("fichaFetoAmaldicoado").style.display = "block"; // mostra as escolhas de anatomia na ficha
+        salvarArrayAnatomia();
+
+        // habilidadse de técnicas
+        nomesTecnicas = userInfo.nomes_tecnicas || [];
+        descricoesTecnicas = userInfo.descricoes_tecnicas || [];
+        descricoesTecnicasAltura = userInfo.descricoes_tecnicas_altura || [];
+
+        // Limpa o container antes de adicionar novas técnicas carregadas
+        const container = document.getElementById('fichaAdicionarHabilidadesTecnicas');
+        container.innerHTML = '';
+
+        // Adiciona as técnicas carregadas ao container
+        for (let i = 0; i < nomesTecnicas.length; i++) {
+            adicionarTecnica(); // Adiciona um novo campo de técnica
+            const nomeInput = document.getElementById('nome_' + (i + 1));
+            const descricaoTextarea = document.getElementById('descricao_' + (i + 1));
+            nomeInput.value = nomesTecnicas[i];
+            descricaoTextarea.value = descricoesTecnicas[i];
+            console.log(descricoesTecnicasAltura[i]);
+            descricaoTextarea.style.height = descricoesTecnicasAltura[i]; // pega a alatura do textarea salvo e reajusta a altura do textarea carreagado
+            // odeio texto responsivo odeio texto responsivo odeio texto responsivo
+            // ta consegui aparentemente e é aquele negocio: se tentar fazer coisa A não dá certo, tente fazer coisa B, pois em programação pode ter várias soluções para um único problema
+        }
     //} catch (error) {
     //    alert('Erro ao carregar informações. Certifique-se de que o código está no formato JSON válido.');
     //}

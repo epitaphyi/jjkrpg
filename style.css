@@ -6,6 +6,7 @@
     display: block;
   }
 
+
 body {
     font-family: Arial, sans-serif;
     color: white;
@@ -45,7 +46,7 @@ button {
 }
 
 button:hover {
-    background-color: #0056b3;
+    background-color: gold;
 }
 
 textarea {
@@ -54,10 +55,10 @@ textarea {
     width: 100%;
     min-height: 50px; /* Altura inicial do textarea */
     resize: none; /* Impede o redimensionamento manual */
-    overflow-y: scroll; /* Adiciona barra de rolagem vertical se necessário */
     background: #251f1f;
     color: white;
 }
+
 
 input {
     background: #251f1f;

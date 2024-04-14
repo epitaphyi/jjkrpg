@@ -1,8 +1,10 @@
 // objetos.js
 // objetos = {}
 // arrays = []
+
+// INFO SALVA
 let userInfo = {
-    nome : "", // define propriedade
+    nome : "", // propriedade e valor, nesse caso a propriedade é nome e o valor é vazio
     nivel : "",
     origem : "",
     clas : "",
@@ -11,21 +13,30 @@ let userInfo = {
     exp : "",
     atributos_base: "",
     bonus_de_atributos_racial: "",
+    pv_atual: "", 
+    pe_atual: "",
     maestrias: "",
     pericias: "",
-    pericias_maestrias: "",
-    pericias_especializacoes: "",
     equipamentos: "",
     habilidades_especializacao: "",
     talentos: "",
     habilidades_amaldicoadas: "",
+    anatomia: "",
     aparencia: "",
     personalidade: "",
     historico: "",
     tecnica_inata: "",
-    lista_de_tecnicas: "",
+    nomes_tecnicas: "",
+    descricoes_tecnicas: "",
+    descricoes_tecnicas_altura: "",
+    maldicao_escolhida: "",
+    turnos: ""
 };
 
+let infoCarregada = 0; // se tiver valor 0, é a mesma coisa que "Informação foi carregada pelo usuário? Não"
+                       // se tiver valor 1, é a mesma coisa que "Informação foi carregada pelo usuário? Sim"
+
+// ATRIBUTOS FINAIS
 let atributosFinais = {
     Força: 0, 
     Destreza: 0, 
@@ -35,13 +46,13 @@ let atributosFinais = {
     Carisma: 0,
 };
 
+// PERICIAS
 let arrayPericias = [];
-let arrayMaestriasPericias = [];
-let arrayEspecializacoesPericias = [];
 
-let arrayEquipamentosID = [];
-let arrayTalentosID = [];
+//let arrayEquipamentosID = [];
+//let arrayTalentosID = [];
 
+// VALORES DA FICHA
 let Valores = {
     "Pontos de Vida": 0,
     "Pontos de Energia Amaldiçoada": 0,
@@ -55,6 +66,8 @@ let Valores = {
     "Especialização em Perícias": 0,
 };
 
+let PVatual = 0;
+let PEatual = 0;
 
 // HABILIDADES BASE DE ORIGEM
 const habilidadesOrigem = {
@@ -187,170 +200,7 @@ const habilidadesOrigem = {
 
     ]
 
-}
-
-// CARAACTERISTICAS DE ANATOMIA DE FETO AMALDIÇOADO
-let arrayAnatomia = [];
-let objAnatomia = {};
-
-const caracteristicasAnatomia = [
-    {nome: "Alma Maldita", 
-    descricao: `Sua alma é impregnada com energia amaldiçoada, assumindo um aspecto maldito e difícil de se alterar. 
-    Sempre que uma criatura for causar dano na sua alma, ela precisa suceder em um teste de Vontade com CD igual a 12 + 
-    seu bônus de maestria + modificador de constituição. 
-    Em um sucesso, ele causa dano normalmente, em uma falha, você anula o dano. 
-    Essa habilidade funciona 1 vez por dia, 2 no nível 6, 3 no nível 12 e 4 no nível 18.<br>`,
-    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
-
-    {nome: "Anatomia Incompreensível", 
-    descricao: `O seu corpo tem uma forma
-    que é difícil de compreender.
-    Você tem 25% de chance
-    (resultado “1” em 1d4) de
-    ignorar o dano adicional de
-    um ataque crítico ou um
-    ataque furtivo.<br>`,
-    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
-
-    {nome: "Armadura Natural", 
-    descricao: `Com uma
-    fisionomia estranha, seu
-    corpo recebe uma arma
-    natural. Ela pode usar tanto
-    força quanto destreza, tem
-    como dano Xd4, onde X é
-    igual ao seu bônus de
-    maestria, crítico 2x e você
-    escolhe entre um dos 3 danos
-    físicos para causar.<br>`,
-    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
-
-    {nome: "Capacidade de Voo", 
-    descricao: `No seu
-    corpo, repousa uma
-    capacidade de voo, que com
-    um estímulo de energia se
-    torna ativa. Você pode gastar
-    1 ponto de energia para
-    receber 9 metros de
-    movimento de voo até o final
-    do seu turno.<br>`,
-    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
-
-    {nome: "Carapaça Mutante", 
-    descricao: `Uma
-    carapaça cobre o seu corpo,
-    sendo uma mutação bizarra,
-    mas resistente. Você recebe
-    redução de dano contra
-    danos físicos igual ao seu
-    bônus de maestria; no nível
-    10, você recebe imunidade a
-    um tipo de dano físico a sua
-    escolha.<br>`,
-    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
-
-    {nome: "Desenvolvimento Exagerado", 
-    descricao: `Seu físico se desenvolve de
-    maneira exagerada,
-    ultrapassando o formato e a
-    constituição padrão. Você
-    conta como uma criatura
-    uma categoria de tamanho
-    acima e recebe 1 ponto de
-    vida máximo adicional por
-    nível.<br>`,
-    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
-
-    {nome: "Devorador de Energia", 
-    descricao: `Tendo
-    surgido da própria energia,
-    você pode a devorar quando
-    resiste a uma habilidade
-    originada dela. Quando passa
-    em um teste de resistência
-    para resistir a uma habilidade
-    de técnica ou amaldiçoada,
-    você recebe 1 ponto de
-    energia temporário. Você
-    pode receber energia
-    temporária igual ao seu
-    bônus de maestria, por cena.<br>`,
-    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
-
-    {nome: "Instinto Sanguinário", 
-    descricao: `Em sua
-    essência há um instinto por
-    sangue e violência. Você
-    adiciona o seu bônus de
-    maestria na sua iniciativa;
-    enquanto em uma cena de
-    combate, você também
-    adiciona seu bônus de
-    maestria na sua atenção e
-    recebe 1,5 metros de
-    movimento adicionais.<br>`,
-    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
-
-    {nome: "Membros Extras", 
-    descricao: `Você
-    recebe um par de braços ou
-    de pernas extra, o que afeta
-    as suas capacidades. Com um
-    par adicional de braços, você
-    recebe um bônus de +2 em
-    Atletismo, Acrobacia e
-    Prestidigitação e você pode
-    usar armas de duas mãos e
-    um escudo. Com um par
-    adicional de pernas, o seu
-    movimento aumenta em 3
-    metros e você ignora terreno
-    difícil.<br>`,
-    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
-
-    {nome: "Olhos Sombrios", 
-    descricao: `Seus olhos
-    guardam escuridão, sendo
-    sombrios por natureza e
-    aguçados. Você ignora efeitos
-    de qualquer tipo de escuridão; você recebe
-    maestria em percepção, se
-    não possuir, e um bônus de
-    +2 em rolagens com a perícia,
-    o qual aumenta em +1 a cada
-    4 níveis.<br>`,
-    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
-
-    {nome: "Presença Nefasta", 
-    descricao: `Com um
-    semblante vil, a sua própria
-    presença é nefasta. Toda
-    criatura hostil, ao vê-lo pela
-    primeira vez, deve realizar
-    um teste de Vontade com CD
-    10 + seu bônus de maestria +
-    metade do nível de
-    personagem. Em uma falha,
-    ela fica amedrontada por 3
-    rodadas. Em um sucesso, ela
-    consegue lidar com a sua
-    presença quase por
-    completo, recebendo apenas
-    -1 em testes de perícia.<br>`,
-    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
-
-    {nome: "Sangue Tóxico", 
-    descricao: `O seu sangue
-    é tóxico, capaz de corroer o
-    que entra em contato com.
-    Sempre que sofrer danos de
-    um ataque corpo-a-corpo, o
-    atacante recebe dano
-    venenoso igual ao seu
-    modificador de constituição.<br>`,
-    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false}
-]
+};
 
 // HABILIDADES BASE DE CLASSE
 const habilidadesBaseEspecializacao = {
@@ -569,7 +419,7 @@ const habilidadesBaseEspecializacao = {
         { nome: "Teste", descricao: `teste de descricao`},
         { nome: "Teste 2", descricao: `teste de descricao 2`},
     ]
-}
+};
 
 // HABILIDADES DE CLASSE
 let arrayHabilidadesEspecializacaoSalvas = [];
@@ -619,7 +469,8 @@ const habilidadesEspecializacao = {
         arremessando outra arma ou uma mesma arma, desde que ela possua a propriedade Retorno.`}
     
     ]
-}
+};
+
 // MAESTRIAS DE CLASSE, pq não juntar nas habilidadesEspecializacao?
 const maestriasEspecializacao = {
     lutador: [
@@ -663,26 +514,709 @@ const maestriasEspecializacao = {
         armas_armaduras_escudos: ``,
         kit_de_ferramentas: ``}
     ]
-}
+};
 
 // TALENTOS
 let arrayTalentosSalvos = [];
 let objTalentosSalvos = {};
 
 const Talentos = [
-    {nome: "Talento 1", 
-    descricao: `Descricao`,
+    {nome: "Adepto de Combate", 
+    descricao: `Você se torna adepto a um estilo de
+    combate específico. Ao obter esse
+    talento você aprende um dos estilos
+    de combate da especialização
+    Especialista em Combate.<br>`,
     requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
 
-    {nome: "Talento 2", 
-    descricao: `Descricao`,
+    {nome: "Afinidade com Técnica", 
+    descricao: `Com uma afinidade superior com a
+    sua técnica amaldiçoada, você
+    consegue a desenvolver melhor,
+    criando mais extensões dela. Ao
+    obter esse talento, você recebe uma
+    habilidade de técnica a mais e tem o
+    seu máximo aumentado em uma
+    quantidade igual a metade do seu
+    bônus de maestria. No nível 10, você
+    recebe outra habilidade de técnica a
+    mais.<br>`,
     requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
 
-    {nome: "", 
-    descricao: ``,
+    {nome: "Arremessos Debilitatentes", 
+    descricao: `Ao arremessar armas, você sabe
+    focar exatamente nos lugares em
+    que é capaz de debilitar o alvo.
+    Sempre que realizar um ataque com
+    arma de arremesso, você pode optar
+    por focar em debilitar o alvo,
+    recebendo -5 no acerto, devido à
+    dificuldade, mas caso acerte, o
+    inimigo receberá -5 na próxima
+    rolagem que realizar.<br>`,
     requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
 
-]
+    {nome: "Artesão Amaldiçoado", 
+    descricao: `A criação de ferramentas
+    amaldiçoadas é um ofício no qual
+    você busca se especializar por
+    completo. Sempre que for realizar
+    uma rolagem para criar ou melhorar
+    uma ferramenta amaldiçoada, você a
+    realiza com vantagem. Além disso,
+    você recebe maestria em Ofício
+    (Ferreiro) ou Feitiçaria, caso não
+    possua; caso já possua em ambas,
+    você se torna especialista em uma
+    delas, a sua escolha.<br>`,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+
+    {nome: "Ataque Infalível", 
+    descricao: `Ao rolar o dano de um ataque com
+    arma, quando rolar 1 ou 2, você
+    pode rolar novamente, ficando com
+    o novo resultado, mesmo se for
+    igual. Você também não pode ter os
+    níveis de dano da sua arma
+    reduzidos.<br>`,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+
+    {nome: "Atenção Infalível", 
+    descricao: `Você não pode ser surpreendido, se
+    consciente, e ataques de inimigos
+    que você não possa ver não te
+    deixam desprevenido. Você recebe
+    um bônus de +5 em Atenção.<br>`,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+
+    {nome: "Atirador Preciso", 
+    descricao: `Atacar a uma distância grande não
+    impõe desvantagem no seu ataque a
+    distância. Sua arma a distância ignora
+    meia cobertura e 3/4 de cobertura.
+    Antes de fazer um ataque com uma
+    arma a distância você pode escolher
+    receber uma penalidade de -5 para
+    acertar em troca de infligir +10 de
+    dano.<br>`,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+
+    {nome: "Dedicação Recompensadora", 
+    descricao: `Você se dedica mais do que o
+    normal em suas missões, imagem e
+    desempenho, e recebe melhores
+    recompensas, em troca. No quarto
+    grau, você recebe dois itens de custo
+    1 a mais; no terceiro grau, você
+    recebe dois itens de custo 2 a mais;
+    no segundo grau, você recebe um
+    item de custo 2 a mais e 2 de custo 3
+    a mais; no primeiro grau, você
+    recebe dois itens de custo 3 a mais e
+    um item de custo 4 a mais e, no grau
+    especial, você recebe dois itens de
+    custo 4 a mais.<br>`,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+
+    {nome: "Favorecido pela Sorte", 
+    descricao: `Você tem uma sorte inexplicável, a
+    qual o favorece nos momentos mais
+    críticos. Você tem 3 pontos de sorte.
+    Sempre que fizer uma rolagem, você
+    pode gastar um ponto de sorte para
+    rolar outro d20, podendo escolher
+    usar qualquer um dos dois
+    resultados. Você pode escolher rolar
+    o outro dado após ver o resultado da
+    primeira rolagem, mas antes de ver
+    as consequências. Você também
+    pode gastar 1 ponto de sorte quando
+    é atacado, rolando um d20 e
+    escolhendo se o inimigo usará o seu
+    resultado ou o resultado dele. Você
+    recupera seus pontos de sorte após
+    um descanso longo.<br>`,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+
+    {nome: "Feiticeiro Companheiro", 
+    descricao: `Em busca de garantir o sucesso,
+    você recruta um feiticeiro para ser
+    seu companheiro. Você recebe um
+    aliado de um tipo a sua escolha:
+    entre o nível 1 a 5, ele é iniciante;
+    entre o nível 6 e 10, ele é veterano e,
+    a partir do nível 11, ele se torna um
+    mestre. Nos níveis 10 e 15 você
+    recebe outro aliado.<br>`,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+
+    {nome: "Guarda Infalível", 
+    descricao: `Você nunca baixa a sua guarda,
+    mesmo em uma situação que pode
+    ser vista como catastrófica. Em caso
+    de um desastre, você não causa um
+    ataque como reação. Caso um efeito
+    imposto sobre você tente reduzir sua
+    classe de armadura ou impor
+    modificadores negativos em testes
+    de resistência, você terá +4 para
+    resistir.<br>`,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+
+    {nome: "Incremento de Atributo", 
+    descricao: `Ao obter esse talento, você aumenta
+    o valor de um atributo em 2,
+    podendo superar até mesmo o limite
+    natural. Você pode pegar este
+    talento várias vezes, mas apenas
+    uma vez para cada atributo.<br>`,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+
+    {nome: "Investida Aprimorada", 
+    descricao: `Você domina a arte de realizar uma
+    investida, otimizando-a para extrair o
+    potencial máximo da ação. Ao
+    realizar uma ação de investida, seu
+    movimento aumenta em 3 metros
+    durante ela; o bônus de acerto
+    aumenta de +2 para um valor igual
+    ao seu bônus de maestria e, caso
+    acerte o ataque, o alvo deve realizar
+    um teste de Atletismo contra o seu,
+    sendo derrubado em uma falha.<br>`,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+
+    {nome: "Maldiçao de Bolso", 
+    descricao: `Você possui uma maldição pequena
+    capaz de armazenar itens para você.
+    Ela deve estar próxima de você. O
+    inventário da maldição de bolso
+    possui 8 espaços. Retirar um item
+    dela conta como uma ação livre.
+    Itens com energia amaldiçoada
+    armazenados no interior dela não
+    são detectáveis.<br>`,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+
+    {nome: "Mestre das Armas", 
+    descricao: `Aumenta a Força ou Destreza em 1.
+    Você recebe maestria em quatro
+    armas quaisquer a sua escolha.<br>`,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+
+    {nome: "Mestre Defensivo", 
+    descricao: `Aumenta a Força ou Constituição em
+    1. Você recebe maestria em dois
+    tipos de armadura a sua escolha e
+    em escudos.<br>`,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+
+    {nome: "Provocação Desafiadora", 
+    descricao: `Não só provocar, mas você é capaz
+    de se transformar no centro da
+    atenção daquele que você deseja
+    desafiar. Uma criatura que seja
+    afetada por uma ação de Provocar
+    sua, ao invés de receber
+    desvantagem para atacar outras
+    criaturas, só pode realizar ataques
+    contra você, até que suceda em um
+    teste para escapar da provocação.<br>`,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+
+    {nome: "Resiliência Melhorada", 
+    descricao: `Você recebe maestria em uma
+    perícia usada para testes de
+    resistência a sua escolha e, caso já
+    possua maestria, se torna
+    especialista. O valor do atributo
+    usado na perícia escolhida aumenta
+    em 2.<br>`,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+
+    {nome: "Técnicas Agressivas de Escudo", 
+    descricao: `Você aperfeiçoa o uso do seu escudo
+    para colocá-lo no seu ataque. Ao
+    atacar no seu turno, você pode usar
+    sua ação bônus para empurrar o alvo
+    do ataque, usando seu escudo. Caso
+    ele seja empurrado com sucesso, ela
+    recebe Xd4, onde X é igual ao seu
+    modificador de força, de dano de
+    impacto, somando seu modificador
+    de força. Ela também fica caída e
+    pode ser empurrada em até 4,5
+    metros ao invés de 1,5 metros.<br>`,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+
+    {nome: "Técnicas de Arremesso", 
+    descricao: `Você se aprofunda em técnicas para
+    manusear armas de arremesso no
+    seu potencial máximo e evitar
+    desperdiçar uma delas. Sempre que
+    atacar com uma arma de arremesso,
+    você recebe um bônus de +2 para
+    acertar e +3 no dano. Caso erre um
+    ataque com uma arma de arremesso,
+    ela imediatamente volta para a sua
+    mão, a menos que algo na trajetória
+    impeça.<br>`,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+
+    {nome: "Técnicas de Reação Rápida", 
+    descricao: `Você recebe +5 de Iniciativa. Após a
+    rolagem de iniciativa, caso você não
+    seja o primeiro, você pode rolar
+    novamente, ficando com o melhor
+    resultado.<br>`,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+
+    {nome: "Técnicas Defensivas de Escudo", 
+    descricao: `Você aperfeiçoa o uso do seu escudo
+    para colocá-lo por completo na sua
+    defesa. Ao invés de receber
+    penalidade, você passa a adicionar o
+    bônus do escudo em testes de
+    resistência de reflexos para resistir a
+    efeitos e ataques. Caso você seja
+    submetido a um efeito que o permita
+    realizar um teste de resistência para
+    receber apenas metade do dano, e
+    suceda, você pode usar sua reação
+    para não receber nenhum dano,
+    utilizando do seu escudo para anular
+    os efeitos do ataque em você.<br>`,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+
+    {nome: "Tempestade de Ideias", 
+    descricao: `Você decide extrair ao máximo o seu
+    potencial, obtendo melhorias e
+    novas maestrias. Aumenta um
+    atributo a sua escolha em 1. Você
+    recebe maestria em duas perícias e
+    duas ferramentas a sua escolha.
+    Escolha uma das suas maestrias,
+    exceto Luta e Pontaria, para ter o seu
+    bônus de maestria adicionado em
+    toda rolagem que a utilize, desde
+    que não seja para ataques.<br>`,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+
+    {nome: "Técnica de Empunhadora Dupla [Pré-Requisito: Força ou Destreza 14]", 
+    descricao: `Você recebe um bônus de +1 na sua
+    classe de armadura quando estiver
+    empunhando uma arma em cada
+    mão. Você pode lutar com duas
+    armas mesmo que as armas não
+    sejam leves, desde que não possuam
+    a propriedade pesada ou duas mãos.
+    Você pode sacar ou guardar duas
+    armas ao invés de uma.<br>`,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+
+    {nome: "Técnicas de Imobilização [Pré-Requisito: Força ou Constituição 16]", 
+    descricao: `Você tem vantagem para atacar uma
+    criatura que estiver agarrando e
+    causa Xd6 de dano adicional, onde X
+    é igual ao seu bônus de maestria.
+    Você pode usar sua ação para tentar
+    imobilizar a criatura que estiver
+    agarrando, para tal, faça outro teste
+    de Agarrar, em um sucesso você a
+    imobiliza e a criatura fica
+    Incapacitada e tem a classe de
+    armadura reduzida em um valor igual
+    ao seu bônus de maestria. Uma
+    criatura imobilizada pode tentar
+    escapar no começo do turno dela,
+    repetindo o mesmo teste do agarrão.<br>`,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+
+    {nome: "Alma Inquebrável [Pré-Requisito: Constituição 14]", 
+    descricao: `Sua alma é mais resistente do que o
+    normal, com sua consciência e
+    perseverança tornando-a difícil de se
+    quebrar. Você recebe um bônus de
+    +5 em rolagens de Integridade e
+    redução de dano na alma igual a
+    metade do seu nível de personagem.<br>`,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+
+    {nome: "Robustez Aprimorada [Pré-Requisito: Constituição 14]", 
+    descricao: `Seus pontos de vida máximos
+    aumentam em um valor igual ao
+    dobro do seu nível ao obter esse
+    talento. Sempre que subir de nível e
+    tiver esse talento, você recebe +2
+    pontos de vida máximos.<br>`,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+
+    {nome: "Determinado a Viver [Pré-Requisito: Constituição 17 ou Nível 10]", 
+    descricao: `Uma vez por dia, na primeira vez
+    que fosse para os testes de morte,
+    você pode escolher ficar com 1 de
+    vida ao invés disso. Todo teste de
+    morte que você realiza, a partir do
+    segundo, possui vantagem.<br>`,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+
+    {nome: "Correr e Atirar [Pré-Requisito: Destreza 14]", 
+    descricao: `Um movimento rápido pode ser bem
+    acompanhado pelos seus tiros,
+    deixando-o mais seguro e letal. Ao
+    realizar a ação Disparar enquanto
+    maneja uma arma de fogo, você
+    recebe RD igual ao seu modificador
+    de Destreza e todos os seus ataques
+    com armas de fogo, até o final do
+    turno, causam um dado de dano
+    adicional.<br>`,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+
+    {nome: "Técnicas de Esquiva [Pré-Requisito: Destreza 14]", 
+    descricao: `Você recebe um bônus de +2 na sua
+    Classe de Armadura e em Testes de
+    Reflexos. Uma quantidade de vezes
+    igual ao seu modificador de Destreza,
+    você pode usar Esquivar como uma
+    ação bônus. [Pré-Requisito: Destreza
+    14]<br>`,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+
+    {nome: "Técnicas de Mobilidade [Pré-Requisito: Destreza 14]", 
+    descricao: `Seu movimento aumenta em 4,5
+    metros. Quando usar Disparar,
+    terreno difícil não te custa
+    movimento adicional. Ao atacar uma
+    criatura, você não causa ataques de
+    oportunidade para ela pelo resto do
+    seu turno, acertando o ataque ou
+    não.<br>`,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+
+    {nome: "Discurso Motivador [Pré-Requisito: Maestria em alguma perícia de Carisma]", 
+    descricao: `Você pode gastar 10 minutos
+    inspirando seus aliados: todas as
+    criaturas amigáveis próximas de você
+    recebem HP temporário igual ao
+    dobro do seu nível + seu modificador
+    de carisma multiplicado pela metade
+    do seu bônus de maestria,
+    arredondado para cima. Uma
+    criatura só pode receber esse bônus
+    uma vez por descanso curto ou
+    longo.<br>`,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+
+    {nome: "Técnicas de Ocultamento [Pré-Requisito: Maestria em Furtividade]", 
+    descricao: `Você passa a aplicar o dobro do
+    bônus de maestria em rolagens de
+    furtividade. Se estiver escondido,
+    você pode se mover até 4,5 metros
+    sem se revelar, a menos que termine
+    seu turno em um lugar onde sua
+    presença é óbvia. Além de ficar
+    desprevenido, o alvo de um ataque
+    surpresa passa a receber -5 em todos
+    os testes de resistência contra você,
+    e não só Reflexos, enquanto
+    desprevenido.<br>`,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+
+    {nome: "Especialista em Armaduras Pesadas [Pré-Requisito: Maestria em Armaduras Robuas ou Acima", 
+    descricao: `Você sabe exatamente como vestir
+    uma armadura pesada da maneira
+    mais efetiva, protegendo-se.
+    Enquanto estiver usando uma
+    armadura robusta ou acima, você
+    recebe redução de dano contra
+    todos os tipos, exceto Dano na Alma,
+    igual ao seu modificador de
+    Constituição.<br>`,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+
+    {nome: "Disparos Perfurantes [Pré-Requisito: Nível 4]", 
+    descricao: `Buscando valorizar ao máximo cada
+    disparo, você consegue encontrar
+    sempre o ângulo perfeito para que
+    um bom tiro não seja desperdiçado
+    em um único alvo. Ao realizar um
+    ataque com uma arma de fogo
+    contra um alvo ao qual haja uma
+    criatura adjacente, a criatura
+    adjacente deve realizar um TR de
+    Reflexos e, caso falhe, recebe
+    metade do dano causado ao alvo do
+    ataque.<br>`,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+
+    {nome: "Mestre da Criação [Pré-Requisitos: Nível 4 e Maestria em dois Ofícios]", 
+    descricao: `Praticando e estudando, você
+    consegue otimizar o seu tempo para
+    poder produzir mais itens em menos
+    tempo. Quando for criar itens
+    durante um interlúdio, você pode
+    criar 2 itens adicionais; quando for
+    criar itens durante um interlúdio em
+    que optar por Criação de Itens, você
+    pode criar 4 itens adicionais. Além
+    disso, você recebe um bônus de +3
+    em duas perícias de ofício a sua
+    escolha.<br>`,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+
+    {nome: "Mestre dos Chicotes [Pré-Requisito: Nível 5]", 
+    descricao: `Os chicotes são um tipo de arma
+    exótico e único, recompensando
+    aqueles que dominam o seu manejo
+    com um novo potencial. Suas
+    rolagens de ataque com chicotes
+    causam +4 de dano e o alcance
+    aumenta em 1,5 metros. Além disso,
+    uma vez ao turno, quando acertar
+    uma criatura com um ataque com
+    chicote, você pode a forçar a realizar
+    um TR de Fortitude e, caso falhe,
+    você pode a puxar até 3 metros para
+    sua direção.<br>`,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+
+    {nome: "Técnicas do Sentinela [Pré-Requisito: Nível 5]", 
+    descricao: `Ao acertar uma criatura com um
+    ataque de oportunidade, o
+    movimento dela se torna 0. Criaturas
+    provocam ataques de oportunidade
+    para você até se elas usarem
+    Desengajar. Quando uma criatura a
+    1,5 metros de você faz um ataque
+    contra um alvo além de você, você
+    pode como uma reação realizar um
+    ataque contra essa criatura.<br>`,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+
+    {nome: "Rápido no Gatilho [Pré-Requisito: Destreza 16 e Nível 6]", 
+    descricao: `Você ignora a propriedade Recarga
+    de armas a distância cujo custo seja
+    ação bônus para recarregar. Estar a
+    curta distância não o faz receber
+    desvantagem em ataques com armas
+    a distância.<br>`,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+
+    {nome: "Especialista em Concussão [Pré-Requisito: Nível 8]", 
+    descricao: `Seu valor de força ou constituição
+    aumenta em 1. Sempre que estiver
+    usando uma arma que causa dano de
+    impacto, considere o dano dela como
+    um nível superior. Uma vez por
+    turno, ao acertar uma criatura e
+    infligir dano de impacto, você pode
+    mover ela até 3 metros para um
+    espaço desocupado, desde que o
+    alvo não seja muito maior do que
+    você. Ao acertar um ataque crítico,
+    ataques contra o alvo recebem um
+    bônus de +5 até o começo do seu
+    próximo turno.<br>`,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+
+    {nome: "Especialista em Cortes [Pré-Requisito: Nível 8]", 
+    descricao: `Seu valor de força ou destreza
+    aumenta em 1. Sempre que estiver
+    usando uma arma que causa dano
+    cortante, considere o dano dela
+    como um nível superior. Uma vez
+    por turno, ao acertar uma criatura e
+    infligir dano cortante, você pode
+    reduzir o movimento dela em 4,5
+    metros até o começo do seu próximo
+    turno. Ao acertar um ataque crítico,
+    o alvo receberá -5 em todas as
+    rolagens de ataque até o seu
+    próximo turno.<br>`,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+
+    {nome: "Especialista em Perfuração [Pré-Requisito: Nível 8]", 
+    descricao: `Seu valor de força ou destreza
+    aumenta em 1. Sempre que estiver
+    usando uma arma que causa dano
+    perfurante, considere o dano dela
+    como um nível superior. Uma vez por
+    turno, ao acertar uma criatura e
+    infligir dano perfurante você pode
+    rolar novamente os dados de dano,
+    usando o melhor resultado total. Ao
+    acertar um ataque crítico com dano
+    perfurante, você adiciona mais um
+    dado de dano da arma no total.<br>`,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+
+    {nome: "Mestre do Arremeso [Pré-Requisito: Nível 8, Técnicas de Arremesso]", 
+    descricao: `Dominando ainda mais as armas de
+    arremesso, você consegue as levar
+    até o seu limite, tornando-se um
+    efetivo mestre dos arremessos. Toda
+    arma de arremesso que você utilizar
+    tem o seu dano aumentado em um
+    dado; o seu bônus em ataques com
+    armas de arremesso se torna +4 para
+    acertar e +6 no dano, e o alcance de
+    ataques com armas de arremesso
+    aumenta em 6 metros.<br>`,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+
+    {nome: "Segredos do Artesão da Alma [Pré-Requisito: Nível 10 e Maestria em Integridade]", 
+    descricao: `Se aventurando por conhecimentos
+    proibidos, você desvenda uma parte
+    considerável dos segredos da alma,
+    além de os implementar como um
+    artesão, na arte da criação e do
+    reparo. Você passa a adicionar o
+    dobro do seu bônus de maestria em
+    rolagens de Integridade, recebe 5 de
+    RD a dano na alma e se torna capaz
+    de reparar um núcleo destruído de
+    um Corpo Amaldiçoado Mutante, o
+    qual requer um teste de Ofício
+    (Canalizador) e um teste de
+    Integridade, ambos com CD igual a
+    20 + nível do corpo amaldiçoado
+    mutante + 2 para cada dia que se
+    passou desde que o núcleo foi
+    destruído.<br>`,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+
+    {nome: "Técnicas de Camuflagem [Pré-Requisito: Destreza 20, Nível 10 e Técnicas de Ocultamento]", 
+    descricao: `Você amplia nas suas capacidades
+    de se esconder, conseguindo não só
+    ocultar, mas também camuflar,
+    dando chances de que golpes errem:
+    enquanto estiver escondido, você
+    recebe camuflagem de 10% (1 em
+    1d10 e o ataque erra). Você pode
+    também optar por focar
+    completamente em se camuflar,
+    realizando um teste de Furtividade
+    contra a Percepção/Atenção dos
+    inimigos: você recebe camuflagem
+    de 30% (1 a 3 em 1d10 e o ataque
+    erra) contra todos que falharem no
+    teste.<br>`,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+
+    {nome: "Familiaridade com Técnica [Pré-Requisito: Origem Inato, Nível 12]", 
+    descricao: `Com a sua técnica amaldiçoada sendo parte da sua individualidade, você se
+    torna cada vez mais e mais familiar com ela, otimizando-a em custo ou poder.
+    Você pode escolher duas habilidades de técnica para ou reduzir o custo em um
+    valor igual a metade do seu bônus de maestria ou aumentar o seu dano em dois
+    dados.<br>`,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+
+    {nome: "Ideias Originais [Pré-Requisito: Origem Inato, Nível 5]", 
+    descricao: `Decifrando cada mistério da sua técnica, você consegue ter mais ideias de
+    como aplica-la. Ao obter este talento, você recebe uma habilidade de técnica
+    adicional, a qual não conta para o seu máximo de habilidades. No 10° nível, você
+    recebe mais uma habilidade de técnica, a qual também não conta para o seu
+    máximo.<br>`,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+
+    {nome: "Conhecimentos Sigilosos [Pré-Requisito: Origem Herdado, Nível 6", 
+    descricao: `Sendo herdeiro de um clã, você recebe acesso a conhecimentos sigilosos e
+    importantes sobre as habilidades transmitidas na sua linhagem. Você recebe
+    maestria na perícia que não escolheu em Maestrias de Clã, além de se tornar
+    especialista nas duas perícias que você escolheu receber.<br>`,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+
+    {nome: "Manual de Técnica [Pré-Requisito: Origem Herdado, Nível 5]", 
+    descricao: `Sua técnica já está registrada há muito tempo, com direito a um manual
+    explicando seu funcionamento e uso. Ao obter este talento, você recebe uma
+    habilidade de técnica adicional, a qual não conta para o seu máximo de
+    habilidades. Além disso, o seu máximo de habilidades de técnica aumenta em 2.<br>`,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+
+    {nome: "Expansão de Reserva [Pré-Requisito: Origem Derivado, Nível 8]", 
+    descricao: `Você expande a sua reserva de energia, a qual fica oculta em seu ser, apenas
+    aguardando seu uso. Sua característica energia antinatural recebe as seguintes
+    melhorias: recuperar energia da sua reserva se torna uma ação livre e, além
+    disso, você recebe uma quantidade de pontos de energia temporários igual a
+    metade do seu bônus de maestria, juntamente da recuperação.<br>`,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+
+    {nome: "Quebra de Limites [Pré-Requisito: Origem Derivado, Nível 6]", 
+    descricao: `Você continua quebrando os seus limites a partir de um desenvolvimento fora
+    da curva ordinária. Ao obter este talento, você recebe 2 pontos de atributo e
+    pode escolher aumentar o valor máximo de dois atributos em 2, até um limite
+    de 30.<br>`,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+
+    {nome: "Desarme Oportunista [Pré-Requisito: Origem Restringido, Nível 4]", 
+    descricao: `Como um restringido, as armas são quase extensões do seu corpo, e um
+    desarme é uma oportunidade de destruir seus inimigos. Ao suceder em
+    desarmar um alvo, você pode gastar 2 pontos de vigor para, como uma reação,
+    realizar um ataque com a arma desarmada contra o mesmo alvo do desarme.<br>`,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+
+    {nome: "Regeneração Maior [Pré-Requisito: Origem Restringido, Nível 10]", 
+    descricao: `Seu corpo se regenera com mais agilidade e eficiência, dando-o mais
+    disposição. Durante um descanso curto, você pode maximizar uma quantidade
+    de dados de cura igual ao seu modificador de Constituição. Além disso, após um
+    descanso longo, você pode rolar uma quantidade de dados de vida igual a
+    metade do seu modificador de Constituição, ganhando-os como pontos de vida
+    temporários.<br>`,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+
+    {nome: "Físico Aperfeiçoado [Pré-Requisito: Origem Feto Amaldiçoado, Nível 6]", 
+    descricao: `O seu corpo específico e desenvolvido para uma área continua se 
+    aperfeiçoando, ligando-se mais firmemente a certos aspectos. O bônus de
+    perícia recebido pela característica Físico Amaldiçoado aumenta de +2 para +4,
+    e você pode escolher mais uma perícia para receber um bônus de +2.<br>`,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+
+    {nome: "Reposição Sanguínea [Pré-Requisito: Origem Feto Amaldiçoada, Nível 6]", 
+    descricao: `Além de um vigor maldito, ele se desenvolve para uma capacidade única de
+    repor o seu sangue e saúde. Sua cura do Vigor Maldito passa a poder ser
+    utilizada tanto como ação bônus quanto reação, além de aumentar para 3d10.<br>`,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+    
+    {nome: "Coleta de Talismãs [Pré-Requisito: Origem Sem Técnica]", 
+    descricao: `Em busca de novas maneiras de compensar pela sua falta de técnica, você
+    passa a buscar coletar talismãs com shikigamis imbuídos. Ao obter este talento,
+    você recebe o talismã de um shikigami de 4° grau, o qual você pode criar
+    conforme as regras padrão de invocações. No nível 5, você recebe um shikigami
+    de 3° grau; no nível 10 você recebe um shikigami de 2° grau e, no nível 15, você
+    recebe um shikigami de 1° grau. Caso não seja um Controlador, você segue as
+    regras de controle geral.<br>`,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+
+    {nome: "Estudo Amaldiçoado [Pré-Requisito: Origem Sem Técnica]", 
+    descricao: `Você estuda sobre a energia amaldiçoada ao máximo, conseguindo descobrir
+    uma nova maneira de a utilizar. Ao obter este talento, você recebe uma
+    habilidade amaldiçoada a sua escolha, desde que atenda os requisitos. Você
+    pode pegar este talento uma quantidade de vezes igual ao seu bônus de
+    maestria.<br>`,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+
+    {nome: "Noção e Preparação [Pré-Requisito: Origem Sem Técnica, Nível 4]", 
+    descricao: `Embora você esteja privado do acesso a uma técnica e certas aplicações da
+    energia, você tem noção e preparação suficiente para o proteger diante certos
+    problemas. Você recebe um bônus de +2 para testes de resistências contra
+    efeitos de habilidades amaldiçoadas. Nos níveis 9, 14 e 19 o bônus aumenta em
+    +1.<br>`,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+
+    {nome: "Núcleos Especializados [Pré-Requisito: Origem Corpo Amaldiçoado, Nível 10]", 
+    descricao: `Cada um dos seus núcleos tem uma mutação peculiar, especializando-os em
+    algo. Para cada núcleo, você pode escolher um tipo de dano para ser imune a e
+    uma perícia para aplicar o dobro do bônus de maestria em rolagens usando ela.<br>`,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+
+    {nome: "Núcleos Reforçados [Pré-Requisito: Origem Corpo Amaldiçoado, Nível 10]", 
+    descricao: `Seus núcleos passam por outra mutação, reforçando-se. Uma vez por missão,
+    caso um dos seus núcleos fosse ser destruído, essa destruição é prevenida e
+    você fica com 1 ponto de vida. Além disso, todos os seus núcleos têm o valor de
+    integridade da alma aumentado em 15.<br>`,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+];
 
 // HABILIDADES AMALDIÇOADAS
 let arrayHabilidadesAmaldicoadasSalvas = [];
@@ -701,4 +1235,172 @@ const habilidadesAmaldicoadas = [
     descricao: ``,
     requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
 
-]
+];
+
+// CARACTERISTICAS DE ANATOMIA DE FETO AMALDIÇOADO
+let arrayAnatomia = [];
+let objAnatomia = {};
+
+const caracteristicasAnatomia = [
+    {nome: "Alma Maldita", 
+    descricao: `Sua alma é impregnada com energia amaldiçoada, assumindo um aspecto maldito e difícil de se alterar. 
+    Sempre que uma criatura for causar dano na sua alma, ela precisa suceder em um teste de Vontade com CD igual a 12 + 
+    seu bônus de maestria + modificador de constituição. 
+    Em um sucesso, ele causa dano normalmente, em uma falha, você anula o dano. 
+    Essa habilidade funciona 1 vez por dia, 2 no nível 6, 3 no nível 12 e 4 no nível 18.`,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+
+    {nome: "Anatomia Incompreensível", 
+    descricao: `O seu corpo tem uma forma
+    que é difícil de compreender.
+    Você tem 25% de chance
+    (resultado “1” em 1d4) de
+    ignorar o dano adicional de
+    um ataque crítico ou um
+    ataque furtivo.<br>`,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+
+    {nome: "Armadura Natural", 
+    descricao: `Com uma
+    fisionomia estranha, seu
+    corpo recebe uma arma
+    natural. Ela pode usar tanto
+    força quanto destreza, tem
+    como dano Xd4, onde X é
+    igual ao seu bônus de
+    maestria, crítico 2x e você
+    escolhe entre um dos 3 danos
+    físicos para causar.<br>`,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+
+    {nome: "Capacidade de Voo", 
+    descricao: `No seu
+    corpo, repousa uma
+    capacidade de voo, que com
+    um estímulo de energia se
+    torna ativa. Você pode gastar
+    1 ponto de energia para
+    receber 9 metros de
+    movimento de voo até o final
+    do seu turno.<br>`,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+
+    {nome: "Carapaça Mutante", 
+    descricao: `Uma
+    carapaça cobre o seu corpo,
+    sendo uma mutação bizarra,
+    mas resistente. Você recebe
+    redução de dano contra
+    danos físicos igual ao seu
+    bônus de maestria; no nível
+    10, você recebe imunidade a
+    um tipo de dano físico a sua
+    escolha.<br>`,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+
+    {nome: "Desenvolvimento Exagerado", 
+    descricao: `Seu físico se desenvolve de
+    maneira exagerada,
+    ultrapassando o formato e a
+    constituição padrão. Você
+    conta como uma criatura
+    uma categoria de tamanho
+    acima e recebe 1 ponto de
+    vida máximo adicional por
+    nível.<br>`,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+
+    {nome: "Devorador de Energia", 
+    descricao: `Tendo
+    surgido da própria energia,
+    você pode a devorar quando
+    resiste a uma habilidade
+    originada dela. Quando passa
+    em um teste de resistência
+    para resistir a uma habilidade
+    de técnica ou amaldiçoada,
+    você recebe 1 ponto de
+    energia temporário. Você
+    pode receber energia
+    temporária igual ao seu
+    bônus de maestria, por cena.<br>`,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+
+    {nome: "Instinto Sanguinário", 
+    descricao: `Em sua
+    essência há um instinto por
+    sangue e violência. Você
+    adiciona o seu bônus de
+    maestria na sua iniciativa;
+    enquanto em uma cena de
+    combate, você também
+    adiciona seu bônus de
+    maestria na sua atenção e
+    recebe 1,5 metros de
+    movimento adicionais.<br>`,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+
+    {nome: "Membros Extras", 
+    descricao: `Você
+    recebe um par de braços ou
+    de pernas extra, o que afeta
+    as suas capacidades. Com um
+    par adicional de braços, você
+    recebe um bônus de +2 em
+    Atletismo, Acrobacia e
+    Prestidigitação e você pode
+    usar armas de duas mãos e
+    um escudo. Com um par
+    adicional de pernas, o seu
+    movimento aumenta em 3
+    metros e você ignora terreno
+    difícil.<br>`,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+
+    {nome: "Olhos Sombrios", 
+    descricao: `Seus olhos
+    guardam escuridão, sendo
+    sombrios por natureza e
+    aguçados. Você ignora efeitos
+    de qualquer tipo de escuridão; você recebe
+    maestria em percepção, se
+    não possuir, e um bônus de
+    +2 em rolagens com a perícia,
+    o qual aumenta em +1 a cada
+    4 níveis.<br>`,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+
+    {nome: "Presença Nefasta", 
+    descricao: `Com um
+    semblante vil, a sua própria
+    presença é nefasta. Toda
+    criatura hostil, ao vê-lo pela
+    primeira vez, deve realizar
+    um teste de Vontade com CD
+    10 + seu bônus de maestria +
+    metade do nível de
+    personagem. Em uma falha,
+    ela fica amedrontada por 3
+    rodadas. Em um sucesso, ela
+    consegue lidar com a sua
+    presença quase por
+    completo, recebendo apenas
+    -1 em testes de perícia.<br>`,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false},
+
+    {nome: "Sangue Tóxico", 
+    descricao: `O seu sangue
+    é tóxico, capaz de corroer o
+    que entra em contato com.
+    Sempre que sofrer danos de
+    um ataque corpo-a-corpo, o
+    atacante recebe dano
+    venenoso igual ao seu
+    modificador de constituição.<br>`,
+    requisito_nivel: 1, requistio_atributo: 0, requisito_habilidade: false}
+];
+
+// HABILIDADES DE TÉCNICAS
+let nomesTecnicas = [];
+let descricoesTecnicas = [];
+let descricoesTecnicasAltura = [];
